@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://172.18.2.114/:4000/";
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 export const PATH_ENV = "environments";
 export const PATH_DASHBOARD = "dashboard";
 export const PATH_LOGS = "logs";
