@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Chart from "react-google-charts";
+import CardHeader from '@material-ui/core/CardHeader';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -24,14 +25,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import BarChart from './BarChart';
 
-import LiveLogs  from './LiveLogs';
-
-
+import LiveLogs from './LiveLogs';
+import Modal from '@material-ui/core/Modal';
+import DialogChart from './DialogChart';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { connect } from 'react-redux'
 
 import environment from '../redux/reducers/environment'
 import { setEnvironment } from '../redux/actions/envirorment';
 import { fetchDashboardData } from '../redux/actions/dashboard';
+import { fetchComponentSummary,clearComponentSummary } from '../redux/actions/dashboard';
 
 
 
@@ -105,8 +108,8 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
   },
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
   paper: {
     padding: theme.spacing(2),
@@ -126,193 +129,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const lineChartData = {
-  "id": 3,
-  "name": "vv-prod-shore",
-  "index_name": "applog-*",
-  "is_active": true,
-  "created": "2019-12-23T11:56:02.909Z",
-  "els_url": "http://10.15.2.248:9200/",
-  "json_data": [
-    {
-      "component": "contentmanagement-service",
-      "data": [
-        {
-          "error_count": "2073",
-          "component_name": "contentmanagement-service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "ship service",
-      "data": [
-        {
-          "error_count": "742",
-          "component_name": "ship service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "IdentityAccessManagementService",
-      "data": [
-        {
-          "error_count": "2",
-          "component_name": "IdentityAccessManagementService",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "dxp-core-ars-service",
-      "data": [
-        {
-          "error_count": "1577",
-          "component_name": "dxp-core-ars-service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "dxp-core-referencedataservice",
-      "data": [
-        {
-          "error_count": "40",
-          "component_name": "dxp-core-referencedataservice",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "BookVoyage-UI",
-      "data": [
-        {
-          "error_count": "26",
-          "component_name": "BookVoyage-UI",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "vv-batchjob-service",
-      "data": [
-        {
-          "error_count": "2113",
-          "component_name": "vv-batchjob-service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "bookvoyage-bff",
-      "data": [
-        {
-          "error_count": "23",
-          "component_name": "bookvoyage-bff",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "user-account-service",
-      "data": [
-        {
-          "error_count": "13",
-          "component_name": "user-account-service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "Reservation-Service",
-      "data": [
-        {
-          "error_count": "11",
-          "component_name": "Reservation-Service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "dxp-core-salesoffer-service",
-      "data": [
-        {
-          "error_count": "1",
-          "component_name": "dxp-core-salesoffer-service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "DXP.RulesEngine.UI",
-      "data": [
-        {
-          "error_count": "3",
-          "component_name": "DXP.RulesEngine.UI",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "dxp-batchjob-cbs-guest",
-      "data": [
-        {
-          "error_count": "17",
-          "component_name": "dxp-batchjob-cbs-guest",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "dxp-retry-scheduler",
-      "data": [
-        {
-          "error_count": "92",
-          "component_name": "dxp-retry-scheduler",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "Hydration service",
-      "data": [
-        {
-          "error_count": "46",
-          "component_name": "Hydration service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "dxp-external-batchjobs",
-      "data": [
-        {
-          "error_count": "16",
-          "component_name": "dxp-external-batchjobs",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    },
-    {
-      "component": "Embarkation-Service",
-      "data": [
-        {
-          "error_count": "23",
-          "component_name": "Embarkation-Service",
-          "capture_date": "2020-01-05T18:30:00.000Z"
-        }
-      ]
-    }
-  ]
-};
-
-const Dashboard = ({ fetchDashboardData,dashboard, env, component }) => {
+const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSummary, dashboard, env, component }) => {
 
 
 
 
-  
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -325,6 +147,13 @@ const Dashboard = ({ fetchDashboardData,dashboard, env, component }) => {
 
   const [page, setPage] = React.useState(1);
 
+  const [envIdForComponentDtl, setEnvIdForComponentDtl] = React.useState(0);
+
+  const resetDtlId = () => {
+
+    clearComponentSummary();
+    setEnvIdForComponentDtl(0);
+  }
 
   const handlePageChange = (number) => {
 
@@ -355,6 +184,13 @@ const Dashboard = ({ fetchDashboardData,dashboard, env, component }) => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleComponentDetail = envId => {
+
+
+    setEnvIdForComponentDtl(envId);
+    fetchComponentSummary(envId);
+
+  };
 
   const renderMenu = (
     <Menu
@@ -371,12 +207,12 @@ const Dashboard = ({ fetchDashboardData,dashboard, env, component }) => {
     </Menu>
   );
 
-  if (dashboard ) {
+  if (dashboard) {
   }
 
-    if(component){
-      
-    }
+  if (component) {
+
+  }
 
 
 
@@ -432,137 +268,150 @@ const Dashboard = ({ fetchDashboardData,dashboard, env, component }) => {
         <Divider />
         <List>{mainListItems(handlePageChange)}</List>
       </Drawer>
-     
-     
-     
+
+
+
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container} >
           {{
-            true: <Grid container spacing={0}>
-              
+            true: <Grid container spacing={2}>
+
               <Grid container xs={6} spacing={2}>
 
-              {
-                dashboard && dashboard.map(summary => {
-                  return (
-                    <Grid item  xs={12}>
+                {
+                  dashboard && dashboard.map(summary => {
+                    return (
+                      <Grid item xs={12} spacing={2}>
+
+
+                        <Paper className={fixedHeightPaper}>
+
+                          <div>
+
+                            <CardHeader
+                              style={{ padding: 0 }}
+
+
+                              title={`LOG SUMMARY | ${summary.env.name.toUpperCase()}`}
+                              titleTypographyProps={{
+                                variant: 'subtitle1'
+                              }}
+                            />
+
+                          </div>
+                          <Chart
+                            width={'100%'}
+                            height={'300px'}
+                            chartType="LineChart"
+                            loader={<div>Loading Chart</div>}
+                            data={[
+                              ['Date', 'INFO', 'ERROR', 'DEBUG'],
+                              ...summary.data.map(item => {
+                                let row = [moment(new Date(item.date)).format('DD MMM'),
+                                item.data[0].logs !== undefined ? parseInt(item.data[0].logs.counts) : 0,
+                                item.data[1].logs !== undefined ? parseInt(item.data[1].logs.counts) : 0,
+                                item.data[2].logs !== undefined ? parseInt(item.data[2].logs.counts) : 0,
+
+                                ];
+                                // console.log(moment(new Date(item['capture_date'])).format("MMMM Do"));
+
+                                return row;
+                              })
+                            ]}
+                            options={{
+                              series: {
+                                1: { curveType: 'function' },
+                              },
+                              vAxis: { scaleType: 'log', format: 'short' }
+
+
+                            }}
+                          // For tests
+                          />
+
+
+                        </Paper>
+
+                      </Grid>
+                    );
+                  })
+                }
+
+              </Grid>
+
+
+              <Grid container xs={6} spacing={2}>
+
+                {component && component.map(env => {
+
+                  return (<Grid item xs={12}>
 
 
                     <Paper className={fixedHeightPaper}>
-      
-                  <div>
-                           { `LOG SUMMARY | ${summary.env.name.toUpperCase()}`}<br></br>
-                               </div>
-                          <Chart
-                          width={'100%'}
-                          height={'300px'}
-                          chartType="LineChart"
-                          loader={<div>Loading Chart</div>}
-                          data={[
-                            ['Date', 'INFO', 'ERROR', 'DEBUG'],
-                            ...summary.data.map(item => {
-                              let row = [moment(new Date(item.date)).format('DD MMM'),
-                              item.data[0].logs !== undefined ? parseInt(item.data[0].logs.counts) : 0,
-                              item.data[1].logs !== undefined ? parseInt(item.data[1].logs.counts) : 0,
-                              item.data[2].logs !== undefined ? parseInt(item.data[2].logs.counts) : 0,
 
-                              ];
-                              // console.log(moment(new Date(item['capture_date'])).format("MMMM Do"));
-      
-                              return row;
-                            })
-                          ]}
-                          options={{
-                            series: {
-                              1: { curveType: 'function' },
-                            },
-                                     vAxis: { scaleType: 'log', format:'short'}
-      
-                           
+                      <div>
+
+
+                        <CardHeader
+                          style={{ padding: 0 }}
+
+                          action={
+                            <IconButton aria-label="settings" onClick={() => handleComponentDetail(env.id)}>
+                              <OpenInNewIcon />
+                            </IconButton>
+                          }
+                          title={`COMPONENT  SUMMARY | ${env.name.toUpperCase()}`}
+                          titleTypographyProps={{
+                            variant: 'subtitle1'
                           }}
-                        // For tests
                         />
-      
-      
-                      </Paper>              
-                      
-                      </Grid>
-                  );
-                })
-              }
-
-
-         
-
- 
-
-
-
-
-
-            </Grid>
-
-
-            <Grid container xs={6} spacing={2}>
-
-            {component && component.map(env => {
-
-              return (<Grid item xs={12}>
-
-
-                <Paper className={fixedHeightPaper}>
-                
-                <div>
-                       { `COMPONENT  SUMMARY | ${env.name.toUpperCase()}`}
-
-                       
-                         </div>
+                      </div>
                       <Chart
-                      width={'100%'}
-                      height={'300px'}
-                      chartType="LineChart"
-                      loader={<div>Loading Chart</div>}
-                      data={[
-                        ['Date', ...env.json_data[0].data.map(com => com.component.component_name)],
-                        ...env.json_data.map(item => {
-                          let row = [moment(new Date(item.date)).format('DD MMM') ,
+                        width={'100%'}
+                        height={'300px'}
+                        chartType="LineChart"
+                        loader={<div>Loading Chart</div>}
+                        data={[
+                          ['Date', ...env.json_data[0].data.map(com => com.component.component_name)],
+                          ...env.json_data.map(item => {
+                            let row = [moment(new Date(item.date)).format('DD MMM'),
                             ...item.data.map(compData => {
-                
-                              if(compData.data.length > 0){
-                              return  parseInt(compData.data[0].error_count);
-                              }else{
-                                return  parseInt("0");
-                
+
+                              if (compData.data.length > 0) {
+                                return parseInt(compData.data[0].error_count);
+                              } else {
+                                return parseInt("0");
+
                               }
                             })
-                    
-                          ];
-                          // console.log(moment(new Date(item['capture_date'])).format("MMMM Do"));
-                
-                          return row;
-                        })
-                      ]}
-                      options={{
-                        series: {
-                          1: { curveType: 'function' },
-                        },
-                                 vAxis: { scaleType: 'log', format:'short'}
-                
-                       
-                      }}
-                    // For tests
-                    />
-                
-                
-                  </Paper>              
-                  
+
+                            ];
+                            // console.log(moment(new Date(item['capture_date'])).format("MMMM Do"));
+
+                            return row;
+                          })
+                        ]}
+                        options={{
+                          series: {
+                            1: { curveType: 'function' },
+                          },
+                          vAxis: { scaleType: 'log', format: 'short' }
+
+
+                        }}
+                      // For tests
+                      />
+
+
+                    </Paper>
+
                   </Grid>);
-            })}
-            </Grid>
-            
-            
-            
+                })}
+              </Grid>
+
+
+
             </Grid>,
 
             [page == 2]:
@@ -570,15 +419,18 @@ const Dashboard = ({ fetchDashboardData,dashboard, env, component }) => {
 
                 <Grid item xs={12}>
 
-             
-                    <LiveLogs/>
-               
+
+                  <LiveLogs />
+
                 </Grid>
 
 
               </Grid>
           }.true}
-
+         {envIdForComponentDtl !== 0 &&  
+         <DialogChart
+           envIdForComponentDtl={envIdForComponentDtl}
+           resetDtlId={() => resetDtlId()} />}
         </Container>
       </main>
     </div>
@@ -587,7 +439,7 @@ const Dashboard = ({ fetchDashboardData,dashboard, env, component }) => {
 
 
 
-const mapStateToProps = state => console.log("state" , state) || ({
+const mapStateToProps = state => console.log("state", state) || ({
   env: state.environment.env,
   currentEnvironment: state.selectedEnv,
   dashboard: state.dashboard.summaryData,
@@ -598,7 +450,10 @@ const mapStateToProps = state => console.log("state" , state) || ({
 
 const mapDispatchToProps = dispatch => ({
   changeEnviroment: env => dispatch(setEnvironment(env)),
-  fetchDashboardData: dispatch(fetchDashboardData())
+  fetchDashboardData: dispatch(fetchDashboardData()),
+  fetchComponentSummary: envId => dispatch(fetchComponentSummary(envId)),
+  clearComponentSummary: () => dispatch(clearComponentSummary())
+
 })
 
 

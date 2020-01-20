@@ -1,4 +1,4 @@
-import {RCV_DASHBOARD_DATA} from '../actions/dashboard';
+import {RCV_DASHBOARD_DATA, RCV_COMPONENT_SUMMARY_DATA} from '../actions/dashboard';
 const dashboard = (state = {summaryData : []} , action) => {
   switch (action.type) {
   
@@ -10,6 +10,12 @@ const dashboard = (state = {summaryData : []} , action) => {
           summaryComponent: action.componentSummary,
           lastUpdated: action.receivedAt
         });
+      case RCV_COMPONENT_SUMMARY_DATA :
+
+      return Object.assign({}, state, {
+          dialogComponentSummary : action.data
+      });
+    
 
 
     default:
