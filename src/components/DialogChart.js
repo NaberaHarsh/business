@@ -144,32 +144,26 @@ const DialogChart = (props) => {
 
                 <Grid container xs={12} spacing={2}>
 
-                  {componentData && <Grid item xs={12}>
+                  {componentData && [0,1,2,3,4,5,6,7,8,9].map(index =>{
+                    return (
+                      <Grid item xs={12}>
 
 
                     <Paper className={{
-                      height: '500px',
-                    }} elevation={0}>
+                      height: '300px',
+                    }} elevation={1}>
 
                   
                       <Chart
                         width={'100%'}
-                        height={'800px'}
+                        height={'300px'}
                         chartType="LineChart"
                         loader={<div>Loading Chart</div>}
                         data={[
-                          ['Date', ...componentData.json_data[0].data.map(com => com.component.component_name)],
+                          ['Date', componentData.json_data[0].data[index].component.component_name],
                           ...componentData.json_data.map(item => {
                             let row = [moment(new Date(item.date)).format('DD MMM'),
-                            ...item.data.map(compData => {
-
-                              if (compData.data.length > 0) {
-                                return parseInt(compData.data[0].error_count);
-                              } else {
-                                return parseInt("0");
-
-                              }
-                            })
+                            parseInt(item.data[index].data.length > 0 ? item.data[index].data[0].error_count : "0" )
 
                             ];
                             // console.log(moment(new Date(item['capture_date'])).format("MMMM Do"));
@@ -192,6 +186,8 @@ const DialogChart = (props) => {
                     </Paper>
 
                   </Grid>
+                    )
+                  })
                   }
                 </Grid>
 
