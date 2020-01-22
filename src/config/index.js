@@ -6,3 +6,4 @@ export const PATH_DASHBOARD = "dashboard";
 export const PATH_LOGS = "logs";
 export const PATH_COMPONENT_SUMMARY = "component-summary/"
 export const PATH_ENV_SETTING = "env-config/"
+export const PATH_ENV_SETTING_DOWNLOAD = "env-config-download/"

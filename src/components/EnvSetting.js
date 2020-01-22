@@ -39,7 +39,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { fetchLogs } from '../redux/actions/logs';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Alert } from '@material-ui/lab';
-
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -53,7 +53,7 @@ import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
-
+import {API_BASE_URL , PATH_ENV_SETTING_DOWNLOAD } from '../config';
 
 const _ = require('lodash');
 
@@ -265,7 +265,7 @@ const EnvSetting = (props) => {
         nodeCount: 0
 
       }]; 
-      
+
 
     let notInFirst = primaryConfig[0].json_agg[0].Settings.filter(item1 => 
 
@@ -430,7 +430,14 @@ const EnvSetting = (props) => {
 
           <Paper>
 
-            <div>
+          <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+
+            <Grid item xs={11}>
 
               <FormControl variant="filled" className={classes.formControl}>
                 <InputLabel id="demo-simple-select-filled-label">Select Env 1</InputLabel>
@@ -446,7 +453,16 @@ const EnvSetting = (props) => {
                   {environments && environments.filter(item => item.client_id === envId).map(item => (<MenuItem value={item.id}>{item.name}</MenuItem>))}
                 </Select>
               </FormControl>
-            </div>
+                </Grid>
+
+                <Grid item xs={1}>
+                <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId1}`} target="_blank">
+                <GetAppIcon fontSize="large" color="secondary"/>
+
+                </a>
+
+              </Grid>
+            </Grid>
             <TreeView
       className={classes.root}
       defaultExpanded={['1', ...new Array(filteredPrimaryArray()[0].nodeCount).fill(0).map((item, index) => `${2+index}`)]}
@@ -497,8 +513,13 @@ const EnvSetting = (props) => {
 
 
           <Paper>
-            <div >
-
+          <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+            <Grid item xs={1}>
 
 
               <FormControl variant="filled" className={classes.formControl}>
@@ -515,7 +536,16 @@ const EnvSetting = (props) => {
                   {environments && environments.filter(item => item.client_id === envId).map(item => (<MenuItem value={item.id}>{item.name}</MenuItem>))}
                 </Select>
               </FormControl>
-            </div>
+            </Grid>
+              <Grid item xs={1}>
+
+              <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId2}`} target="_blank">
+                <GetAppIcon fontSize="large" color="secondary"/>
+
+                </a>
+                
+                            </Grid>
+            </Grid>
             <TreeView
       className={classes.root}
       defaultExpanded={['1', ...new Array(filteredSecondaryArray()[0].nodeCount).fill(0).map((item, index) => `${2+index}`)]}
