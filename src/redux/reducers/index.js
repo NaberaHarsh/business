@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
-import environment from './environment'
+import config from './config'
 import dashboard from './dashboard';
 import logs from './logs';
+import configCompare from './settingCompare';
 
 export default combineReducers({
   dashboard,
-  environment,
-  logs
+  config,
+  logs,
+  configCompare
 })

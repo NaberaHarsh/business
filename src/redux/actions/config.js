@@ -1,9 +1,11 @@
 import fetch from 'cross-fetch'
 import {requestStart, requestFinish} from './common';
-import {API_BASE_URL , PATH_ENV } from '../../config';
+import {API_BASE_URL , PATH_ENV, PATH_LOOKUP } from '../../config';
 
 
 export const RECEIVE_ENV = 'RECEIVE_ENV'
+export const RECEIVE_LOOKUP = 'RECEIVE_LOOKUP'
+
 function recvEnv(json) {
 
 
@@ -13,13 +15,17 @@ function recvEnv(json) {
     receivedAt: Date.now()
   }
 }
-export const INVALIDATE_SUBREDDIT = 'INVALIDATE_SUBREDDIT'
-export function invalidateSubreddit(subreddit) {
+
+
+function recvLookup(json) {
+
+
   return {
-    type: INVALIDATE_SUBREDDIT,
-    subreddit
-  }
+    type: RECEIVE_LOOKUP,
+    lookup: json  }
 }
+
+
 
 
 export const setEnvironment = environment => ({
@@ -44,6 +50,26 @@ export function fetchEnvironments() {
       .then(json =>
        
         dispatch(recvEnv(json))
+      )
+  }
+}
+
+
+export function fetchLookupData() {
+
+  return function(dispatch) {
+   
+    dispatch(requestStart())
+ 
+    return fetch(`${API_BASE_URL}${PATH_LOOKUP}`)
+      .then(
+        response => response.json(),
+       
+        error => console.log('An error occurred.', error)
+      )
+      .then(json =>
+       
+        dispatch(recvLookup(json))
       )
   }
 }

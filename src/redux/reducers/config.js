@@ -1,5 +1,12 @@
-import {RECEIVE_ENV} from '../actions/envirorment';
-const environment = (state = {} , action) => {
+import {RECEIVE_ENV, RECEIVE_LOOKUP} from '../actions/config';
+const environment = (state = {
+  lookup: {
+    client:[],
+    environment:[],
+    component: []
+
+  }
+} , action) => {
   switch (action.type) {
     case 'SET_ENVIRONMENT':
       return Object.assign({}, state, {
@@ -15,6 +22,14 @@ const environment = (state = {} , action) => {
           selectedEnv : action.env != null && action.env.length > 0 ? action.env[0] : {},
           lastUpdated: action.receivedAt
         });
+
+    case RECEIVE_LOOKUP :
+
+      return Object.assign({}, state, {
+      
+        lookup: action.lookup,
+       
+      });        
 
 
     default:

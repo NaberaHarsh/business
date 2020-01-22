@@ -31,10 +31,11 @@ import DialogChart from './DialogChart';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { connect } from 'react-redux'
 
-import environment from '../redux/reducers/environment'
-import { setEnvironment } from '../redux/actions/envirorment';
+import environment from '../redux/reducers/config'
+import { setEnvironment } from '../redux/actions/config';
 import { fetchDashboardData } from '../redux/actions/dashboard';
 import { fetchComponentSummary,clearComponentSummary } from '../redux/actions/dashboard';
+import EnvSetting from './EnvSetting';
 
 
 
@@ -425,7 +426,9 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
                 </Grid>
 
 
-              </Grid>
+              </Grid>,
+              [page == 3]:
+              <EnvSetting/>
           }.true}
          {envIdForComponentDtl !== 0 &&  
          <DialogChart
@@ -440,8 +443,7 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
 
 
 const mapStateToProps = state => console.log("state", state) || ({
-  env: state.environment.env,
-  currentEnvironment: state.selectedEnv,
+
   dashboard: state.dashboard.summaryData,
   component: state.dashboard.summaryComponent
 

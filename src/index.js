@@ -8,13 +8,27 @@ import rootReducer from './redux/reducers'
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import {fetchEnvironments} from './redux/actions/envirorment'
+import {fetchEnvironments, fetchLookupData} from './redux/actions/config'
 import { composeWithDevTools } from 'redux-devtools-extension';
+
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+ 
 
 
 const loggerMiddleware = createLogger()
+
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+ 
+ 
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 const store = createStore(
-  rootReducer,
+  persistedReducer,
   composeWithDevTools(
   applyMiddleware(
     thunkMiddleware, // lets us dispatch() functions
@@ -23,12 +37,23 @@ const store = createStore(
 )
 
 
-store.dispatch(fetchEnvironments()).then(() => console.log(store.getState()))
+
+
+
+  let persistor = persistStore(store)
+ 
+
+
+
+
+store.dispatch(fetchLookupData()).then(() => console.log(store.getState()))
 
 
 ReactDOM.render( 
 <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
     <App />
+      </PersistGate>
   </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

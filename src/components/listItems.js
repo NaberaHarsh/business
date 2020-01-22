@@ -10,8 +10,8 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Icon from '@material-ui/core/Icon';
-
-
+import HdrStrongIcon from '@material-ui/icons/HdrStrong';
+import CompareIcon from '@material-ui/icons/Compare';
 
 export const mainListItems = (handlePageChange) => (
   <div>
@@ -23,10 +23,17 @@ export const mainListItems = (handlePageChange) => (
     </ListItem>
     <ListItem button onClick={() => handlePageChange(2)}>
       <ListItemIcon>
-          <Icon>more_vert</Icon>
-
+  <HdrStrongIcon/>
       </ListItemIcon>
       <ListItemText primary="Logs" />
+    </ListItem>
+
+    <ListItem button onClick={() => handlePageChange(3)}>
+      <ListItemIcon>
+        <CompareIcon/>
+
+      </ListItemIcon>
+      <ListItemText primary="Compare Config" />
     </ListItem>
   
   
