@@ -146,7 +146,7 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  const [page, setPage] = React.useState(3);
+  const [page, setPage] = React.useState(1);
 
   const [envIdForComponentDtl, setEnvIdForComponentDtl] = React.useState(0);
 

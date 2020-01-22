@@ -456,10 +456,12 @@ const EnvSetting = (props) => {
                 </Grid>
 
                 <Grid item xs={1}>
-                <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId1}`} target="_blank">
+
+                  {envToCompareId1!='' && <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId1}`} target="_blank">
                 <GetAppIcon fontSize="large" color="secondary"/>
 
-                </a>
+                </a>}
+                
 
               </Grid>
             </Grid>
@@ -539,10 +541,11 @@ const EnvSetting = (props) => {
             </Grid>
               <Grid item xs={1}>
 
-              <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId2}`} target="_blank">
+               {envToCompareId2!='' && <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId2}`} target="_blank">
                 <GetAppIcon fontSize="large" color="secondary"/>
 
-                </a>
+                </a>} 
+              
                 
                             </Grid>
             </Grid>
