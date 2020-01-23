@@ -317,8 +317,6 @@ const useStyles = makeStyles(theme => ({
 
 
 const mapStateToProps = state => console.log("state" , state) || ({
-    env: state.environment.env,
-    currentEnvironment: state.selectedEnv,
     dashboard: state.dashboard.summaryData,
     logs: state.logs,
     isRefreshing: state.logs.isRefreshing

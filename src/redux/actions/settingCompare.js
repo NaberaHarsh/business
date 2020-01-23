@@ -30,14 +30,18 @@ export function fetchEnvSetting(params) {
    
     dispatch(requestStart())
  
-    return fetch(`${API_BASE_URL}${PATH_ENV_SETTING}${params.envId}`)
+    return fetch(`${API_BASE_URL}${PATH_ENV_SETTING}${params.envId}/${params.componentId}`)
       .then(
         response => response.json(),
        
         error => console.log('An error occurred.', error)
       )
-      .then(json =>
-        dispatch(recvEnv(json, params.isPrimary))
+      .then(json =>{
+
+        dispatch(requestFinish());
+        dispatch(recvEnv(json, params.isPrimary));
+      }
+       
       )
   }
 }

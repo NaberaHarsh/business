@@ -42,7 +42,7 @@ import EnvSetting from './EnvSetting';
 const _ = require('lodash');
 const moment = require('moment');
 
-const drawerWidth = 200;
+const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,6 +81,10 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
   },
   drawerPaper: {
     position: 'relative',
@@ -139,14 +143,16 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
-    setOpen(true);
+
+
+    setOpen(!open);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState(3);
 
   const [envIdForComponentDtl, setEnvIdForComponentDtl] = React.useState(0);
 
@@ -220,14 +226,16 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+      <AppBar 
+       className={classes.appBar}
+      position="absolute">
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            className={clsx(classes.menuButton)}
           >
             <MenuIcon />
           </IconButton>
@@ -246,7 +254,7 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-            >Login</Button>
+            >Admin</Button>
 
           </div>
 
@@ -255,6 +263,8 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
       {renderMenu}
 
       <Drawer
+        className={classes.drawer}
+
         variant="permanent"
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
@@ -267,7 +277,7 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems(handlePageChange)}</List>
+        <List>{mainListItems(handlePageChange, page)}</List>
       </Drawer>
 
 

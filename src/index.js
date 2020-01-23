@@ -25,10 +25,10 @@ const persistConfig = {
 }
  
  
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+// const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = createStore(
-  persistedReducer,
+  rootReducer,
   composeWithDevTools(
   applyMiddleware(
     thunkMiddleware, // lets us dispatch() functions
@@ -51,9 +51,7 @@ store.dispatch(fetchLookupData()).then(() => console.log(store.getState()))
 
 ReactDOM.render( 
 <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
     <App />
-      </PersistGate>
   </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

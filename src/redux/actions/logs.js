@@ -31,7 +31,6 @@ export function fetchLogs() {
 
   return function(dispatch) {
    
-    dispatch(requestStart())
     dispatch(refreshingLogs(true))
 
     return fetch(`${API_BASE_URL}${PATH_LOGS}`)
@@ -46,6 +45,7 @@ export function fetchLogs() {
       )
       .then(json =>{
         dispatch(recvLogs(json))
+
         dispatch(refreshingLogs(false))
       }
        

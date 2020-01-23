@@ -13,22 +13,30 @@ import Icon from '@material-ui/core/Icon';
 import HdrStrongIcon from '@material-ui/icons/HdrStrong';
 import CompareIcon from '@material-ui/icons/Compare';
 
-export const mainListItems = (handlePageChange) => (
+export const mainListItems = (handlePageChange, pageId) => (
   <div>
-    <ListItem button onClick={() => handlePageChange(1)}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={pageId == 1}
+    >
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button onClick={() => handlePageChange(2)}>
+    <ListItem button onClick={() => handlePageChange(2)}
+        selected={pageId == 2}
+
+    >
       <ListItemIcon>
-  <HdrStrongIcon/>
+      <HdrStrongIcon/>
       </ListItemIcon>
       <ListItemText primary="Logs" />
     </ListItem>
 
-    <ListItem button onClick={() => handlePageChange(3)}>
+    <ListItem button onClick={() => handlePageChange(3)}
+        selected={pageId == 3}
+        >
       <ListItemIcon>
         <CompareIcon/>
 

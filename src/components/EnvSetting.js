@@ -53,7 +53,7 @@ import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
-import {API_BASE_URL , PATH_ENV_SETTING_DOWNLOAD } from '../config';
+import { API_BASE_URL, PATH_ENV_SETTING_DOWNLOAD } from '../config';
 
 const _ = require('lodash');
 
@@ -177,7 +177,7 @@ const StyledTreeItem = withStyles(theme => ({
 const EnvSetting = (props) => {
 
 
-  let { clients, environments,components, fetchEnvSetting, primaryConfig, secondaryConfig } = props;
+  let { clients, environments, components, fetchEnvSetting, primaryConfig, secondaryConfig } = props;
 
   const classes = useStyles();
 
@@ -189,31 +189,39 @@ const EnvSetting = (props) => {
 
 
   const [componentId, setComponentId] = React.useState('');
+  const [envToCompareId1, setEnvToCompareId1] = React.useState('');
+  const [envToCompareId2, setEnvToCompareId2] = React.useState('');
+
 
   const handleComponentChange = event => {
     setComponentId(event.target.value);
+
+    if(envToCompareId1 != '')
+    fetchEnvSetting(envToCompareId1, event.target.value, true);
+
+    if(envToCompareId2 != '')
+    fetchEnvSetting(envToCompareId2, event.target.value, false);
+
   };
 
 
 
-  const [envToCompareId1, setEnvToCompareId1] = React.useState('');
 
   const handleChangeEnvToCompareId1 = event => {
     setEnvToCompareId1(event.target.value);
 
     if (event.target.value !== '')
-      fetchEnvSetting(event.target.value, true);
+      fetchEnvSetting(event.target.value, componentId, true);
   };
 
 
 
-  const [envToCompareId2, setEnvToCompareId2] = React.useState('');
 
   const handleChangeEnvToCompareId2 = event => {
     setEnvToCompareId2(event.target.value);
 
     if (event.target.value !== '')
-      fetchEnvSetting(event.target.value, false);
+      fetchEnvSetting(event.target.value, componentId, false);
 
   };
 
@@ -223,21 +231,21 @@ const EnvSetting = (props) => {
 
 
 
-    let notInSecond = primaryConfig[0].json_agg[0].Settings.filter(item1 => 
+    let notInSecond = primaryConfig[0].json_agg[0].Settings.filter(item1 =>
 
-      secondaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length == 0 
-    
-    ); 
+      secondaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length == 0
+
+    );
 
 
-    let notInFirst = secondaryConfig[0].json_agg[0].Settings.filter(item1 => 
+    let notInFirst = secondaryConfig[0].json_agg[0].Settings.filter(item1 =>
 
-      primaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length == 0 
-    
-    ); 
+      primaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length == 0
 
-      console.log(notInSecond);
-      console.log(notInFirst);
+    );
+
+    console.log(notInSecond);
+    console.log(notInFirst);
 
     return [...notInFirst, ...notInSecond]
 
@@ -248,51 +256,57 @@ const EnvSetting = (props) => {
 
   const filteredPrimaryArray = () => {
 
+    if(primaryConfig && (primaryConfig[0].json_agg.length > 0) && secondaryConfig && (secondaryConfig[0].json_agg.length > 0)){
+      console.log("inside true");
+    }else{
+      console.log("inside false");
+
+    }
 
 
-    if(primaryConfig === undefined)
+    if (primaryConfig === undefined || primaryConfig[0].json_agg.length == 0)
       return [{
-        Component : '',
+        Component: '',
         Settings: [],
         nodeCount: 0
 
-      }]; 
+      }];
 
-      if(secondaryConfig === undefined)
+    if (secondaryConfig === undefined || secondaryConfig[0].json_agg.length == 0 )
       return [{
-        Component : '',
+        Component: '',
         Settings: [],
         nodeCount: 0
 
-      }]; 
+      }];
 
 
-    let notInFirst = primaryConfig[0].json_agg[0].Settings.filter(item1 => 
+    let notInFirst = primaryConfig[0].json_agg[0].Settings.filter(item1 =>
 
-      secondaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name.trim() === item2.Name.trim()).length == 0 
-    
-    ); 
+      secondaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name.trim() === item2.Name.trim()).length == 0
 
-    let onlyInFirst = primaryConfig[0].json_agg[0].Settings.filter(item1 => 
+    );
 
-      secondaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length > 0 
-    
-    ); 
+    let onlyInFirst = primaryConfig[0].json_agg[0].Settings.filter(item1 =>
+
+      secondaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length > 0
+
+    );
 
 
 
-      console.log(onlyInFirst, notInFirst);
+    console.log(onlyInFirst, notInFirst);
 
-    let formattedData =  [...onlyInFirst, ...notInFirst];
+    let formattedData = [...onlyInFirst, ...notInFirst];
 
-    if(formattedData === undefined)
+    if (formattedData === undefined)
       formattedData = [];
 
-     return [{
-      Component : primaryConfig[0].json_agg[0].Component,
+    return [{
+      Component: primaryConfig[0].json_agg[0].Component,
       Settings: formattedData,
       nodeCount: formattedData.length
-    }]; 
+    }];
 
   }
 
@@ -300,49 +314,49 @@ const EnvSetting = (props) => {
   const filteredSecondaryArray = () => {
 
 
-    if(primaryConfig === undefined)
-      return [{
-        Component : '',
-        Settings: [],
-        nodeCount: 0
+    if (primaryConfig === undefined || primaryConfig[0].json_agg.length == 0)
+    return [{
+      Component: '',
+      Settings: [],
+      nodeCount: 0
 
-      }]; 
+    }];
 
-      if(secondaryConfig === undefined)
-      return [{
-        Component : '',
-        Settings: [],
-        nodeCount: 0
+  if (secondaryConfig === undefined || secondaryConfig[0].json_agg.length == 0 )
+    return [{
+      Component: '',
+      Settings: [],
+      nodeCount: 0
 
-      }]; 
+    }];
 
-    let notInFirst = secondaryConfig[0].json_agg[0].Settings.filter(item1 => 
+    let notInFirst = secondaryConfig[0].json_agg[0].Settings.filter(item1 =>
 
-      primaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length == 0 
-    
-    ); 
+      primaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length == 0
 
-    let onlyInFirst = secondaryConfig[0].json_agg[0].Settings.filter(item1 => 
+    );
 
-      primaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length > 0 
-    
-    ); 
+    let onlyInFirst = secondaryConfig[0].json_agg[0].Settings.filter(item1 =>
+
+      primaryConfig[0].json_agg[0].Settings.filter(item2 => item1.Name === item2.Name).length > 0
+
+    );
 
 
 
-      console.log(onlyInFirst, notInFirst);
+    console.log(onlyInFirst, notInFirst);
 
-    let formattedData =  [...onlyInFirst, ...notInFirst];
+    let formattedData = [...onlyInFirst, ...notInFirst];
 
-    if(formattedData === undefined)
+    if (formattedData === undefined)
       formattedData = [];
 
-     return [{
-      Component : secondaryConfig[0].json_agg[0].Component,
+    return [{
+      Component: secondaryConfig[0].json_agg[0].Component,
       Settings: formattedData,
       nodeCount: formattedData.length
 
-    }]; 
+    }];
 
   }
 
@@ -351,21 +365,21 @@ const EnvSetting = (props) => {
 
 
 
-   
 
-    if(isReverseComparison)
-    return  secondaryConfig[0].json_agg[0].Settings.filter(item1 => {
-      if(componentName === item1.Name){
-       return item1[key] === value;
-      }
-    }).length == 0; 
+
+    if (isReverseComparison)
+      return secondaryConfig[0].json_agg[0].Settings.filter(item1 => {
+        if (componentName === item1.Name) {
+          return item1[key] === value;
+        }
+      }).length == 0;
 
     else
-    return  primaryConfig[0].json_agg[0].Settings.filter(item1 => {
-      if(componentName === item1.Name){
-       return item1[key] === value;
-      }
-    }).length == 0; 
+      return primaryConfig[0].json_agg[0].Settings.filter(item1 => {
+        if (componentName === item1.Name) {
+          return item1[key] === value;
+        }
+      }).length == 0;
 
 
   }
@@ -383,7 +397,7 @@ const EnvSetting = (props) => {
 
         <div>
 
-        <FormControl variant="filled" className={classes.formControl}>
+          <FormControl variant="filled" className={classes.formControl}>
             <InputLabel id="demo-simple-select-filled-label">Select Client</InputLabel>
             <Select
               labelId="demo-simple-select-filled-label"
@@ -403,17 +417,19 @@ const EnvSetting = (props) => {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
-              value={envId}
-              onChange={handleChange}
+              value={componentId}
+              onChange={handleComponentChange}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {components && 
-              components.map(item => 
-              (<MenuItem value={item.id}>{item.name}</MenuItem>))}
+              {components &&
+                components.map(item =>
+                  (<MenuItem value={item.Name}>{item.Name}</MenuItem>))}
             </Select>
           </FormControl>
+
+          {props.isApiCalling && <CircularProgress/>}
         </div>
 
 
@@ -430,78 +446,90 @@ const EnvSetting = (props) => {
 
           <Paper>
 
-          <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
+            <Grid
+              container
+              direction="row"
+              justify="space-between"
+              alignItems="center"
+            >
 
-            <Grid item xs={11}>
+              <Grid item xs={11}>
 
-              <FormControl variant="filled" className={classes.formControl}>
-                <InputLabel id="demo-simple-select-filled-label">Select Env 1</InputLabel>
-                <Select
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
-                  value={envToCompareId1}
-                  onChange={handleChangeEnvToCompareId1}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {environments && environments.filter(item => item.client_id === envId).map(item => (<MenuItem value={item.id}>{item.name}</MenuItem>))}
-                </Select>
-              </FormControl>
-                </Grid>
+                <FormControl variant="filled" className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-filled-label">Select Env 1</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    value={envToCompareId1}
+                    onChange={handleChangeEnvToCompareId1}
+                    disabled={componentId=='' || envId == ''}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {environments && environments.filter(item => item.client_id === envId).map(item => (<MenuItem value={item.id}>{item.name}</MenuItem>))}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-                <Grid item xs={1}>
+              <Grid item xs={1}>
 
-                  {envToCompareId1!='' && <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId1}`} target="_blank">
-                <GetAppIcon fontSize="large" color="secondary"/>
+                {envToCompareId1 != '' && <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId1}/${componentId}`} target="_blank">
+                  <GetAppIcon fontSize="large" color="secondary" />
 
                 </a>}
-                
+
 
               </Grid>
             </Grid>
-            <TreeView
-      className={classes.root}
-      defaultExpanded={['1', ...new Array(filteredPrimaryArray()[0].nodeCount).fill(0).map((item, index) => `${2+index}`)]}
-      defaultCollapseIcon={<MinusSquare />}
-      defaultExpandIcon={<PlusSquare />}
-      defaultEndIcon={<CloseSquare />}
-      style={{overflow:'scroll'}}
-      onNodeToggle={() => console.log("do nothing on toggle")}
-
-    >
-
-        {
-          primaryConfig && secondaryConfig && filteredPrimaryArray().map((component, index) => {
-            return (
-            <StyledTreeItem nodeId="1" label={component.Component}>
-
-              {component.Settings.map((setting , indexDeep) => {
-                return (
-              <StyledTreeItem nodeId={`${ indexDeep + 2}`} label={setting.Name} >
-                <div style={{  overflow: 'auto', wordBreak: 'break-all',     whiteSpace:'nowrap'}}>
-                  {/* <div style={{background: checkIfDiff(true,  setting.Name,  setting.Name, 'Name') ? '#ff5252' : 'white'}}>Name : {setting.Name}</div> */}
-                  <div style={{background: checkIfDiff(true, setting.Name,  setting.Environmental, 'Environmental') ? '#ff5252' : 'white'}}>Environmental : {setting.Environmental.toString()}</div>
-                  <div style={{background: checkIfDiff(true, setting.Name, setting.Value, 'Value') ? '#ff5252' : 'white'}}>Value : {setting.Value.trim().replace(/(\r\n|\n|\r)/gm," ").replace(/\s/g,'')}</div>
-             
-             
-                </div>
-
-                </StyledTreeItem>
-
-              )})}
+            {{
+              true: <CardHeader
 
 
-            </StyledTreeItem>
-          ) ;
-        })
-        }
-            </TreeView>
+              title={componentId != '' ? `NOT DATA AVAILABLE`: ``}
+              titleTypographyProps={{
+                variant: 'subtitle1'
+              }}
+            />,
+              [primaryConfig && primaryConfig[0].json_agg.length > 0 && secondaryConfig && secondaryConfig[0].json_agg.length > 0]: <TreeView
+                className={classes.root}
+                defaultExpanded={['1', ...new Array(filteredPrimaryArray()[0].nodeCount).fill(0).map((item, index) => `${2 + index}`)]}
+                defaultCollapseIcon={<MinusSquare />}
+                defaultExpandIcon={<PlusSquare />}
+                defaultEndIcon={<CloseSquare />}
+                style={{ overflow: 'scroll' }}
+                onNodeToggle={() => console.log("do nothing on toggle")}
+
+              >
+
+                {
+                  primaryConfig && secondaryConfig && filteredPrimaryArray().map((component, index) => {
+                    return (
+                      <StyledTreeItem nodeId="1" label={component.Component}>
+
+                        {component.Settings.map((setting, indexDeep) => {
+                          return (
+                            <StyledTreeItem nodeId={`${indexDeep + 2}`} label={setting.Name} >
+                              <div style={{ overflow: 'auto', wordBreak: 'break-all', whiteSpace: 'nowrap' }}>
+                                {/* <div style={{background: checkIfDiff(true,  setting.Name,  setting.Name, 'Name') ? '#ff5252' : 'white'}}>Name : {setting.Name}</div> */}
+                                <div style={{ background: checkIfDiff(true, setting.Name, setting.Environmental, 'Environmental') ? '#ff5252' : 'white' }}>Environmental : {setting.Environmental.toString()}</div>
+                                <div style={{ background: checkIfDiff(true, setting.Name, setting.Value, 'Value') ? '#ff5252' : 'white' }}>Value : {setting.Value.trim().replace(/(\r\n|\n|\r)/gm, " ").replace(/\s/g, '')}</div>
+
+
+                              </div>
+
+                            </StyledTreeItem>
+
+                          )
+                        })}
+
+
+                      </StyledTreeItem>
+                    );
+                  })
+                }
+              </TreeView>
+            }.true}
 
 
 
@@ -515,76 +543,91 @@ const EnvSetting = (props) => {
 
 
           <Paper>
-          <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-            <Grid item xs={1}>
-
-
-              <FormControl variant="filled" className={classes.formControl}>
-                <InputLabel id="demo-simple-select-filled-label">Select Env 2</InputLabel>
-                <Select
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
-                  value={envToCompareId2}
-                  onChange={handleChangeEnvToCompareId2}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {environments && environments.filter(item => item.client_id === envId).map(item => (<MenuItem value={item.id}>{item.name}</MenuItem>))}
-                </Select>
-              </FormControl>
-            </Grid>
+            <Grid
+              container
+              direction="row"
+              justify="space-between"
+              alignItems="center"
+            >
               <Grid item xs={1}>
 
-               {envToCompareId2!='' && <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId2}`} target="_blank">
-                <GetAppIcon fontSize="large" color="secondary"/>
 
-                </a>} 
-              
-                
-                            </Grid>
+                <FormControl variant="filled" className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-filled-label">Select Env 2</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    value={envToCompareId2}
+                    onChange={handleChangeEnvToCompareId2}
+                    disabled={componentId=='' || envId == ''}
+
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {environments && environments.filter(item => item.client_id === envId).map(item => (<MenuItem value={item.id}>{item.name}</MenuItem>))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={1}>
+
+                {envToCompareId2 != '' && <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId2}/${componentId}`} target="_blank">
+                  <GetAppIcon fontSize="large" color="secondary" />
+
+                </a>}
+
+
+              </Grid>
             </Grid>
-            <TreeView
-      className={classes.root}
-      defaultExpanded={['1', ...new Array(filteredSecondaryArray()[0].nodeCount).fill(0).map((item, index) => `${2+index}`)]}
-      defaultCollapseIcon={<MinusSquare />}
-      defaultExpandIcon={<PlusSquare />}
-      defaultEndIcon={<CloseSquare />}
-      style={{overflow:'scroll'}}
+            {{
+              true: 
+              <CardHeader
+  
+  
+                title={componentId != '' ? `NOT DATA AVAILABLE`: ``}
+                titleTypographyProps={{
+                  variant: 'subtitle1'
+                }}
+              />,
+              [true && primaryConfig && primaryConfig[0].json_agg.length > 0 && secondaryConfig && secondaryConfig[0].json_agg.length > 0]: <TreeView
+                className={classes.root}
+                defaultExpanded={['1', ...new Array(filteredSecondaryArray()[0].nodeCount).fill(0).map((item, index) => `${2 + index}`)]}
+                defaultCollapseIcon={<MinusSquare />}
+                defaultExpandIcon={<PlusSquare />}
+                defaultEndIcon={<CloseSquare />}
+                style={{ overflow: 'scroll' }}
 
-    >
-        {
-         primaryConfig && secondaryConfig &&  filteredSecondaryArray() && filteredSecondaryArray().map((component, index) => {
-            return (
-            <StyledTreeItem nodeId="1" label={component.Component}>
+              >
+                {
+                  primaryConfig && secondaryConfig && filteredSecondaryArray() && filteredSecondaryArray().map((component, index) => {
+                    return (
+                      <StyledTreeItem nodeId="1" label={component.Component}>
 
-              {component.Settings.map((setting , indexDeep) => {return (
-              <StyledTreeItem nodeId={`${indexDeep + 2}`} label={setting.Name} >
+                        {component.Settings.map((setting, indexDeep) => {
+                          return (
+                            <StyledTreeItem nodeId={`${indexDeep + 2}`} label={setting.Name} >
 
-                <div style={{  overflow: 'auto', wordBreak: 'break-all',     whiteSpace:'nowrap'}}>
+                              <div style={{ overflow: 'auto', wordBreak: 'break-all', whiteSpace: 'nowrap' }}>
 
-                  {/* <div style={{background: checkIfDiff(false,  setting.Name,setting.Name, 'Name') ? '#64ffda' : 'white'}}>Name : {setting.Name}</div> */}
-                  <div style={{background: checkIfDiff(false, setting.Name, setting.Environmental, 'Environmental') ? '#64ffda' : 'white'}}>Environmental : {setting.Environmental.toString()}</div>
-                  <div style={{background: checkIfDiff(false,  setting.Name,setting.Value, 'Value') ? '#64ffda' : 'white'}}>Value : {setting.Value.trim().replace(/(\r\n|\n|\r)/gm," ").replace(/\s/g,'')}</div>
-             
-             
-                </div>
-
-                </StyledTreeItem>
-
-              )})}
+                                {/* <div style={{background: checkIfDiff(false,  setting.Name,setting.Name, 'Name') ? '#64ffda' : 'white'}}>Name : {setting.Name}</div> */}
+                                <div style={{ background: checkIfDiff(false, setting.Name, setting.Environmental, 'Environmental') ? '#64ffda' : 'white' }}>Environmental : {setting.Environmental.toString()}</div>
+                                <div style={{ background: checkIfDiff(false, setting.Name, setting.Value, 'Value') ? '#64ffda' : 'white' }}>Value : {setting.Value.trim().replace(/(\r\n|\n|\r)/gm, " ").replace(/\s/g, '')}</div>
 
 
-            </StyledTreeItem>
-          ) ;
-        })
-        }
-            </TreeView>
+                              </div>
+
+                            </StyledTreeItem>
+
+                          )
+                        })}
+
+
+                      </StyledTreeItem>
+                    );
+                  })
+                }
+              </TreeView>
+            }.true}
           </Paper>
 
 
@@ -593,44 +636,45 @@ const EnvSetting = (props) => {
         <Grid item xs={2}>
 
 
-        <Paper style={
-          {padding: '10px',
-          overflowWrap:'break-word'
-          }}>
+          <Paper style={
+            {
+              padding: '10px',
+              overflowWrap: 'break-word'
+            }}>
 
-        <CardHeader
-                              style={{ padding: 0 }}
-
-
-                              title={`NOT AVAILABLE`}
-                              titleTypographyProps={{
-                                variant: 'subtitle1'
-                              }}
-                            />
+            <CardHeader
+              style={{ padding: 0 }}
 
 
+              title={`NOT AVAILABLE`}
+              titleTypographyProps={{
+                variant: 'subtitle1'
+              }}
+            />
 
 
-            {primaryConfig && secondaryConfig && getJsonDiffArray().map((item, index) => {
+
+
+            {primaryConfig && primaryConfig[0].json_agg.length > 0 && secondaryConfig && secondaryConfig[0].json_agg.length > 0 &&  getJsonDiffArray().map((item, index) => {
               return (
                 <div  >
-                    <div style={{fontSize:'16px', fontWeight:'800'}}>{item.Name}</div>
-                    <div style={{marginLeft:'16px',marginBottom:'8px'}}>
+                  <div style={{ fontSize: '16px', fontWeight: '800' }}>{item.Name}</div>
+                  <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
 
                     <div>Name : {item.Name}</div>
                     <div>Environmental : {item.Environmental}</div>
                     <div>Value : {item.Value}</div>
-                    </div>
+                  </div>
 
 
-              </div>
+                </div>
               );
             })}
 
-        </Paper>
+          </Paper>
 
 
-          </Grid>
+        </Grid>
       </Grid>
 
 
@@ -649,13 +693,13 @@ const mapStateToProps = state => console.log("state", state) || ({
   isRefreshing: state.logs.isRefreshing,
   primaryConfig: state.configCompare.envPrimaryConfig,
   secondaryConfig: state.configCompare.envSecondaryConfig,
-
+  isApiCalling: state.common.isLoading
 })
 
 
 const mapDispatchToProps = dispatch => ({
 
-  fetchEnvSetting: (envId, isPrimary) => dispatch(fetchEnvSetting({ envId: envId, isPrimary: isPrimary }))
+  fetchEnvSetting: (envId, componentId, isPrimary) => dispatch(fetchEnvSetting({ envId: envId, componentId: componentId, isPrimary: isPrimary }))
 
 })
 
