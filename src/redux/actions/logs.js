@@ -33,7 +33,13 @@ export function fetchLogs() {
    
     dispatch(refreshingLogs(true))
 
-    return fetch(`${API_BASE_URL}${PATH_LOGS}`)
+    return fetch(`${API_BASE_URL}${PATH_LOGS}`,{
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer '+localStorage.getItem('authToken')
+      }
+        })
       .then(
         response => response.json(),
        

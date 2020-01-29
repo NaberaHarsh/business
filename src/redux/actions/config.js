@@ -61,7 +61,13 @@ export function fetchLookupData() {
    
     dispatch(requestStart())
  
-    return fetch(`${API_BASE_URL}${PATH_LOOKUP}`)
+    return fetch(`${API_BASE_URL}${PATH_LOOKUP}`,{
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer '+localStorage.getItem('authToken')
+      }
+        })
       .then(
         response => response.json(),
        

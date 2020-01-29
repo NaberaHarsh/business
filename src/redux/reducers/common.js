@@ -1,6 +1,9 @@
-import {REQUEST_START, REQUEST_FINISH} from '../actions/common';
+import {REQUEST_START, REQUEST_FINISH,AUTH_COMPLETE } from '../actions/common';
+import ls from 'local-storage'
+
 const common = (state = {
-  isLoading: false
+  isLoading: false,
+  isAuth: false
 } , action) => {
   switch (action.type) {
     case REQUEST_START:
@@ -14,7 +17,18 @@ const common = (state = {
         
         isLoading : action.isLoading,
       });
+    case AUTH_COMPLETE:
 
+
+        if(action.isAuth)
+        localStorage.setItem('authToken', action.data.token);
+
+        return Object.assign({}, state, {
+          
+          authData : action.data,
+          isAuth: action.isAuth,
+          authErrorMessage: action.authErrorMessage
+        });
     default:
       return state
   }

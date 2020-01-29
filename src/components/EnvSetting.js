@@ -474,10 +474,19 @@ const EnvSetting = (props) => {
 
               <Grid item xs={1}>
 
-                {envToCompareId1 != '' && <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId1}/${componentId}`} target="_blank">
-                  <GetAppIcon fontSize="large" color="secondary" />
+                {envToCompareId1 != '' && <GetAppIcon fontSize="large" color="secondary" 
+                  onClick={()=>{
+                    const link = document.createElement('a');
+                      link.href = `${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId1}/${componentId}`;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                  }}/>
 
-                </a>}
+                }
+
+
+             
 
 
               </Grid>
@@ -486,7 +495,7 @@ const EnvSetting = (props) => {
               true: <CardHeader
 
 
-              title={componentId != '' ? `NOT DATA AVAILABLE`: ``}
+              title={componentId != '' ? `NO DATA AVAILABLE`: ``}
               titleTypographyProps={{
                 variant: 'subtitle1'
               }}
@@ -571,10 +580,18 @@ const EnvSetting = (props) => {
               </Grid>
               <Grid item xs={1}>
 
-                {envToCompareId2 != '' && <a href={`${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId2}/${componentId}`} target="_blank">
-                  <GetAppIcon fontSize="large" color="secondary" />
+                
 
-                </a>}
+                {envToCompareId2 != '' && <GetAppIcon fontSize="large" color="secondary" 
+                  onClick={()=>{
+                    const link = document.createElement('a');
+                      link.href = `${API_BASE_URL}${PATH_ENV_SETTING_DOWNLOAD}${envToCompareId2}/${componentId}`;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                  }}/>
+
+                }
 
 
               </Grid>
@@ -584,7 +601,7 @@ const EnvSetting = (props) => {
               <CardHeader
   
   
-                title={componentId != '' ? `NOT DATA AVAILABLE`: ``}
+                title={componentId != '' ? `NO DATA AVAILABLE`: ``}
                 titleTypographyProps={{
                   variant: 'subtitle1'
                 }}

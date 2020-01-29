@@ -148,7 +148,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData, clearComponentSummary, dashboard, env, component }) => {
+const DashboardGraph = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData, clearComponentSummary, dashboard, env, component }) => {
 
 
 
@@ -259,65 +259,10 @@ const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData,
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        className={classes.appBar}
-        position="absolute">
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            DXP MONITORING
-          </Typography>
-
-
-          <div className={classes.sectionDesktop}>
-
-            <Button
-              color="inherit"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >Profile</Button>
-
-          </div>
-
-        </Toolbar>
-      </AppBar>
-      {renderMenu}
-
-      <Drawer
-        className={classes.drawer}
-
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>{mainListItems(handlePageChange, page)}</List>
-      </Drawer>
 
 
 
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container} >
           {{
             true: <Grid container spacing={2}>
@@ -509,4 +454,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Dashboard)
+)(DashboardGraph)

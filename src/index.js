@@ -14,7 +14,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
- 
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
 
 
 const loggerMiddleware = createLogger()
@@ -46,12 +47,14 @@ const store = createStore(
 
 
 
-store.dispatch(fetchLookupData()).then(() => console.log(store.getState()))
+// store.dispatch(fetchLookupData()).then(() => console.log(store.getState()))
 
 
 ReactDOM.render( 
 <Provider store={store}>
-    <App />
+    <Router>
+      <Route path="/:filter?" component={App} />
+    </Router>
   </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

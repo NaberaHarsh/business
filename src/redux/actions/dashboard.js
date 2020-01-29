@@ -43,7 +43,13 @@ export function fetchDashboardData() {
    
     dispatch(requestStart())
  
-    return fetch(`${API_BASE_URL}${PATH_DASHBOARD}`)
+    return fetch(`${API_BASE_URL}${PATH_DASHBOARD}?cache=${1}`,{
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer '+localStorage.getItem('authToken')
+      }
+    })
 
       .then(
         response => response.json(),
@@ -68,7 +74,13 @@ export function fetchComponentSummary(envId) {
    
     dispatch(requestStart())
  
-    return fetch(`${API_BASE_URL}${PATH_COMPONENT_SUMMARY}${envId}`)
+    return fetch(`${API_BASE_URL}${PATH_COMPONENT_SUMMARY}/${envId}`,{
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer '+localStorage.getItem('authToken')
+      }
+    })
       .then(
         response => response.json(),
        

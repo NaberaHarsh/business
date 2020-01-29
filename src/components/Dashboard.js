@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -34,8 +34,22 @@ import { connect } from 'react-redux'
 import environment from '../redux/reducers/config'
 import { setEnvironment } from '../redux/actions/config';
 import { fetchDashboardData } from '../redux/actions/dashboard';
-import { fetchComponentSummary,clearComponentSummary } from '../redux/actions/dashboard';
+import { fetchComponentSummary, clearComponentSummary } from '../redux/actions/dashboard';
 import EnvSetting from './EnvSetting';
+import { fetchEnvironments, fetchLookupData } from '../redux/actions/config';
+import DashboardGraph from './DashboardGraph';
+
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+
 
 
 
@@ -134,7 +148,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSummary, dashboard, env, component }) => {
+const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData, clearComponentSummary, dashboard, env, component }) => {
+
+
+
+
 
 
 
@@ -153,8 +171,11 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const [page, setPage] = React.useState(process.env.REACT_APP_DEFAULT_PAGE);
+  const [refresh, setRefresh] = React.useState(false);
 
   const [envIdForComponentDtl, setEnvIdForComponentDtl] = React.useState(0);
+  let history = useHistory();
+
 
   const resetDtlId = () => {
 
@@ -177,9 +198,21 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
   const menuId = 'primary-search-account-menu';
   const isMenuOpen = Boolean(anchorEl);
 
-  const handleMenuClose = () => {
+  const handleMenuClose = (actionId) => {
     setAnchorEl(null);
     handleMobileMenuClose();
+
+    switch (actionId) {
+      case 3:
+        localStorage.removeItem('authToken');
+        history.replace('/login');
+
+
+
+
+        break;
+
+    }
   };
 
 
@@ -210,7 +243,8 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={() => handleMenuClose(3)}>Logout</MenuItem>
+
     </Menu>
   );
 
@@ -226,9 +260,9 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar 
-       className={classes.appBar}
-      position="absolute">
+      <AppBar
+        className={classes.appBar}
+        position="absolute">
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
@@ -254,7 +288,7 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-            >Admin</Button>
+            >Profile</Button>
 
           </div>
 
@@ -277,174 +311,48 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems(handlePageChange, page)}</List>
+        <List>{mainListItems(handlePageChange, page, history)}</List>
       </Drawer>
 
 
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="xl" className={classes.container} >
-          {{
-            true: <Grid container spacing={2}>
 
-              <Grid container xs={6} spacing={2}>
+            
+            <Route exact path="/dashboard">
+              <DashboardGraph />
+            </Route>
+            <Route exact path="/log_analytics">
+            <Container maxWidth="xl" className={classes.container} >
 
-                {
-                  dashboard && dashboard.map(summary => {
-                    return (
-                      <Grid item xs={12} spacing={2}>
+            <Grid container spacing={1}>
 
-
-                        <Paper className={fixedHeightPaper}>
-
-                          <div>
-
-                            <CardHeader
-                              style={{ padding: 0 }}
+            <Grid item xs={12}>
 
 
-                              title={`LOG SUMMARY | ${summary.env.name.toUpperCase()}`}
-                              titleTypographyProps={{
-                                variant: 'subtitle1'
-                              }}
-                            />
+              <LiveLogs />
 
-                          </div>
-                          <Chart
-                            width={'100%'}
-                            height={'300px'}
-                            chartType="LineChart"
-                            loader={<div>Loading Chart</div>}
-                            data={[
-                              ['Date', 'INFO', 'ERROR', 'DEBUG'],
-                              ...summary.data.map(item => {
-                                let row = [moment(new Date(item.date)).format('DD MMM'),
-                                item.data[0].logs !== undefined ? parseInt(item.data[0].logs.counts) : 0,
-                                item.data[1].logs !== undefined ? parseInt(item.data[1].logs.counts) : 0,
-                                item.data[2].logs !== undefined ? parseInt(item.data[2].logs.counts) : 0,
-
-                                ];
-                                // console.log(moment(new Date(item['capture_date'])).format("MMMM Do"));
-
-                                return row;
-                              })
-                            ]}
-                            options={{
-                              series: {
-                                1: { curveType: 'function' },
-                              },
-                              vAxis: { scaleType: 'log', format: 'short' }
+            </Grid>
 
 
-                            }}
-                          // For tests
-                          />
+            </Grid>
+            </Container>
+            </Route>
 
 
-                        </Paper>
+            <Route path="/config">
 
-                      </Grid>
-                    );
-                  })
-                }
+            <Container maxWidth="xl" className={classes.container} >
 
-              </Grid>
+              <EnvSetting />
 
-
-              <Grid container xs={6} spacing={2}>
-
-                {component && component.map(env => {
-
-                  return (<Grid item xs={12}>
-
-
-                    <Paper className={fixedHeightPaper}>
-
-                      <div>
-
-
-                        <CardHeader
-                          style={{ padding: 0 }}
-
-                          action={
-                            <IconButton aria-label="settings" onClick={() => handleComponentDetail(env.id)}>
-                              <OpenInNewIcon />
-                            </IconButton>
-                          }
-                          title={`COMPONENT  SUMMARY | ${env.name.toUpperCase()}`}
-                          titleTypographyProps={{
-                            variant: 'subtitle1'
-                          }}
-                        />
-                      </div>
-                      <Chart
-                        width={'100%'}
-                        height={'300px'}
-                        chartType="LineChart"
-                        loader={<div>Loading Chart</div>}
-                        data={[
-                          ['Date', ...env.json_data[0].data.map(com => com.component.component_name)],
-                          ...env.json_data.map(item => {
-                            let row = [moment(new Date(item.date)).format('DD MMM'),
-                            ...item.data.map(compData => {
-
-                              if (compData.data.length > 0) {
-                                return parseInt(compData.data[0].error_count);
-                              } else {
-                                return parseInt("0");
-
-                              }
-                            })
-
-                            ];
-                            // console.log(moment(new Date(item['capture_date'])).format("MMMM Do"));
-
-                            return row;
-                          })
-                        ]}
-                        options={{
-                          series: {
-                            1: { curveType: 'function' },
-                          },
-                          vAxis: { scaleType: 'log', format: 'short' }
-
-
-                        }}
-                      // For tests
-                      />
-
-
-                    </Paper>
-
-                  </Grid>);
-                })}
-              </Grid>
+              </Container>
+            </Route>
+                
 
 
 
-            </Grid>,
-
-            [page == 2]:
-              <Grid container spacing={1}>
-
-                <Grid item xs={12}>
-
-
-                  <LiveLogs />
-
-                </Grid>
-
-
-              </Grid>,
-              [page == 3]:
-              <EnvSetting/>
-          }.true}
-         {envIdForComponentDtl !== 0 &&  
-         <DialogChart
-           envIdForComponentDtl={envIdForComponentDtl}
-           resetDtlId={() => resetDtlId()} />}
-        </Container>
       </main>
     </div>
   );
@@ -452,7 +360,7 @@ const Dashboard = ({ fetchComponentSummary, fetchDashboardData, clearComponentSu
 
 
 
-const mapStateToProps = state => console.log("state", state) || ({
+const mapStateToProps = state =>  ({
 
   dashboard: state.dashboard.summaryData,
   component: state.dashboard.summaryComponent
@@ -462,9 +370,11 @@ const mapStateToProps = state => console.log("state", state) || ({
 
 const mapDispatchToProps = dispatch => ({
   changeEnviroment: env => dispatch(setEnvironment(env)),
-  fetchDashboardData: dispatch(fetchDashboardData()),
+  fetchDashboardData:dispatch(fetchDashboardData()),
   fetchComponentSummary: envId => dispatch(fetchComponentSummary(envId)),
-  clearComponentSummary: () => dispatch(clearComponentSummary())
+  clearComponentSummary: () => dispatch(clearComponentSummary()),
+
+  fetchLookupData: () => dispatch(fetchLookupData()),
 
 })
 

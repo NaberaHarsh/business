@@ -30,7 +30,13 @@ export function fetchEnvSetting(params) {
    
     dispatch(requestStart())
  
-    return fetch(`${API_BASE_URL}${PATH_ENV_SETTING}${params.envId}/${params.componentId}`)
+    return fetch(`${API_BASE_URL}${PATH_ENV_SETTING}${params.envId}/${params.componentId}`,{
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer '+localStorage.getItem('authToken')
+      }
+        })
       .then(
         response => response.json(),
        

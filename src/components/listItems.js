@@ -12,38 +12,57 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import Icon from '@material-ui/core/Icon';
 import HdrStrongIcon from '@material-ui/icons/HdrStrong';
 import CompareIcon from '@material-ui/icons/Compare';
-
-export const mainListItems = (handlePageChange, pageId) => (
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+export const mainListItems = (handlePageChange, pageId, history) =>  console.log(history) || (
   <div>
+
+    <Link to={`/dashboard`} style={{ textDecoration: 'none', color: 'black'  }}>
     <ListItem  
     button onClick={() => handlePageChange(1)}
-    selected={pageId == 1}
+    selected={history.location.pathname === '/dashboard'}
     >
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
+    </Link>
+    
+    <Link to={`/log_analytics`} style={{ textDecoration: 'none', color: 'black' }}>
+
     <ListItem button onClick={() => handlePageChange(2)}
-        selected={pageId == 2}
+    selected={history.location.pathname === '/log_analytics'}
 
     >
       <ListItemIcon>
       <HdrStrongIcon/>
       </ListItemIcon>
-      <ListItemText primary="Logs" />
+      <ListItemText primary="Log Analytics" />
     </ListItem>
 
+    </Link>
+
+    <Link to={`/config`} style={{ textDecoration: 'none', color: 'black'  }}>
+
     <ListItem button onClick={() => handlePageChange(3)}
-        selected={pageId == 3}
-        >
+    selected={history.location.pathname === '/config'}
+    >
       <ListItemIcon>
         <CompareIcon/>
 
       </ListItemIcon>
-      <ListItemText primary="Compare Config" />
+      <ListItemText primary="Config Compare" />
     </ListItem>
-  
+    </Link>
+
   
   </div>
 );
