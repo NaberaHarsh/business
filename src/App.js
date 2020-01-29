@@ -44,7 +44,6 @@ function App(props) {
               state: { from: location }
             }}
           />}
-          onEnter={props.fetchLookupData()}
           path="/" />
 
 
@@ -71,7 +70,6 @@ const mapStateToProps = state => console.log("state", state) || ({
 const mapDispatchToProps = dispatch => ({
 
   authUser: (data) => dispatch(authUser(data)),
-  fetchLookupData: () => dispatch(fetchLookupData()),
 
 })
 

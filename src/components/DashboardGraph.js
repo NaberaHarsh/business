@@ -445,7 +445,6 @@ const mapDispatchToProps = dispatch => ({
   fetchComponentSummary: envId => dispatch(fetchComponentSummary(envId)),
   clearComponentSummary: () => dispatch(clearComponentSummary()),
 
-  fetchLookupData: () => dispatch(fetchLookupData()),
 
 })
 

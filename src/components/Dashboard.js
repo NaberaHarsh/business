@@ -320,7 +320,10 @@ const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData,
         <div className={classes.appBarSpacer} />
 
             
-            <Route exact path="/dashboard">
+            <Route 
+            exact path="/dashboard"
+            onEnter={fetchLookupData()}
+            >
               <DashboardGraph />
             </Route>
             <Route exact path="/log_analytics">

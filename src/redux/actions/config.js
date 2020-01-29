@@ -59,7 +59,6 @@ export function fetchLookupData() {
 
   return function(dispatch) {
    
-    dispatch(requestStart())
  
     return fetch(`${API_BASE_URL}${PATH_LOOKUP}`,{
       method: 'GET', 
