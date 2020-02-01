@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,21 +10,14 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Chart from "react-google-charts";
-import CardHeader from '@material-ui/core/CardHeader';
-
+import ConfirmationDialog from './Dialog'
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems } from './listItems';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
-import Modal from '@material-ui/core/Modal';
-import DialogChart from './DialogChart';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { connect } from 'react-redux'
 
 
@@ -297,8 +290,7 @@ const Dashboard = (props) => {
             exact path="/1"
             // onEnter={} // CALL API ON ROUTE
             >
-
-              <h1>Page 1</h1>
+<h1>page 1</h1>
             </Route>
           
 
@@ -307,7 +299,7 @@ const Dashboard = (props) => {
 
             <Container maxWidth="xl" className={classes.container} >
 
-            <h1>page 2</h1>
+            <ConfirmationDialog />
               </Container>
             </Route>
                 

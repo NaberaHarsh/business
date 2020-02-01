@@ -4,13 +4,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import Icon from '@material-ui/core/Icon';
-import HdrStrongIcon from '@material-ui/icons/HdrStrong';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+
+
 import CompareIcon from '@material-ui/icons/Compare';
 import {
   BrowserRouter as Router,
@@ -44,10 +41,10 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
     selected={history.location.pathname === '/config'}
     >
       <ListItemIcon>
-        <CompareIcon/>
+        <AddBoxIcon />
 
       </ListItemIcon>
-      <ListItemText primary="PAGE 3" />
+      <ListItemText primary="Create Post" />
     </ListItem>
     </Link>
 
