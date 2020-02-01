@@ -1,4 +1,4 @@
-import {API_BASE_URL , PATH_AUTH_USER } from '../../config';
+import {API_BASE_URL } from '../../config';
 
 export const REQUEST_START = 'API_REQUEST_START'
 export function requestStart() {
@@ -39,7 +39,7 @@ export function authUser(data) {
    
     dispatch(requestStart())
  
-    return fetch(`${API_BASE_URL}${PATH_AUTH_USER}`,{
+    return fetch(`${API_BASE_URL}`,{
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json',

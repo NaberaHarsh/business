@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch'
 import {requestStart, requestFinish} from './common';
-import {API_BASE_URL , PATH_DASHBOARD , PATH_COMPONENT_SUMMARY} from '../../config';
+import {API_BASE_URL , PATH_DASHBOARD} from '../../config';
 
 
 export const RCV_DASHBOARD_DATA = 'RCV_DASHBOARD_DATA';
@@ -68,34 +68,6 @@ export function fetchDashboardData() {
 }
 
 
-export function fetchComponentSummary(envId) {
-
-  return function(dispatch) {
-   
-    dispatch(requestStart())
- 
-    return fetch(`${API_BASE_URL}${PATH_COMPONENT_SUMMARY}/${envId}`,{
-      method: 'GET', 
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'bearer '+localStorage.getItem('authToken')
-      }
-    })
-      .then(
-        response => response.json(),
-       
-        error => console.log('An error occurred.', error)
-      )
-      .then(json => {
-        dispatch(recvComponentSummaryData(json));
-
-        dispatch(requestFinish());
-
-      }
-       
-      )
-  }
-}
 
 
 

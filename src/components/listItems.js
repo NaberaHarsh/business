@@ -24,7 +24,7 @@ import {
 export const mainListItems = (handlePageChange, pageId, history) =>  console.log(history) || (
   <div>
 
-    <Link to={`/dashboard`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <Link to={`/1`} style={{ textDecoration: 'none', color: 'black'  }}>
     <ListItem  
     button onClick={() => handlePageChange(1)}
     selected={history.location.pathname === '/dashboard'}
@@ -36,21 +36,9 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
     </ListItem>
     </Link>
     
-    <Link to={`/log_analytics`} style={{ textDecoration: 'none', color: 'black' }}>
+  
 
-    <ListItem button onClick={() => handlePageChange(2)}
-    selected={history.location.pathname === '/log_analytics'}
-
-    >
-      <ListItemIcon>
-      <HdrStrongIcon/>
-      </ListItemIcon>
-      <ListItemText primary="Log Analytics" />
-    </ListItem>
-
-    </Link>
-
-    <Link to={`/config`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <Link to={`/2`} style={{ textDecoration: 'none', color: 'black'  }}>
 
     <ListItem button onClick={() => handlePageChange(3)}
     selected={history.location.pathname === '/config'}
@@ -59,7 +47,7 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
         <CompareIcon/>
 
       </ListItemIcon>
-      <ListItemText primary="Config Compare" />
+      <ListItemText primary="PAGE 3" />
     </ListItem>
     </Link>
 

@@ -19,25 +19,14 @@ import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems } from './listItems';
-import { ExcelGrid } from './ExcelGrid';
-import CCErrorCount from './CCErrorCount';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import BarChart from './BarChart';
 
-import LiveLogs from './LiveLogs';
 import Modal from '@material-ui/core/Modal';
 import DialogChart from './DialogChart';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { connect } from 'react-redux'
 
-import environment from '../redux/reducers/config'
-import { setEnvironment } from '../redux/actions/config';
-import { fetchDashboardData } from '../redux/actions/dashboard';
-import { fetchComponentSummary, clearComponentSummary } from '../redux/actions/dashboard';
-import EnvSetting from './EnvSetting';
-import { fetchEnvironments, fetchLookupData } from '../redux/actions/config';
-import DashboardGraph from './DashboardGraph';
 
 
 import {
@@ -148,7 +137,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData, clearComponentSummary, dashboard, env, component }) => {
+const Dashboard = (props) => {
 
 
 
@@ -177,11 +166,7 @@ const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData,
   let history = useHistory();
 
 
-  const resetDtlId = () => {
-
-    clearComponentSummary();
-    setEnvIdForComponentDtl(0);
-  }
+ 
 
   const handlePageChange = (number) => {
 
@@ -224,13 +209,7 @@ const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData,
     setAnchorEl(event.currentTarget);
   };
 
-  const handleComponentDetail = envId => {
-
-
-    setEnvIdForComponentDtl(envId);
-    fetchComponentSummary(envId);
-
-  };
+ 
 
   const renderMenu = (
     <Menu
@@ -248,13 +227,7 @@ const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData,
     </Menu>
   );
 
-  if (dashboard) {
-  }
-
-  if (component) {
-
-  }
-
+ 
 
 
   return (
@@ -274,7 +247,7 @@ const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData,
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            DXP MONITORING
+             DASHBOARD
           </Typography>
 
 
@@ -321,35 +294,20 @@ const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData,
 
             
             <Route 
-            exact path="/dashboard"
-            onEnter={fetchLookupData()}
+            exact path="/1"
+            // onEnter={} // CALL API ON ROUTE
             >
-              <DashboardGraph />
+
+              <h1>Page 1</h1>
             </Route>
-            <Route exact path="/log_analytics">
-            <Container maxWidth="xl" className={classes.container} >
-
-            <Grid container spacing={1}>
-
-            <Grid item xs={12}>
+          
 
 
-              <LiveLogs />
-
-            </Grid>
-
-
-            </Grid>
-            </Container>
-            </Route>
-
-
-            <Route path="/config">
+            <Route path="/2">
 
             <Container maxWidth="xl" className={classes.container} >
 
-              <EnvSetting />
-
+            <h1>page 2</h1>
               </Container>
             </Route>
                 
@@ -365,19 +323,12 @@ const Dashboard = ({ fetchLookupData, fetchComponentSummary, fetchDashboardData,
 
 const mapStateToProps = state =>  ({
 
-  dashboard: state.dashboard.summaryData,
-  component: state.dashboard.summaryComponent
-
+ 
 })
 
 
 const mapDispatchToProps = dispatch => ({
-  changeEnviroment: env => dispatch(setEnvironment(env)),
-  fetchDashboardData:dispatch(fetchDashboardData()),
-  fetchComponentSummary: envId => dispatch(fetchComponentSummary(envId)),
-  clearComponentSummary: () => dispatch(clearComponentSummary()),
-
-  fetchLookupData: () => dispatch(fetchLookupData()),
+ 
 
 })
 

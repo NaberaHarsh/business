@@ -83,18 +83,15 @@ const useStyles = makeStyles(theme => ({
     
     setErrorMessage('');
 
-    props.authUser({username:email, password: pass});
+    localStorage.setItem('authToken', 'kma');
+
+    history.replace('/dashboard');
 
     
 
   }
 
 
-  if(localStorage.getItem('authToken') !== null && history.location.pathname!= '/dashboard'){
-    history.replace('/dashboard');
-  }else{
-
-  }
 
 
 
