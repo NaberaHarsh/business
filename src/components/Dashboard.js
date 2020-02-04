@@ -17,7 +17,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems } from './listItems';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-
+import Post from './Post'
 import { connect } from 'react-redux'
 
 
@@ -290,7 +290,7 @@ const Dashboard = (props) => {
             exact path="/1"
             // onEnter={} // CALL API ON ROUTE
             >
-<h1>page 1</h1>
+<Post />
             </Route>
           
 

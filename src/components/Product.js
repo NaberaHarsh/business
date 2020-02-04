@@ -121,20 +121,18 @@ class Product extends React.Component {
                         autoComplete="price"
                         autoFocus
                     />
-                    <TextareaAutosize className={classes.root}
-                        style={{ font: 'inherit', padding: "18.5px 14px" }}
+                    <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
                         id="description"
-                        label="Product description"
+                        label="Product Description"
                         name="description"
                         autoComplete="description"
                         autoFocus
-                        aria-label="minimum height"
-                        placeholder="Product Description"
-                        rowsMin={3} />
+                        multiline = {true}
+                    />
                     <FormControl
                         className={classes.root} style={{ width: '70%' }}
                         variant="outlined" >

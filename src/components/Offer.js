@@ -207,21 +207,19 @@ class Offer extends React.Component {
           <Typography >Additional Details(optional)</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <TextareaAutosize className={classes.root}
-                        style={{width:'100%', font: 'inherit', padding: "18.5px 14px" }}
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        id="description"
-                        label="Offer description"
-                        name="description"
-                        autoComplete="description"
-                        autoFocus
-                        aria-label="minimum height"
-                        placeholder="Offer Details"
-
-                        rowsMin={3} />
-                                </ExpansionPanelDetails>
+        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="desc"
+                            label="Offer Description"
+                            name="desc"
+                            autoComplete="desc"
+                            autoFocus
+                            multiline={true}
+                        />     
+                         </ExpansionPanelDetails>
 
         <ExpansionPanelDetails>
 

@@ -13,9 +13,13 @@ import { authUser } from '../redux/actions/common';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {
-  BrowserRouter as 
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
   useHistory,
-  
+  useLocation
 } from "react-router-dom";
 
 

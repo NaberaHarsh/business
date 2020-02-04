@@ -90,6 +90,7 @@ class Event extends React.Component {
                         name="event"
                         autoComplete="event"
                         autoFocus
+                        
                     />
                     <FormControlLabel
                         value="time"
@@ -204,20 +205,18 @@ class Event extends React.Component {
                     }
 
 
-                    <TextareaAutosize className={classes.root}
-                        style={{ font: 'inherit', padding: "18.5px 14px" }}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="description"
-                        label="Event description"
-                        name="description"
-                        autoComplete="description"
-                        autoFocus
-                        aria-label="minimum height"
-                        placeholder="Event Description"
-                        rowsMin={3} />
+<TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="desc"
+                            label="Event Description"
+                            name="desc"
+                            autoComplete="desc"
+                            autoFocus
+                            multiline={true}
+                        />
                     <FormControl
                         className={classes.root} style={{ width: '70%' }}
                         variant="outlined" >

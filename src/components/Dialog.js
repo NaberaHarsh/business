@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -14,7 +14,15 @@ import Tabbar from './Tab'
 import Product from './Product'
 import Event from './Event'
 import Offer from './Offer'
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
 
 
 
@@ -23,10 +31,12 @@ function ConfirmationDialogRaw(props) {
   const [value, setValue] = React.useState(valueProp);
   const radioGroupRef = React.useRef(null);
   const [tab, setTab] = React.useState('product');
+  const [display, setDisplay] = React.useState(true)
 
   React.useEffect(() => {
     if (!open) {
       setValue(valueProp);
+
     }
   }, [valueProp, open]);
 
@@ -37,10 +47,24 @@ function ConfirmationDialogRaw(props) {
   };
 
   const handleCancel = () => {
+    setDisplay(false);
     onClose();
+
   };
 
+  if (display === false) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/1"
+
+        }}
+      />
+    );
+  }
+
   const handleOk = () => {
+    setDisplay(false);
     onClose(value);
   };
 
@@ -87,7 +111,7 @@ function ConfirmationDialogRaw(props) {
           <Event />
           :
           ""}
-          {tab === 'offer'
+        {tab === 'offer'
           ?
           <Offer />
           :
@@ -103,6 +127,7 @@ function ConfirmationDialogRaw(props) {
           Ok
         </Button>
       </DialogActions>
+
     </Dialog>
   );
 }
@@ -130,6 +155,12 @@ export default function ConfirmationDialog() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('Dione');
 
+
+  useEffect(() => {
+    handleClickListItem()
+  })
+
+
   const handleClickListItem = () => {
     setOpen(true);
   };
@@ -137,38 +168,27 @@ export default function ConfirmationDialog() {
   const handleClose = newValue => {
     setOpen(false);
 
+
     if (newValue) {
       setValue(newValue);
     }
   };
 
+
   return (
     <div className={classes.root}>
-      <List component="div" role="list">
 
-        <ListItem
-          button
-          divider
-          aria-haspopup="true"
-          aria-controls="ringtone-menu"
-          aria-label="Create Post"
-          onClick={handleClickListItem}
-          role="listitem"
-        >
-          <ListItemText primary="Create Post" />
-        </ListItem>
 
-        <ConfirmationDialogRaw
-          classes={{
-            paper: classes.paper,
-          }}
-          id="ringtone-menu"
-          keepMounted
-          open={open}
-          onClose={handleClose}
-          value={value}
-        />
-      </List>
+      <ConfirmationDialogRaw
+        classes={{
+          paper: classes.paper,
+        }}
+        id="ringtone-menu"
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        value={value}
+      />
     </div>
   );
 }
