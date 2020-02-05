@@ -126,6 +126,12 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'flex',
     },
+    shiftTextLeft: {
+      marginLeft: '0px'
+    },
+    shiftTextRight: {
+      marginLeft: drawerWidth,
+    }
   },
 }));
 
@@ -263,7 +269,7 @@ const Dashboard = (props) => {
       {renderMenu}
 
       <Drawer
-        className={classes.drawer}
+      className={open ? classes.shiftTextRight : classes.shiftTextLeft}
 
         variant="permanent"
         classes={{

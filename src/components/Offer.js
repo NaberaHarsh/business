@@ -3,10 +3,9 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import CloseIcon from '@material-ui/icons/Close';
 import { Grid } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -40,12 +39,16 @@ class Offer extends React.Component {
         this.state = {
             selectedDate: new Date(),
             button: 0,
-            time: false
+            time: false,
+            file:null
         }
+
+        this.handleClick = this.handleClick.bind(this);
+     this.handleChange=this.handleChange.bind(this)
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChangeDate = this.handleChangeDate.bind(this)
         this.handleChangeTime = this.handleChangeTime.bind(this)
-
+        this.deleteImage = this.deleteImage.bind(this)
 
     }
 
@@ -63,6 +66,23 @@ class Offer extends React.Component {
         console.log(this.state.time)
     };
 
+    handleClick(e) {
+        this.refs.fileUploader.click();
+        
+    }
+    handleChange(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        // var send =  event.target.files[0];
+        var file =  URL.createObjectURL(event.target.files[0])
+        console.log(file);
+        this.setState({file:file});
+      }
+
+      deleteImage(){
+        this.setState({file:null})
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -70,11 +90,21 @@ class Offer extends React.Component {
             <div>
 
                 <Paper variant='outlined'>
-                    <div class={classes.paper} style={{ paddingBottom: '40px' }}>
-                        <AddAPhotoIcon style={{ color: '#1a73e8', fontSize: '36px' }} />
-                        <br />
-                        <div style={{ color: '#1a73e8', fontSize: "16px" }}>Make your post stand out with a photo</div>
+                    <div >
+                    {this.state.file!= null
+                        ?
+                        <div style={{textAlign:'right'}}>
+                       <CloseIcon style={{alignSelf:'right'}}  onClick={this.deleteImage} />
+                        <img src={this.state.file} style={{maxheight:"100%" , maxWidth:"100%"}}/>
+                        </div>
+                        :
+                        <div class={classes.paper} style={{ paddingBottom: '40px' }}>
+                        <AddAPhotoIcon style={{ color: '#1a73e8', fontSize: '36px' }} onClick={this.handleClick}  />
+                        <input type="file" id="file" ref="fileUploader"  onChange={this.handleChange}  accept="image/*" style={{display: "none"}}/>
+                                               <br />
+ <div style={{ color: '#1a73e8', fontSize: "16px" }}>Make your post stand out with a photo</div>
                     </div>
+                        } </div>
                 </Paper>
                 <form className={classes.root} noValidate >
                     <TextField

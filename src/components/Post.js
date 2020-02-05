@@ -1,15 +1,11 @@
 import React from 'react';
 import { withStyles } from "@material-ui/core/styles";
-import Paper from '@material-ui/core/Paper';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
@@ -32,7 +28,7 @@ const styles = theme => ({
     },
 
     root: {
-width:300
+width:280
 
     }
 })
@@ -62,7 +58,13 @@ data:[
         title:'Bike',
         desc:'This is very impressive Bike',
         price:'55,000'
-    }
+    },
+    {
+      image:'https://images-na.ssl-images-amazon.com/images/I/813GNyCh8HL._SX466_.jpg',
+      title:'Laptop',
+      desc:'This is very impressive Laptop',
+      price:'40,000'
+  }
 ]
         }
 
@@ -80,17 +82,17 @@ data:[
         const { classes } = this.props;
 
         return (
-            <div>
+            <div > 
 
-      <Container maxwidth='sm'>
-          <div style={{paddingTop:"20px"}}>
+      <Container >
+          <div >
               <Grid container spacing={2}>
                   {this.state.data.map((product)=>
 
-                  <Card className={classes.root} style={{marginLeft:'20px'}}>
+                  <Card className={classes.root} style={{marginLeft:'20px', marginTop:'20px'}}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
+          <Avatar aria-label="name" className={classes.avatar}>
             H
           </Avatar>
         }
