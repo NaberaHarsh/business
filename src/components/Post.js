@@ -42,28 +42,29 @@ class Post extends React.Component {
             menu:null,
 data:[
     {
-        image:'https://collegeinfogeek.com/wp-content/uploads/2018/11/Essential-Books.jpg',
-        title:'Book',
-        desc:'This is very impressive book',
-        price:'499'
+          image:'https://d13ezvd6yrslxm.cloudfront.net/wp/wp-content/images/harrypotter-mosscovers.jpg',
+          title:'Harry Potter ',
+          desc:'This is Harry Potter collection',
+          price:'2499',
+        },
+        {
+          image:'https://www.nypl.org/sites/default/files/lesbooks_zps6c776c00.png',
+          title:'GOT',
+          desc:'This is Got book',
+          price:'2000',
+        }
+    ,
+    {
+        image:'https://images-na.ssl-images-amazon.com/images/I/61Fh66VqDPL._SX329_BO1,204,203,200_.jpg',
+        title:'13 Reason Why',
+        desc:'This is 13 reason why book',
+        price:'1500',
     },
     {
-        image:'https://specials-images.forbesimg.com/imageserve/5d35eacaf1176b0008974b54/960x0.jpg?cropX1=790&cropX2=5350&cropY1=784&cropY2=3349',
-        title:'Car',
-        desc:'This is very impressive Car',
-        price:'50,55,000'
-    },
-    {
-        image:'https://auto.ndtvimg.com/bike-images/colors/yamaha/fz-s-v20-fi/yamaha-fz-s-v20-fi-lightning-cyan.webp?v=1',
-        title:'Bike',
-        desc:'This is very impressive Bike',
-        price:'55,000'
-    },
-    {
-      image:'https://images-na.ssl-images-amazon.com/images/I/813GNyCh8HL._SX466_.jpg',
-      title:'Laptop',
-      desc:'This is very impressive Laptop',
-      price:'40,000'
+      image:'https://images-na.ssl-images-amazon.com/images/I/81yAo5ElQlL.jpg',
+      title:'Fault in our stars',
+      desc:'This is fault in our stars book',
+      price:'500',
   }
 ]
         }
@@ -86,10 +87,15 @@ data:[
 
       <Container >
           <div >
+          <Card style={{width:'100%', marginTop:'20px',paddingBottom:'30px',paddingLeft:'10px'}}>
+                <CardHeader
+                            title="Book" />
               <Grid container spacing={2}>
+                
                   {this.state.data.map((product)=>
 
-                  <Card className={classes.root} style={{marginLeft:'20px', marginTop:'20px'}}>
+                  <Card className={classes.root} style={{marginLeft:'20px', marginTop:'10px'}}>                        
+
       <CardHeader
         avatar={
           <Avatar aria-label="name" className={classes.avatar}>
@@ -138,6 +144,8 @@ data:[
           </Card>
 )}
               </Grid>
+              </Card>
+
           </div>
         
       </Container>

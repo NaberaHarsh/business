@@ -2,12 +2,11 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import DragAndDrop from './Drag&Drop'
-import CloseIcon from '@material-ui/icons/Close';
+import { Button } from '@material-ui/core';
 
 
 const styles = theme => ({
@@ -36,54 +35,49 @@ class Product extends React.Component {
             value: 0,
             button: 0,
             image: false,
-            file: null
+            file: null,
+            product_name:'',
+            price:'',
+            category:'',
+            desc:'',
+            link:''
 
         }
-        this.handleClick = this.handleClick.bind(this);
-        this.handleChange = this.handleChange.bind(this)
         this.handleChangeCategory = this.handleChangeCategory.bind(this)
         this.handleChangeButton = this.handleChangeButton.bind(this)
-        this.handleDrop = this.handleDrop.bind(this)
-        this.deleteImage = this.deleteImage.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit=this.handleSubmit.bind(this)
 
     }
-    handleClick(e) {
-        this.refs.fileUploader.click();
+  
 
-    }
-    handleChange(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        // var send = event.target.files[0];
-        var file = URL.createObjectURL(event.target.files[0])
-        console.log(file);
-        this.setState({ file: file });
-    }
+    handleChange = e => {
+        const { name, value } = e.target
+        this.setState({
+          [name]: value
+        })
+      }
+
+      handleSubmit = e => {
+        e.preventDefault()
+        const { product_name, category, price, desc, link} = this.state;
+        const userData = { product_name, category, price, desc, link };
+        console.log(userData);
+      }    
 
     handleChangeCategory(e) {
         this.setState({ value: e.target.value })
         console.log(e.target.value)
     };
-    handleDrop = (file) => {
-        let fileList = this.state.file
-        for (var i = 0; i < file.length; i++) {
-            if (!file.name) return
-            fileList.push(file.name)
-        }
-        this.setState({ file: fileList })
-    }
 
     handleChangeButton(p) {
         this.setState({ button: p.target.value })
         console.log(p.target.value)
     };
 
-deleteImage(){
-    this.setState({file:null})
-}
+
 
     // get(){
-    //     console.log("hello")
     //     this.setState({image:true})
     // }
 
@@ -93,6 +87,8 @@ deleteImage(){
 
 
     render() {
+        const { product_name, category, price, desc, link} = this.state;
+
 
         //         if(this.state.image === true){
         //             return(
@@ -106,23 +102,11 @@ deleteImage(){
 
                 <Paper variant='outlined'>
                     <div>
-                        {this.state.file != null
-                            ?
-                            <div style={{textAlign:'right'}} >
-                             <CloseIcon style={{alignSelf:'right'}} onClick={this.deleteImage} />
-                                <img src={this.state.file} style={{ maxheight: "100%", maxWidth: "100%" }} />
-                            </div>
-                            :
-                            <div class={classes.paper} style={{ paddingBottom: '40px' }}>
-                                <AddAPhotoIcon style={{ color: '#1a73e8', fontSize: '36px' }} onClick={this.handleClick} />
-                                <input type="file" id="file" ref="fileUploader" onChange={this.handleChange} accept="image/*" style={{ display: "none" }} />
-                                <br />
-                                <div style={{ color: '#1a73e8', fontSize: "16px" }}>Make your post stand out with a photo</div>
-                            </div>
-                        }
+                                <DragAndDrop/>   
                     </div>
                 </Paper>
                 <form className={classes.root} noValidate >
+                    
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -133,6 +117,8 @@ deleteImage(){
                         name="product"
                         autoComplete="product"
                         autoFocus
+                        // value={product_name}
+                        onChange={this.handleChange}
                     />
                     <FormControl
                         className={classes.root} style={{ width: '70%' }}
@@ -162,6 +148,8 @@ deleteImage(){
                                 name="category"
                                 autoComplete="category"
                                 autoFocus
+                                value={category}
+                                onChange={this.handleChange}
                                 helperText="Eg: Education, HealthCare..."
                             />
                             :
@@ -173,10 +161,12 @@ deleteImage(){
                         required
                         fullWidth
                         id="price"
-                        label="Product price"
+                        label="Product price (INR)"
                         name="price"
                         autoComplete="price"
                         autoFocus
+                        value={price}
+                        onChange={this.handleChange}
                     />
                     <TextField
                         variant="outlined"
@@ -188,6 +178,8 @@ deleteImage(){
                         name="description"
                         autoComplete="description"
                         autoFocus
+                        // value={desc}
+                        onChange={this.handleChange}
                         multiline={true}
                     />
                     <FormControl
@@ -222,19 +214,16 @@ deleteImage(){
                                 name="link"
                                 autoComplete="link"
                                 autoFocus
+                                value={link}
+                                onChange={this.handleChange}
                                 helperText="Eg: google.com"
 
                             />
                             :
                             " "
                     }
-
+<Button onClick={()=>this.handleSubmit()}></Button>
                 </form>
-                <DragAndDrop handleDrop={this.handleDrop}>
-                    <div >
-                    </div>
-
-                </DragAndDrop>
 
             </div>
         )

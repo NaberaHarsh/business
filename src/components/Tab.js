@@ -16,8 +16,8 @@ class Tabbar extends React.Component {
 
     handleChange = (event, newValue) => {
         this.setState({ value: newValue })
-        console.log(this.state.value)
-        this.props.getValue(this.state.value)
+        // console.log(newValue);
+        this.props.getValue(newValue)
     };
 
 
@@ -33,9 +33,9 @@ class Tabbar extends React.Component {
                     textColor="primary"
                     aria-label="icon tabs example"
                 >
-                    <Tab icon={<ShoppingBasketIcon />} label="Product" aria-label="phone" />
-                    <Tab icon={<EventIcon />} aria-label="person" label="Event" />
-                    <Tab icon={<BookmarkIcon />} aria-label="favorite" label="Offer" />
+                    <Tab icon={<ShoppingBasketIcon />} value={0} label="Product" aria-label="product" />
+                    <Tab icon={<EventIcon />} value={1} aria-label="event" label="Event" />
+                    <Tab icon={<BookmarkIcon />} value={2} aria-label="offer" label="Offer" />
                 </Tabs>
             </div>
         )

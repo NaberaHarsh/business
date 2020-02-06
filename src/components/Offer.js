@@ -12,6 +12,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import DragAndDrop from './Drag&Drop'
 
 
 const styles = theme => ({
@@ -43,12 +44,10 @@ class Offer extends React.Component {
             file:null
         }
 
-        this.handleClick = this.handleClick.bind(this);
-     this.handleChange=this.handleChange.bind(this)
+        
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChangeDate = this.handleChangeDate.bind(this)
         this.handleChangeTime = this.handleChangeTime.bind(this)
-        this.deleteImage = this.deleteImage.bind(this)
 
     }
 
@@ -66,22 +65,6 @@ class Offer extends React.Component {
         console.log(this.state.time)
     };
 
-    handleClick(e) {
-        this.refs.fileUploader.click();
-        
-    }
-    handleChange(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        // var send =  event.target.files[0];
-        var file =  URL.createObjectURL(event.target.files[0])
-        console.log(file);
-        this.setState({file:file});
-      }
-
-      deleteImage(){
-        this.setState({file:null})
-    }
 
     render() {
         const { classes } = this.props;
@@ -91,20 +74,8 @@ class Offer extends React.Component {
 
                 <Paper variant='outlined'>
                     <div >
-                    {this.state.file!= null
-                        ?
-                        <div style={{textAlign:'right'}}>
-                       <CloseIcon style={{alignSelf:'right'}}  onClick={this.deleteImage} />
-                        <img src={this.state.file} style={{maxheight:"100%" , maxWidth:"100%"}}/>
-                        </div>
-                        :
-                        <div class={classes.paper} style={{ paddingBottom: '40px' }}>
-                        <AddAPhotoIcon style={{ color: '#1a73e8', fontSize: '36px' }} onClick={this.handleClick}  />
-                        <input type="file" id="file" ref="fileUploader"  onChange={this.handleChange}  accept="image/*" style={{display: "none"}}/>
-                                               <br />
- <div style={{ color: '#1a73e8', fontSize: "16px" }}>Make your post stand out with a photo</div>
-                    </div>
-                        } </div>
+                  <DragAndDrop />
+                  </div>
                 </Paper>
                 <form className={classes.root} noValidate >
                     <TextField

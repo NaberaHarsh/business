@@ -67,17 +67,16 @@ function ConfirmationDialogRaw(props) {
 
   const getValue = (e) => {
     console.log(e);
-    if (e === 0) {
+    if (e === 1) {
       setTab('event')
     }
     else
-      if (e === 1) {
+      if (e === 2) {
         setTab('offer')
       }
       else
-        if (e === 2) {
-          setTab('product')
-        }
+       setTab('product')
+        
   }
 
 
