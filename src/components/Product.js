@@ -6,7 +6,9 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import DragAndDrop from './Drag&Drop'
-import { Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+
 
 
 const styles = theme => ({
@@ -114,10 +116,10 @@ class Product extends React.Component {
                         fullWidth
                         id="product"
                         label="Product Name"
-                        name="product"
+                        name="product_name"
                         autoComplete="product"
                         autoFocus
-                        // value={product_name}
+                        value={product_name}
                         onChange={this.handleChange}
                     />
                     <FormControl
@@ -175,10 +177,10 @@ class Product extends React.Component {
                         fullWidth
                         id="description"
                         label="Product Description"
-                        name="description"
+                        name="desc"
                         autoComplete="description"
                         autoFocus
-                        // value={desc}
+                        value={desc}
                         onChange={this.handleChange}
                         multiline={true}
                     />
@@ -222,7 +224,19 @@ class Product extends React.Component {
                             :
                             " "
                     }
-<Button onClick={()=>this.handleSubmit()}></Button>
+<br />
+<Divider />
+<br />
+                    <Grid container spacing={2}>
+                        <Grid md={6} xs={6}></Grid>
+                        <Grid md={3} xs={3} style={{textAlign:'center'}}>
+                        <Button variant='contained' color='primary'  onClick={(e)=>{this.handleSubmit(e); this.props.handleOk()}}>Submit</Button>
+                            </Grid>
+                            <Grid md={3} xs={3} style={{textAlign:'center'}}>
+                            <Button variant='contained' color='primary'  onClick={()=>{ this.props.handleCancel()}}>Cancel</Button>
+                            </Grid>
+
+                    </Grid>
                 </form>
 
             </div>

@@ -303,10 +303,11 @@ const Dashboard = (props) => {
 
             <Route path="/2">
 
-            <Container maxWidth="xl" className={classes.container} >
+            {/* <Container maxWidth="xl" className={classes.container} > */}
+            <Post />
 
             <ConfirmationDialog />
-              </Container>
+              {/* </Container> */}
             </Route>
             
                 

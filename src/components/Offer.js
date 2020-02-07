@@ -6,13 +6,14 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CloseIcon from '@material-ui/icons/Close';
-import { Grid } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DragAndDrop from './Drag&Drop'
+import Divider from '@material-ui/core/Divider';
 
 
 const styles = theme => ({
@@ -41,15 +42,40 @@ class Offer extends React.Component {
             selectedDate: new Date(),
             button: 0,
             time: false,
-            file:null
+            file:null,
+            title: ' ',
+            description:' ',
+            start_date:' ',
+            end_date:' ',
+            link:' ',
+            start_time:' ',
+            end_time:' ',
+            Voucher:' ',
+            terms:' '
         }
 
         
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChangeDate = this.handleChangeDate.bind(this)
         this.handleChangeTime = this.handleChangeTime.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit=this.handleSubmit.bind(this)
 
     }
+    
+    handleChange = e => {
+        const { name, value } = e.target
+        this.setState({
+          [name]: value
+        })
+      }
+
+      handleSubmit = e => {
+        e.preventDefault()
+        const { title , start_date, end_date, start_time, end_time , description , link, voucher, terms} = this.state;
+        const userData = {  title , start_date, end_date, start_time, end_time , description , link, voucher, terms};
+        console.log(userData);
+      } 
 
     handleChangeDate = date => {
         this.setState({ selectedDate: date })
@@ -68,6 +94,7 @@ class Offer extends React.Component {
 
     render() {
         const { classes } = this.props;
+        const { title , start_date, end_date, start_time, end_time , description , link, voucher, terms} = this.state;
 
         return (
             <div>
@@ -85,9 +112,11 @@ class Offer extends React.Component {
                         fullWidth
                         id="offer"
                         label="Offer Title"
-                        name="offer"
+                        name="title"
                         autoComplete="offer"
                         autoFocus
+                        value={title}
+                        onChange={this,this.handleChange}
                         helperText="Eg: 20% off on this store"
                     />
                     <FormControlLabel
@@ -123,8 +152,10 @@ class Offer extends React.Component {
                                     fullWidth
                                     id="start date"
                                     label="Start Date"
-                                    name="start date"
+                                    name="start_date"
                                     autoComplete="start date"
+                                    value={start_date}
+                        onChange={this.handleChange}
                                     autoFocus
                                 />
                             </Grid>
@@ -136,9 +167,11 @@ class Offer extends React.Component {
                                     fullWidth
                                     id="start time"
                                     label="Start Time"
-                                    name="start time"
+                                    name="start_time"
                                     autoComplete="start time"
                                     autoFocus
+                                    value={start_time}
+                        onChange={this.handleChange}
                                 />
                             </Grid>
                         </Grid>
@@ -150,9 +183,12 @@ class Offer extends React.Component {
                             fullWidth
                             id="start date"
                             label="Start Date"
-                            name="start date"
+                            name="start_date"
                             autoComplete="start date"
                             autoFocus
+                            value={start_date}
+                        onChange={this.handleChange}
+
                         />}
 
                     {this.state.time === true
@@ -166,9 +202,11 @@ class Offer extends React.Component {
                                     fullWidth
                                     id="end date"
                                     label="End Date"
-                                    name="end date "
+                                    name="end_date "
                                     autoComplete="end date"
                                     autoFocus
+                                    value={end_date}
+                        onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid md={4} xs={4}>
@@ -179,9 +217,11 @@ class Offer extends React.Component {
                                     fullWidth
                                     id="end time"
                                     label="End Time"
-                                    name="end time"
+                                    name="end_time"
                                     autoComplete="end time"
                                     autoFocus
+                                    value={end_time}
+                                    onChange={this.handleChange}
                                 />
                             </Grid>
                         </Grid>
@@ -193,9 +233,11 @@ class Offer extends React.Component {
                             fullWidth
                             id="end date"
                             label="End Date"
-                            name="end date"
+                            name="end_date"
                             autoComplete="end date"
                             autoFocus
+                            value={end_date}
+                            onChange={this.handleChange}
                         />
                     }
 
@@ -215,9 +257,11 @@ class Offer extends React.Component {
                             fullWidth
                             id="desc"
                             label="Offer Description"
-                            name="desc"
+                            name="description"
                             autoComplete="desc"
                             autoFocus
+                            value={description}
+                            onChange={this.handleChange}
                             multiline={true}
                         />     
                          </ExpansionPanelDetails>
@@ -233,6 +277,8 @@ class Offer extends React.Component {
                             name="code"
                             autoComplete="code"
                             autoFocus
+                            value={voucher}
+                            onChange={this.handleChange}
                             helperText="optional"
                         />
                                 </ExpansionPanelDetails>
@@ -245,17 +291,29 @@ class Offer extends React.Component {
                             fullWidth
                             id="terms and conditions"
                             label="Terms and Conditions"
-                            name="terms and conditions"
+                            name="terms"
                             autoComplete="terms and conditions"
                             autoFocus
+                            value={terms}
+                            onChange={this.handleChange}
                             helperText="optional"
-
-
                         />
           
         </ExpansionPanelDetails>
       </ExpansionPanel>
-                    
+      <br />
+<Divider />
+<br />
+                    <Grid container spacing={2}>
+                        <Grid md={6} xs={6}></Grid>
+                        <Grid md={3} xs={3} style={{textAlign:'center'}}>
+                        <Button variant='contained' color='primary'  onClick={(e)=>{this.handleSubmit(e); this.props.handleOk()}}>Submit</Button>
+                            </Grid>
+                            <Grid md={3} xs={3} style={{textAlign:'center'}}>
+                            <Button variant='contained' color='primary'  onClick={()=>{ this.props.handleCancel()}}>Cancel</Button>
+                            </Grid>
+
+                    </Grid>
                     
                 </form>
 

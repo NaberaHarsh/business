@@ -26,7 +26,6 @@ import {
 function ConfirmationDialogRaw(props) {
   const { onClose, value: valueProp, open, ...other } = props;
   const [value, setValue] = React.useState(valueProp);
-  const radioGroupRef = React.useRef(null);
   const [tab, setTab] = React.useState('product');
   const [display, setDisplay] = React.useState(true)
 
@@ -37,11 +36,7 @@ function ConfirmationDialogRaw(props) {
     }
   }, [valueProp, open]);
 
-  const handleEntering = () => {
-    if (radioGroupRef.current != null) {
-      radioGroupRef.current.focus();
-    }
-  };
+ 
 
   const handleCancel = () => {
     setDisplay(false);
@@ -85,7 +80,6 @@ function ConfirmationDialogRaw(props) {
       disableBackdropClick
       disableEscapeKeyDown
       maxWidth="xs"
-      onEntering={handleEntering}
       aria-labelledby="confirmation-dialog-title"
       open={open}
       {...other}
@@ -99,30 +93,23 @@ function ConfirmationDialogRaw(props) {
       <DialogContent dividers>
         {tab === 'product'
           ?
-          <Product />
+          <Product handleOk={handleOk} handleCancel={handleCancel}/>
           :
           ""}
         {tab === 'event'
           ?
-          <Event />
+          <Event  handleOk={handleOk} handleCancel={handleCancel}/>
           :
           ""}
         {tab === 'offer'
           ?
-          <Offer />
+          <Offer  handleOk={handleOk} handleCancel={handleCancel}/>
           :
           ""}
 
 
       </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleOk} color="primary">
-          Ok
-        </Button>
-      </DialogActions>
+      
 
     </Dialog>
   );
