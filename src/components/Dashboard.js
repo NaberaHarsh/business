@@ -21,7 +21,6 @@ import Post from './Post'
 import { connect } from 'react-redux'
 
 
-
 import {
   BrowserRouter as Router,
   Switch,
@@ -309,8 +308,7 @@ const Dashboard = (props) => {
             <ConfirmationDialog />
               {/* </Container> */}
             </Route>
-            
-                
+           
 
 
 

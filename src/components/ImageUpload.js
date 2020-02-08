@@ -96,7 +96,7 @@ height:'100%'
              <AddAPhotoIcon style={{ color: '#1a73e8', fontSize: '36px' }} />
                                 {/* <input type="file" id="file" ref="fileUploader"  accept="image/*" style={{ display: "none" }} /> */}
                                 <br />
-                                <div style={{ color: '#1a73e8', fontSize: "16px" }}>Make your post stand out with a photo</div>
+                                <div style={{ color: '#1a73e8',textAlign:"center", fontSize: "16px" }}>Make your post stand out with a photo</div>
         </div>
       );
 

@@ -35,6 +35,7 @@ class Product extends React.Component {
         super(props)
         this.state = {
             value: 0,
+            image:'',
             button: 0,
             image: false,
             file: null,
@@ -49,9 +50,13 @@ class Product extends React.Component {
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit=this.handleSubmit.bind(this)
-
+this.getImage=this.getImage.bind(this);
     }
   
+
+    getImage(image){
+        this.setState({image:image})
+    }
 
     handleChange = e => {
         const { name, value } = e.target
@@ -62,8 +67,8 @@ class Product extends React.Component {
 
       handleSubmit = e => {
         e.preventDefault()
-        const { product_name, category, price, desc, link} = this.state;
-        const userData = { product_name, category, price, desc, link };
+        const { image, product_name, category, price, desc, link} = this.state;
+        const userData = {image, product_name, category, price, desc, link };
         console.log(userData);
       }    
 
@@ -104,7 +109,7 @@ class Product extends React.Component {
 
                 <Paper variant='outlined'>
                     <div>
-                                <DragAndDrop/>   
+                                <DragAndDrop getImage={this.getImage}/>   
                     </div>
                 </Paper>
                 <form className={classes.root} noValidate >
@@ -228,11 +233,11 @@ class Product extends React.Component {
 <Divider />
 <br />
                     <Grid container spacing={2}>
-                        <Grid md={6} xs={6}></Grid>
-                        <Grid md={3} xs={3} style={{textAlign:'center'}}>
+                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                        <Grid md={3} lg={3} sm={5} xs={5} style={{textAlign:'center'}}>
                         <Button variant='contained' color='primary'  onClick={(e)=>{this.handleSubmit(e); this.props.handleOk()}}>Submit</Button>
                             </Grid>
-                            <Grid md={3} xs={3} style={{textAlign:'center'}}>
+                            <Grid md={3} lg={3} sm={4} xs={4} style={{textAlign:'center'}}>
                             <Button variant='contained' color='primary'  onClick={()=>{ this.props.handleCancel()}}>Cancel</Button>
                             </Grid>
 

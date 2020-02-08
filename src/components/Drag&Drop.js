@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import ImageUpload from "./ImageUpload";
 
 class DragAndDrop extends React.Component {
@@ -13,6 +12,7 @@ class DragAndDrop extends React.Component {
   }
 
   addFile = file => {
+    this.props.getImage(file)
     console.log(file);
     this.setState({
       files: file.map(file =>

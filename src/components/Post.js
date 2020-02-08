@@ -123,7 +123,7 @@ data:[
         title={product.title}
       />
       <CardMedia
-        style={{height:'140px'}}
+        style={{height:'140px', width:'100%'}}
         image={product.image}
       />
       <CardContent>

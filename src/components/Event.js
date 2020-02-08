@@ -1,25 +1,21 @@
-// import 'date-fns';
+
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import DateFnsUtils from '@date-io/date-fns';
-// import {
-//     MuiPickersUtilsProvider,
-//     KeyboardDatePicker,
-// } from '@material-ui/pickers';
 import { Button, Grid } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import DragAndDrop from './Drag&Drop';
 import Divider from '@material-ui/core/Divider';
-
-
+import MaterialUIPickersStartDate from './StartDate'
+import MaterialUIPickersEndDate from './EndDate'
+import MaterialUIPickersEndTime from './EndTime'
+import MaterialUIPickersStartTime from './StartTime'
 
 
 const styles = theme => ({
@@ -48,36 +44,59 @@ class Event extends React.Component {
             selectedDate: new Date(),
             button: 0,
             time: false,
-            file:null,
+            file: null,
+            image:'',
             title: ' ',
-            description:' ',
-            start_date:' ',
-            end_date:' ',
-            link:' ',
-            start_time:' ',
-            end_time:' ' 
+            description: ' ',
+            start_date: ' ',
+            end_date: ' ',
+            link: ' ',
+            start_time: ' ',
+            end_time: ' '
         }
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChangeDate = this.handleChangeDate.bind(this)
         this.handleChangeTime = this.handleChangeTime.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit=this.handleSubmit.bind(this)
-        
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.getStartDate = this.getStartDate.bind(this);
+        this.getEndDate = this.getEndDate.bind(this);
+        this.getStartTime = this.getStartTime.bind(this);
+        this.getEndTime = this.getEndTime.bind(this);
+        this.getImage=this.getImage.bind(this);
+    }
+
+    getImage(image){
+        this.setState({image:image})
     }
 
     handleChange = e => {
         const { name, value } = e.target
         this.setState({
-          [name]: value
+            [name]: value
         })
-      }
+    }
 
-      handleSubmit = e => {
+    getStartDate(startDate) {
+        this.setState({ start_date: startDate })
+    }
+    getEndDate(endDate) {
+        this.setState({ end_date: endDate })
+    }
+    getStartTime(startTime) {
+        this.setState({ start_time: startTime })
+    }
+    getEndTime(endTime) {
+        this.setState({ end_time: endTime })
+    }
+
+    handleSubmit = e => {
         e.preventDefault()
-        const { title , start_date, end_date, start_time, end_time , description , link} = this.state;
-        const userData = {  title ,start_date, end_date, start_time, end_time , description , link};
+        const { image, title, start_date, end_date, start_time, end_time, description, link } = this.state;
+        const userData = { image,title, start_date, end_date, start_time, end_time, description, link };
         console.log(userData);
-      } 
+
+    }
 
     handleChangeDate = date => {
         this.setState({ selectedDate: date })
@@ -93,10 +112,10 @@ class Event extends React.Component {
         console.log(this.state.time)
     };
 
-   
+
 
     render() {
-        const { title , start_date, end_date, start_time, end_time , description , link} = this.state;
+        const { title, description, link } = this.state;
 
         const { classes } = this.props;
 
@@ -105,8 +124,8 @@ class Event extends React.Component {
 
                 <Paper variant='outlined'>
                     <div >
-                        <DragAndDrop />
-                      </div>
+                        <DragAndDrop  getImage={this.getImage} />
+                    </div>
                 </Paper>
                 <form className={classes.root} noValidate >
                     <TextField
@@ -121,7 +140,7 @@ class Event extends React.Component {
                         autoFocus
                         value={title}
                         onChange={this.handleChange}
-                        
+
                     />
                     <FormControlLabel
                         value="time"
@@ -131,138 +150,73 @@ class Event extends React.Component {
                         labelPlacement="start"
                     />
 
-                    {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <Grid container justify="space-around">
-                        <KeyboardDatePicker
-          margin="normal"
-          id="date-picker-dialog"
-          label="Date picker dialog"
-          format="MM/dd/yyyy"
-          value={this.state.selectedDate}
-          onChange={this.handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        </Grid>
-        </MuiPickersUtilsProvider> */}
 
-        
                     {this.state.time === true
                         ?
                         <Grid container spacing={0}>
-                            <Grid md={8} xs={8}>
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="start date"
-                                    label="Start Date"
-                                    name="start_date"
-                                    autoComplete="start date"
-                                    autoFocus
-                                    value={start_date}
-                        onChange={this.handleChange}
+                            <Grid md={8} xs={8} >
+                              
+                                < MaterialUIPickersStartDate
+                                    startDate={this.getStartDate}
                                 />
+
                             </Grid>
                             <Grid md={4} xs={4}>
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="start time"
-                                    label="Start Time"
-                                    name="start_time"
-                                    autoComplete="start time"
-                                    autoFocus
-                                    value={start_time}
-                        onChange={this.handleChange}
+                               
+                                <MaterialUIPickersStartTime
+                                    startTime={this.getStartTime}
                                 />
                             </Grid>
                         </Grid>
                         :
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="start date"
-                            label="Start Date"
-                            name="start_date"
-                            autoComplete="start date"
-                            autoFocus
-                            value={start_date}
-                        onChange={this.handleChange}
-                        />}
+                        <div>
+                           
+                            < MaterialUIPickersStartDate
+                                startDate={this.getStartDate}
+                            />
+                        </div>
+                    }
 
                     {this.state.time === true
                         ?
                         <Grid container spacing={0}>
                             <Grid md={8} xs={8}>
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="end date"
-                                    label="End Date"
-                                    name="end_date "
-                                    autoComplete="end date"
-                                    autoFocus
-                                    value={end_date}
-                        onChange={this.handleChange}
+                               
+                                <MaterialUIPickersEndDate
+                                    endDate={this.getEndDate}
+                                />
+                            </Grid>
+                            <Grid md={4} xs={4}>
                                 
-                                />
-                            </Grid>
-                            <Grid md={4} xs={4}>
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="end time"
-                                    label="End Time"
-                                    name="end_time"
-                                    autoComplete="end time"
-                                    autoFocus
-                                    value={end_time}
-                        onChange={this.handleChange}
+                                <MaterialUIPickersEndTime
+                                    endTime={this.getEndTime}
                                 />
                             </Grid>
                         </Grid>
                         :
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="end date"
-                            label="End Date"
-                            name="end_date"
-                            autoComplete="end date"
-                            autoFocus
-                            value={end_date}
-                            onChange={this.handleChange}
-                        />
+                        <div>
+                           
+                            <MaterialUIPickersEndDate
+                                endDate={this.getEndDate}
+                            />
+                        </div>
                     }
 
 
-<TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="desc"
-                            label="Event Description"
-                            name="description"
-                            autoComplete="desc"
-                            autoFocus
-                            multiline={true}
-                            value={description}
-                            onChange={this.handleChange}
-                        />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="desc"
+                        label="Event Description"
+                        name="description"
+                        autoComplete="desc"
+                        autoFocus
+                        multiline={true}
+                        value={description}
+                        onChange={this.handleChange}
+                    />
                     <FormControl
                         className={classes.root} style={{ width: '70%' }}
                         variant="outlined" >
@@ -307,16 +261,16 @@ class Event extends React.Component {
                             " "
                     }
                     <br />
-<Divider />
-<br />
+                    <Divider />
+                    <br />
                     <Grid container spacing={2}>
-                        <Grid md={6} xs={6}></Grid>
-                        <Grid md={3} xs={3} style={{textAlign:'center'}}>
-                        <Button variant='contained' color='primary'  onClick={(e)=>{this.handleSubmit(e); this.props.handleOk()}}>Submit</Button>
-                            </Grid>
-                            <Grid md={3} xs={3} style={{textAlign:'center'}}>
-                            <Button variant='contained' color='primary'  onClick={()=>{ this.props.handleCancel()}}>Cancel</Button>
-                            </Grid>
+                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                        <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
+                            <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
+                        </Grid>
+                        <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                            <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
+                        </Grid>
 
                     </Grid>
 
