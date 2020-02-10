@@ -64,7 +64,7 @@ const DialogActions = withStyles(theme => ({
     },
 }))(MuiDialogActions);
 
-class Image extends React.Component {
+class  extends React.Component {
     constructor(props) {
         super(props)
         this.state = {

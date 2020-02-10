@@ -85,7 +85,7 @@ function ConfirmationDialogRaw(props) {
       <DialogTitle id="confirmation-dialog-title">Create Post</DialogTitle>
       <Divider />
       <DialogTitle >
-        <Tabbar getValue={getValue} />
+        <Tabbar getValue={getValue}  />
 
       </DialogTitle>
       <DialogContent dividers>
@@ -127,7 +127,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     width: '80%',
-    maxHeight: 435,
+    maxHeight: 580,
   },
 }));
 
