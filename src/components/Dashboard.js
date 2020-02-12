@@ -19,7 +19,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Post from './Post'
 import { connect } from 'react-redux'
-
+import FileDialog from './FileModal'
+// import OpenIconSpeedDial from './SpeedDial'
 
 import {
   BrowserRouter as Router,
@@ -157,6 +158,7 @@ const Dashboard = (props) => {
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+  const [data,setData] = React.useState(null);
   const [page, setPage] = React.useState(process.env.REACT_APP_DEFAULT_PAGE);
   const [refresh, setRefresh] = React.useState(false);
 
@@ -164,7 +166,11 @@ const Dashboard = (props) => {
   let history = useHistory();
 
 
- 
+ const handleData =(item)=> {
+console.log(item);
+setData(item)
+console.log(data);
+ }
 
   const handlePageChange = (number) => {
 
@@ -296,6 +302,8 @@ const Dashboard = (props) => {
             // onEnter={} // CALL API ON ROUTE
             >
 <Post />
+{/* <OpenIconSpeedDial /> */}
+
             </Route>
           
 
@@ -305,11 +313,18 @@ const Dashboard = (props) => {
             {/* <Container maxWidth="xl" className={classes.container} > */}
             <Post />
 
-            <ConfirmationDialog />
+            <ConfirmationDialog getData={handleData}/>
               {/* </Container> */}
             </Route>
            
+            <Route 
+            exact path="/3"
+            // onEnter={} // CALL API ON ROUTE
+            >
+                          <Post />
 
+<FileDialog />
+            </Route>
 
 
       </main>

@@ -6,7 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 
 import CompareIcon from '@material-ui/icons/Compare';
 import {
@@ -45,6 +45,23 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
 
       </ListItemIcon>
       <ListItemText primary="Create Post" />
+    </ListItem>
+    </Link>
+    <ListItem>
+    <ListItemIcon>
+      </ListItemIcon>
+      <ListItemText secondary="product 1" />
+    </ListItem>
+    
+    <Link to={`/3`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={history.location.pathname === '/dashboard'}
+    >
+      <ListItemIcon>
+        <InsertDriveFileIcon />
+      </ListItemIcon>
+      <ListItemText primary="My Files" />
     </ListItem>
     </Link>
     

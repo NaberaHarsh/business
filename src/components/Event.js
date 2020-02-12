@@ -45,7 +45,7 @@ class Event extends React.Component {
             button: 0,
             time: false,
             file: null,
-            image:'',
+            image: '',
             title: ' ',
             description: ' ',
             start_date: ' ',
@@ -63,11 +63,11 @@ class Event extends React.Component {
         this.getEndDate = this.getEndDate.bind(this);
         this.getStartTime = this.getStartTime.bind(this);
         this.getEndTime = this.getEndTime.bind(this);
-        this.getImage=this.getImage.bind(this);
+        this.getImage = this.getImage.bind(this);
     }
 
-    getImage(image){
-        this.setState({image:image})
+    getImage(image) {
+        this.setState({ image: image })
     }
 
     handleChange = e => {
@@ -93,7 +93,7 @@ class Event extends React.Component {
     handleSubmit = e => {
         e.preventDefault()
         const { image, title, start_date, end_date, start_time, end_time, description, link } = this.state;
-        const userData = { image,title, start_date, end_date, start_time, end_time, description, link };
+        const userData = { image, title, start_date, end_date, start_time, end_time, description, link };
         console.log(userData);
 
     }
@@ -124,7 +124,7 @@ class Event extends React.Component {
 
                 <Paper variant='outlined'>
                     <div >
-                        <DragAndDrop  getImage={this.getImage} />
+                        <DragAndDrop getImage={this.getImage} />
                     </div>
                 </Paper>
                 <form className={classes.root} noValidate >
@@ -155,14 +155,14 @@ class Event extends React.Component {
                         ?
                         <Grid container spacing={0}>
                             <Grid md={8} xs={8} >
-                              
+
                                 < MaterialUIPickersStartDate
                                     startDate={this.getStartDate}
                                 />
 
                             </Grid>
                             <Grid md={4} xs={4}>
-                               
+
                                 <MaterialUIPickersStartTime
                                     startTime={this.getStartTime}
                                 />
@@ -170,7 +170,7 @@ class Event extends React.Component {
                         </Grid>
                         :
                         <div>
-                           
+
                             < MaterialUIPickersStartDate
                                 startDate={this.getStartDate}
                             />
@@ -181,13 +181,13 @@ class Event extends React.Component {
                         ?
                         <Grid container spacing={0}>
                             <Grid md={8} xs={8}>
-                               
+
                                 <MaterialUIPickersEndDate
                                     endDate={this.getEndDate}
                                 />
                             </Grid>
                             <Grid md={4} xs={4}>
-                                
+
                                 <MaterialUIPickersEndTime
                                     endTime={this.getEndTime}
                                 />
@@ -195,7 +195,7 @@ class Event extends React.Component {
                         </Grid>
                         :
                         <div>
-                           
+
                             <MaterialUIPickersEndDate
                                 endDate={this.getEndDate}
                             />

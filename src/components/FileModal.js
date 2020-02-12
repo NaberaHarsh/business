@@ -5,10 +5,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Dialog from '@material-ui/core/Dialog';
 import Divider from '@material-ui/core/Divider';
-import Tabbar from './Tab'
-import Product from './Product'
-import Event from './Event'
-import Offer from './Offer'
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import Files from './Files';
+// import OpenIconSpeedDial from './SpeedDial'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -34,16 +35,11 @@ function ConfirmationDialogRaw(props) {
     }
   }, [valueProp, open]);
 
- const handleData =(data) =>{
-   console.log(data)
-   getData(data.product_name)
- }
+//  const handleData =(data) =>{
+//    console.log(data)
+//    getData(data.product_name)
+//  }
 
-  const handleCancel = () => {
-    setDisplay(false);
-    onClose();
-
-  };
 
   if (display === false) {
     return (
@@ -56,62 +52,33 @@ function ConfirmationDialogRaw(props) {
     );
   }
 
-  const handleOk = () => {
+  const handleClose = () => {
     setDisplay(false);
     onClose(value);
   };
-
-  const getValue = (e) => {
-    console.log(e);
-    if (e === 1) {
-      setTab('event')
-    }
-    else
-      if (e === 2) {
-        setTab('offer')
-      }
-      else
-       setTab('product')
-        
-  }
 
 
   return (
     <Dialog
       disableBackdropClick
       disableEscapeKeyDown
-      maxWidth="xs"
+      maxWidth="md"
       aria-labelledby="confirmation-dialog-title"
       open={open}
       {...other}
     >
-      <DialogTitle id="confirmation-dialog-title">Create Post</DialogTitle>
-      <Divider />
-      <DialogTitle >
-        <Tabbar getValue={getValue}  />
-
-      </DialogTitle>
+      <DialogTitle id="confirmation-dialog-title">My Files</DialogTitle>
+    
       <DialogContent dividers>
-        {tab === 'product'
-          ?
-          <Product handleOk={handleOk} handleCancel={handleCancel} handleData={handleData}/>
-          :
-          ""}
-        {tab === 'event'
-          ?
-          <Event  handleOk={handleOk} handleCancel={handleCancel}/>
-          :
-          ""}
-        {tab === 'offer'
-          ?
-          <Offer  handleOk={handleOk} handleCancel={handleCancel}/>
-          :
-          ""}
-
-
+        
+<Files />
       </DialogContent>
-      
-
+      <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Close
+        </Button>
+      </DialogActions>
+      {/* <OpenIconSpeedDial display={display}/> */}
     </Dialog>
   );
 }
@@ -130,11 +97,11 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     width: '80%',
-    maxHeight: 580,
+    height: 580,
   },
 }));
 
-export default function ConfirmationDialog(props) {
+export default function FileDialog(props) {
   const {getData} = props;
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);

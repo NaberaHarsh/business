@@ -70,6 +70,7 @@ this.getImage=this.getImage.bind(this);
         const { image, product_name, category, price, desc, link} = this.state;
         const userData = {image, product_name, category, price, desc, link };
         console.log(userData);
+        this.props.handleData(userData);
       }    
 
     handleChangeCategory(e) {
