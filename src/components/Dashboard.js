@@ -20,7 +20,9 @@ import Menu from '@material-ui/core/Menu';
 import Post from './Post'
 import { connect } from 'react-redux'
 import FileDialog from './FileModal'
-// import OpenIconSpeedDial from './SpeedDial'
+import QuestionDialog from './QuestionDialog'
+
+import OpenIconSpeedDial from './SpeedDial'
 
 import {
   BrowserRouter as Router,
@@ -324,6 +326,14 @@ console.log(data);
                           <Post />
 
 <FileDialog />
+            </Route>
+            <Route 
+            exact path="/4"
+            // onEnter={} // CALL API ON ROUTE
+            >
+                          <Post />
+
+<QuestionDialog />
             </Route>
 
 

@@ -12,7 +12,17 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import EditIcon from '@material-ui/icons/Edit';
 import FileDialog from './FileModal'
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import QuestionDialog from './QuestionDialog'
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,35 +42,53 @@ const useStyles = makeStyles(theme => ({
 export default function OpenIconSpeedDial(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const {display} = props;
-
+  const [display, setDisplay] = React.useState(false);
 
   const handleOpen = () => {
-    setOpen(true); 
-};
-  
+    setOpen(true);
+  };
 
-  if(open === true){
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClick = () =>{
+    setDisplay(true)
+    
+  }
+
+  if(display === true){
     return(
-    <FileDialog />
-    )
+<QuestionDialog />    
+)
+}
+else{
+    
+return (
+  <div         className={classes.speedDial}
+  >
+    <SpeedDial
+    onClose={handleClose}
+    onOpen={handleOpen}
+    open={open}
+    // onClick={handleOpen}
+      ariaLabel="SpeedDial openIcon example"
+      icon={<InsertDriveFileIcon openIcon={< InsertDriveFileIcon/>} />}
+    >
+      <SpeedDialAction
+          key=""
+          icon={<InsertDriveFileIcon />}
+          tooltipTitle="File"
+          onClick={handleClick}
+        />
+    </SpeedDial>
+  </div>
+);
+
 }
 
 // if(display === false){
 //     setOpen(false);
 // }
 
-return (
-    <div         className={classes.speedDial}
-    >
-      <SpeedDial
-      onClick={handleOpen}
-        ariaLabel="SpeedDial openIcon example"
-        icon={<InsertDriveFileIcon openIcon={< InsertDriveFileIcon/>} />}
-      >
-       
-      </SpeedDial>
-    </div>
-  );
-  
 }

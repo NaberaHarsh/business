@@ -7,6 +7,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
 import CompareIcon from '@material-ui/icons/Compare';
 import {
@@ -64,7 +65,17 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
       <ListItemText primary="My Files" />
     </ListItem>
     </Link>
-    
+    <Link to={`/4`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={history.location.pathname === '/dashboard'}
+    >
+      <ListItemIcon>
+        <QuestionAnswerIcon />
+      </ListItemIcon>
+      <ListItemText primary="Add Questions" />
+    </ListItem>
+    </Link>
   
 
 

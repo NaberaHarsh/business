@@ -109,6 +109,7 @@ height:'100%'
         className={Object.keys(files).length !== 0 ?   classes.paper2: classes.paper1}
           multiple={false}
           accept="image/*"
+          // accept="video/*"
           onDrop={(accepted, rejected) => this.onDrop(accepted, rejected)}
         >
           {({ isDragAccept, isDragReject, acceptedFiles, rejectedFiles }) => {
