@@ -20,7 +20,14 @@ const styles = theme => ({
         flexDirection: "column",
         alignItems: "center"
 
-    },
+    }, 
+    inputRoot: {
+        fontSize: 14
+      },
+      labelRoot: {
+        fontSize: 14,
+       
+      },
 
     root: {
         marginTop: theme.spacing(2),
@@ -137,6 +144,14 @@ class Question extends React.Component {
                 <form className={classes.root} noValidate >
 
                     <TextField
+                    InputProps={{ classes: { root: classes.inputRoot } }}
+                    InputLabelProps={{
+                      classes: {
+                        root: classes.labelRoot,
+                        focused: classes.labelFocused
+                      }
+                    }}
+                    size="small"
                         variant="outlined"
                         margin="normal"
                         required
@@ -151,12 +166,22 @@ class Question extends React.Component {
                         onChange={this.handleChange}
                     />
                     <FormControl
+                    InputProps={{ classes: { root: classes.inputRoot } }}
+                    InputLabelProps={{
+                      classes: {
+                        root: classes.labelRoot,
+                        focused: classes.labelFocused
+                      }
+                    }}
                         className={classes.root} style={{ width: '80%' }}
-                        variant="outlined" >
-                        <InputLabel htmlFor="outlined-age-native-simple">
+                        variant="outlined"
+                        size="small" >
+                        <InputLabel htmlFor="outlined-age-native-simple"
+                        style={{fontSize:"14px"}}>
                             Select answer type
         </InputLabel>
                         <Select
+                        style={{fontSize:"14px"}}
                             native
                             value={this.state.value}
                             onChange={this.handleChangeCategory}
@@ -173,6 +198,14 @@ class Question extends React.Component {
                             {
                                 this.state.value == 1 || this.state.value == 2 ?
                                     <TextField
+                                    InputProps={{ classes: { root: classes.inputRoot } }}
+                     InputLabelProps={{
+                       classes: {
+                         root: classes.labelRoot,
+                         focused: classes.labelFocused
+                       }
+                     }}
+                     size="small"
                                         variant="outlined"
                                         margin="normal"
                                         required
@@ -186,6 +219,14 @@ class Question extends React.Component {
                                         onChange={this.handleChange} />
                                     :
                                     <TextField
+                                    InputProps={{ classes: { root: classes.inputRoot } }}
+                     InputLabelProps={{
+                       classes: {
+                         root: classes.labelRoot,
+                         focused: classes.labelFocused
+                       }
+                     }}
+                     size="small"
                                         variant="outlined"
                                         margin="normal"
                                         disabled
@@ -316,7 +357,8 @@ class Question extends React.Component {
             </>
                     } */}
                     <Button variant='contained' color='primary'
-                        onClick={this.addQuestion}                    >
+                        onClick={this.addQuestion}  
+                        style={{fontSize:"12px"}}                  >
                         Add Option</Button>
 
 
@@ -326,10 +368,14 @@ class Question extends React.Component {
                     <Grid container spacing={2}>
                         <Grid md={6} lg={6} sm={3} xs={3}></Grid>
                         <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                            <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
+                            <Button variant='contained' color='primary'
+                            style={{fontSize:"12px"}}
+                             onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
                         </Grid>
                         <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                            <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
+                            <Button variant='contained' 
+                            style={{fontSize:"12px"}}
+                            color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
                         </Grid>
 
                     </Grid>

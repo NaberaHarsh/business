@@ -28,7 +28,13 @@ const styles = theme => ({
         alignItems: "center"
 
     },
+    inputRoot: {
+        fontSize: 14
+    },
+    labelRoot: {
+        fontSize: 14,
 
+    },
     root: {
         marginTop: theme.spacing(2),
         display: "flex",
@@ -46,7 +52,7 @@ class Offer extends React.Component {
             button: 0,
             time: false,
             file: null,
-            image:'',
+            image: '',
             title: ' ',
             description: ' ',
             start_date: ' ',
@@ -67,11 +73,11 @@ class Offer extends React.Component {
         this.getEndDate = this.getEndDate.bind(this);
         this.getStartTime = this.getStartTime.bind(this);
         this.getEndTime = this.getEndTime.bind(this);
-        this.getImage=this.getImage.bind(this);
+        this.getImage = this.getImage.bind(this);
     }
 
-    getImage(image){
-        this.setState({image:image})
+    getImage(image) {
+        this.setState({ image: image })
     }
 
     handleChange = e => {
@@ -96,8 +102,8 @@ class Offer extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault()
-        const { image ,title, start_date, end_date, start_time, end_time, description, voucher, terms } = this.state;
-        const userData = {image, title, start_date, end_date, start_time, end_time, description, voucher, terms };
+        const { image, title, start_date, end_date, start_time, end_time, description, voucher, terms } = this.state;
+        const userData = { image, title, start_date, end_date, start_time, end_time, description, voucher, terms };
         console.log(userData);
     }
 
@@ -118,18 +124,25 @@ class Offer extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const { title,  description, voucher, terms } = this.state;
+        const { title, description, voucher, terms } = this.state;
 
         return (
             <div>
 
                 <Paper variant='outlined'>
                     <div >
-                        <DragAndDrop   getImage={this.getImage}/>
+                        <DragAndDrop getImage={this.getImage} />
                     </div>
                 </Paper>
                 <form className={classes.root} noValidate >
                     <TextField
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}
                         variant="outlined"
                         margin="normal"
                         required
@@ -139,31 +152,40 @@ class Offer extends React.Component {
                         name="title"
                         autoComplete="offer"
                         autoFocus
+                        size="small"
                         value={title}
                         onChange={this.handleChange}
                         helperText="Eg: 20% off on this store"
                     />
                     <FormControlLabel
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}
                         value="time"
                         onChange={this.handleChangeTime}
-                        control={<Switch color="primary" />}
-                        label="Add Time"
+                        control={<Switch color="primary" size="small" />}
+                        label={<span style={{ fontSize: '14px' }}>Add Time</span>}
                         labelPlacement="start"
+
                     />
 
-                  
+
                     {this.state.time === true
                         ?
                         <Grid container spacing={0}>
                             <Grid md={8} xs={8}>
-                                
+
                                 < MaterialUIPickersStartDate
                                     startDate={this.getStartDate}
                                 />
 
                             </Grid>
                             <Grid md={4} xs={4}>
-                               
+
                                 <MaterialUIPickersStartTime
                                     startTime={this.getStartTime}
                                 />
@@ -171,7 +193,7 @@ class Offer extends React.Component {
                             </Grid>
                         </Grid>
                         :
-                       
+
                         < MaterialUIPickersStartDate
                             startDate={this.getStartDate}
                         />
@@ -181,14 +203,14 @@ class Offer extends React.Component {
                         ?
                         <Grid container spacing={0}>
                             <Grid md={8} xs={8}>
-                                
+
                                 <MaterialUIPickersEndDate
                                     endDate={this.getEndDate}
                                 />
 
                             </Grid>
                             <Grid md={4} xs={4}>
-                               
+
                                 <MaterialUIPickersEndTime
                                     endTime={this.getEndTime}
                                 />
@@ -196,7 +218,7 @@ class Offer extends React.Component {
                             </Grid>
                         </Grid>
                         :
-                       
+
                         <MaterialUIPickersEndDate
                             endDate={this.getEndDate}
                         />
@@ -208,11 +230,22 @@ class Offer extends React.Component {
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            size="small"
                         >
-                            <Typography >Additional Details(optional)</Typography>
+                            <Typography
+                                style={{ fontSize: "14px" }}
+                            >
+                                Additional Details(optional)</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <TextField
+                                InputProps={{ classes: { root: classes.inputRoot } }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelRoot,
+                                        focused: classes.labelFocused
+                                    }
+                                }}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -222,6 +255,7 @@ class Offer extends React.Component {
                                 name="description"
                                 autoComplete="desc"
                                 autoFocus
+                                size="small"
                                 value={description}
                                 onChange={this.handleChange}
                                 multiline={true}
@@ -231,6 +265,13 @@ class Offer extends React.Component {
                         <ExpansionPanelDetails>
 
                             <TextField
+                                InputProps={{ classes: { root: classes.inputRoot } }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelRoot,
+                                        focused: classes.labelFocused
+                                    }
+                                }}
                                 variant="outlined"
                                 margin="normal"
                                 fullWidth
@@ -239,6 +280,7 @@ class Offer extends React.Component {
                                 name="voucher"
                                 autoComplete="code"
                                 autoFocus
+                                size="small"
                                 value={voucher}
                                 onChange={this.handleChange}
                                 helperText="optional"
@@ -248,6 +290,13 @@ class Offer extends React.Component {
 
 
                             <TextField
+                                InputProps={{ classes: { root: classes.inputRoot } }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelRoot,
+                                        focused: classes.labelFocused
+                                    }
+                                }}
                                 variant="outlined"
                                 margin="normal"
                                 fullWidth
@@ -256,6 +305,7 @@ class Offer extends React.Component {
                                 name="terms"
                                 autoComplete="terms and conditions"
                                 autoFocus
+                                size="small"
                                 value={terms}
                                 onChange={this.handleChange}
                                 helperText="optional"
@@ -263,16 +313,20 @@ class Offer extends React.Component {
 
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
-                    <br />
+
                     <Divider />
                     <br />
                     <Grid container spacing={2}>
-                        <Grid md={6}  lg={6} sm={3} xs={3}></Grid>
-                        <Grid md={3}  lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                            <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
+                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                        <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
+                            <Button variant='contained'
+                                style={{ fontSize: '12px' }}
+                                color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
                         </Grid>
-                        <Grid md={3}   lg={3} sm={4} xs={4}style={{ textAlign: 'center' }}>
-                            <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
+                        <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                            <Button variant='contained'
+                                style={{ fontSize: '12px' }}
+                                color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
                         </Grid>
 
                     </Grid>

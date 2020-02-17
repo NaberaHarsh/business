@@ -1,0 +1,2119 @@
+previous listitem
+
+import React from 'react';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+
+import CompareIcon from '@material-ui/icons/Compare';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+export const mainListItems = (handlePageChange, pageId, history) =>  console.log(history) || (
+  <div>
+
+    <Link to={`/1`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={history.location.pathname === '/dashboard'}
+    >
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItem>
+    </Link>
+    
+  
+
+    <Link to={`/2`} style={{ textDecoration: 'none', color: 'black'  }}>
+
+    <ListItem button onClick={() => handlePageChange(3)}
+    selected={history.location.pathname === '/config'}
+    >
+      <ListItemIcon>
+        <AddBoxIcon />
+
+      </ListItemIcon>
+      <ListItemText primary="Create Post" />
+    </ListItem>
+    </Link>
+    <ListItem>
+    <ListItemIcon>
+      </ListItemIcon>
+      <ListItemText secondary="product 1" />
+    </ListItem>
+    
+    <Link to={`/3`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={history.location.pathname === '/dashboard'}
+    >
+      <ListItemIcon>
+        <InsertDriveFileIcon />
+      </ListItemIcon>
+      <ListItemText primary="My Files" />
+    </ListItem>
+    </Link>
+    <Link to={`/4`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={history.location.pathname === '/dashboard'}
+    >
+      <ListItemIcon>
+        <QuestionAnswerIcon />
+      </ListItemIcon>
+      <ListItemText primary="Add Questions" />
+    </ListItem>
+    </Link>
+  
+
+
+  
+  </div>
+);
+
+export const secondaryListItems = (
+  <div>
+    <ListSubheader inset>Saved reports</ListSubheader>
+    <ListItem button>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Current month" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Last quarter" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Year-end sale" />
+    </ListItem>
+  </div>
+);
+
+
+
+
+
+previuos dashboard
+
+import React from 'react';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import ConfirmationDialog from './Dialog'
+import Container from '@material-ui/core/Container';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { mainListItems } from './listItems';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import Post from './Post'
+import { connect } from 'react-redux'
+import FileDialog from './FileModal'
+import QuestionDialog from './QuestionDialog'
+
+import OpenIconSpeedDial from './SpeedDial'
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+
+
+
+
+const _ = require('lodash');
+const moment = require('moment');
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  toolbar: {
+    paddingRight: 24, // keep right padding when drawer closed
+  },
+  toolbarIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  menuButtonHidden: {
+    display: 'none',
+  },
+  title: {
+    flexGrow: 1,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7),
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9),
+    },
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+  fixedHeight: {
+    height: 380,
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+    shiftTextLeft: {
+      marginLeft: '0px'
+    },
+    shiftTextRight: {
+      marginLeft: drawerWidth,
+    }
+  },
+}));
+
+
+const Dashboard = (props) => {
+
+
+
+
+
+
+
+
+
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+  const handleDrawerOpen = () => {
+
+
+    setOpen(!open);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const [data,setData] = React.useState(null);
+  const [page, setPage] = React.useState(process.env.REACT_APP_DEFAULT_PAGE);
+  const [refresh, setRefresh] = React.useState(false);
+
+  const [envIdForComponentDtl, setEnvIdForComponentDtl] = React.useState(0);
+  let history = useHistory();
+
+
+ const handleData =(item)=> {
+console.log(item);
+setData(item)
+console.log(data);
+ }
+
+  const handlePageChange = (number) => {
+
+    console.log(number);
+
+    setPage(number);
+
+
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const menuId = 'primary-search-account-menu';
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleMenuClose = (actionId) => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+
+    switch (actionId) {
+      case 3:
+        localStorage.removeItem('authToken');
+        history.replace('/login');
+
+
+
+
+        break;
+
+    }
+  };
+
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleProfileMenuOpen = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+ 
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={() => handleMenuClose(3)}>Logout</MenuItem>
+
+    </Menu>
+  );
+
+ 
+
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        className={classes.appBar}
+        position="absolute">
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(classes.menuButton)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+             DASHBOARD
+          </Typography>
+
+
+          <div className={classes.sectionDesktop}>
+
+            <Button
+              color="inherit"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >Profile</Button>
+
+          </div>
+
+        </Toolbar>
+      </AppBar>
+      {renderMenu}
+
+      <Drawer
+      className={open ? classes.shiftTextRight : classes.shiftTextLeft}
+
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>{mainListItems(handlePageChange, page, history)}</List>
+      </Drawer>
+
+
+
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+
+            
+            <Route 
+            exact path="/1"
+            // onEnter={} // CALL API ON ROUTE
+            >
+<Post />
+{/* <OpenIconSpeedDial /> */}
+
+            </Route>
+          
+
+
+            <Route path="/2">
+
+            {/* <Container maxWidth="xl" className={classes.container} > */}
+            <Post />
+
+            <ConfirmationDialog getData={handleData}/>
+              {/* </Container> */}
+            </Route>
+           
+            <Route 
+            exact path="/3"
+            // onEnter={} // CALL API ON ROUTE
+            >
+                          <Post />
+
+<FileDialog />
+            </Route>
+            <Route 
+            exact path="/4"
+            // onEnter={} // CALL API ON ROUTE
+            >
+                          <Post />
+
+<QuestionDialog />
+            </Route>
+
+
+      </main>
+    </div>
+  );
+}
+
+
+
+const mapStateToProps = state =>  ({
+
+ 
+})
+
+
+const mapDispatchToProps = dispatch => ({
+ 
+
+})
+
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard)
+
+
+
+
+
+
+previous product
+
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from "@material-ui/core/styles";
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import DragAndDrop from './Drag&Drop'
+import { Button, Grid } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+
+
+
+const styles = theme => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+
+    },
+
+    root: {
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "initial"
+
+    }
+})
+
+class Product extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            value: 0,
+            image:'',
+            button: 0,
+            image: false,
+            file: null,
+            product_name:'',
+            price:'',
+            category:'',
+            desc:'',
+            link:''
+
+        }
+        this.handleChangeCategory = this.handleChangeCategory.bind(this)
+        this.handleChangeButton = this.handleChangeButton.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit=this.handleSubmit.bind(this)
+this.getImage=this.getImage.bind(this);
+    }
+  
+
+    getImage(image){
+        this.setState({image:image})
+    }
+
+    handleChange = e => {
+        const { name, value } = e.target
+        this.setState({
+          [name]: value
+        })
+      }
+
+      handleSubmit = e => {
+        e.preventDefault()
+        const { image, product_name, category, price, desc, link} = this.state;
+        const userData = {image, product_name, category, price, desc, link };
+        console.log(userData);
+        this.props.handleData(userData);
+      }    
+
+    handleChangeCategory(e) {
+        this.setState({ value: e.target.value })
+        console.log(e.target.value)
+    };
+
+    handleChangeButton(p) {
+        this.setState({ button: p.target.value })
+        console.log(p.target.value)
+    };
+
+
+
+    // get(){
+    //     this.setState({image:true})
+    // }
+
+
+
+
+
+
+    render() {
+        const { product_name, category, price, desc, link} = this.state;
+
+
+        //         if(this.state.image === true){
+        //             return(
+        // <Image />
+        //             )
+        //         }
+        const { classes } = this.props;
+
+        return (
+            <div>
+
+                <Paper variant='outlined'>
+                    <div>
+                                <DragAndDrop getImage={this.getImage}/>   
+                    </div>
+                </Paper>
+                <form className={classes.root} noValidate >
+                    
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="product"
+                        label="Product Name"
+                        name="product_name"
+                        autoComplete="product"
+                        autoFocus
+                        value={product_name}
+                        onChange={this.handleChange}
+                    />
+                    <FormControl
+                        className={classes.root} style={{ width: '70%' }}
+                        variant="outlined" >
+                        <InputLabel htmlFor="outlined-age-native-simple">
+                            Select a category
+        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.value}
+                            onChange={this.handleChangeCategory}
+                        >
+                            <option value="" />
+                            <option value={1}>Create a new category</option>
+
+                        </Select>
+                    </FormControl>
+                    {
+                        this.state.value !== 0 ?
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="category"
+                                label="Product Category"
+                                name="category"
+                                autoComplete="category"
+                                autoFocus
+                                value={category}
+                                onChange={this.handleChange}
+                                helperText="Eg: Education, HealthCare..."
+                            />
+                            :
+                            " "
+                    }
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="price"
+                        label="Product price (INR)"
+                        name="price"
+                        autoComplete="price"
+                        autoFocus
+                        value={price}
+                        onChange={this.handleChange}
+                    />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="description"
+                        label="Product Description"
+                        name="desc"
+                        autoComplete="description"
+                        autoFocus
+                        value={desc}
+                        onChange={this.handleChange}
+                        multiline={true}
+                    />
+                    <FormControl
+                        className={classes.root} style={{ width: '70%' }}
+                        variant="outlined" >
+                        <InputLabel htmlFor="outlined-age-native-simple">
+                            Select a button
+        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.button}
+                            onChange={this.handleChangeButton}
+                        >
+                            <option value="" />
+                            <option value={1}>Order Online</option>
+                            <option value={2}>Buy</option>
+                            <option value={3}>Learn more</option>
+                            <option value={4}>Get offer</option>
+
+
+                        </Select>
+                    </FormControl>
+                    {
+                        this.state.button !== 0 ?
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="link"
+                                label="Link from your button"
+                                name="link"
+                                autoComplete="link"
+                                autoFocus
+                                value={link}
+                                onChange={this.handleChange}
+                                helperText="Eg: google.com"
+
+                            />
+                            :
+                            " "
+                    }
+<br />
+<Divider />
+<br />
+                    <Grid container spacing={2}>
+                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                        <Grid md={3} lg={3} sm={5} xs={5} style={{textAlign:'center'}}>
+                        <Button variant='contained' color='primary'  onClick={(e)=>{this.handleSubmit(e); this.props.handleOk()}}>Submit</Button>
+                            </Grid>
+                            <Grid md={3} lg={3} sm={4} xs={4} style={{textAlign:'center'}}>
+                            <Button variant='contained' color='primary'  onClick={()=>{ this.props.handleCancel()}}>Cancel</Button>
+                            </Grid>
+
+                    </Grid>
+                </form>
+
+            </div>
+        )
+    }
+}
+
+export default withStyles(styles)(Product);
+
+
+
+
+
+previous event
+
+
+
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from "@material-ui/core/styles";
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Button, Grid } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import DragAndDrop from './Drag&Drop';
+import Divider from '@material-ui/core/Divider';
+import MaterialUIPickersStartDate from './StartDate'
+import MaterialUIPickersEndDate from './EndDate'
+import MaterialUIPickersEndTime from './EndTime'
+import MaterialUIPickersStartTime from './StartTime'
+
+
+const styles = theme => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+
+    },
+
+    root: {
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "initial"
+
+    }
+})
+
+class Event extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedDate: new Date(),
+            button: 0,
+            time: false,
+            file: null,
+            image: '',
+            title: ' ',
+            description: ' ',
+            start_date: ' ',
+            end_date: ' ',
+            link: ' ',
+            start_time: ' ',
+            end_time: ' '
+        }
+        this.handleChangeButton = this.handleChangeButton.bind(this)
+        this.handleChangeDate = this.handleChangeDate.bind(this)
+        this.handleChangeTime = this.handleChangeTime.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.getStartDate = this.getStartDate.bind(this);
+        this.getEndDate = this.getEndDate.bind(this);
+        this.getStartTime = this.getStartTime.bind(this);
+        this.getEndTime = this.getEndTime.bind(this);
+        this.getImage = this.getImage.bind(this);
+    }
+
+    getImage(image) {
+        this.setState({ image: image })
+    }
+
+    handleChange = e => {
+        const { name, value } = e.target
+        this.setState({
+            [name]: value
+        })
+    }
+
+    getStartDate(startDate) {
+        this.setState({ start_date: startDate })
+    }
+    getEndDate(endDate) {
+        this.setState({ end_date: endDate })
+    }
+    getStartTime(startTime) {
+        this.setState({ start_time: startTime })
+    }
+    getEndTime(endTime) {
+        this.setState({ end_time: endTime })
+    }
+
+    handleSubmit = e => {
+        e.preventDefault()
+        const { image, title, start_date, end_date, start_time, end_time, description, link } = this.state;
+        const userData = { image, title, start_date, end_date, start_time, end_time, description, link };
+        console.log(userData);
+
+    }
+
+    handleChangeDate = date => {
+        this.setState({ selectedDate: date })
+    };
+
+    handleChangeButton(p) {
+        this.setState({ button: p.target.value })
+        console.log(p.target.value)
+    };
+
+    handleChangeTime() {
+        this.setState({ time: !this.state.time })
+        console.log(this.state.time)
+    };
+
+
+
+    render() {
+        const { title, description, link } = this.state;
+
+        const { classes } = this.props;
+
+        return (
+            <div>
+
+                <Paper variant='outlined'>
+                    <div >
+                        <DragAndDrop getImage={this.getImage} />
+                    </div>
+                </Paper>
+                <form className={classes.root} noValidate >
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="event"
+                        label="Event Title"
+                        name="title"
+                        autoComplete="event"
+                        autoFocus
+                        value={title}
+                        onChange={this.handleChange}
+
+                    />
+                    <FormControlLabel
+                        value="time"
+                        onChange={this.handleChangeTime}
+                        control={<Switch color="primary" />}
+                        label="Add Time"
+                        labelPlacement="start"
+                    />
+
+
+                    {this.state.time === true
+                        ?
+                        <Grid container spacing={0}>
+                            <Grid md={8} xs={8} >
+
+                                < MaterialUIPickersStartDate
+                                    startDate={this.getStartDate}
+                                />
+
+                            </Grid>
+                            <Grid md={4} xs={4}>
+
+                                <MaterialUIPickersStartTime
+                                    startTime={this.getStartTime}
+                                />
+                            </Grid>
+                        </Grid>
+                        :
+                        <div>
+
+                            < MaterialUIPickersStartDate
+                                startDate={this.getStartDate}
+                            />
+                        </div>
+                    }
+
+                    {this.state.time === true
+                        ?
+                        <Grid container spacing={0}>
+                            <Grid md={8} xs={8}>
+
+                                <MaterialUIPickersEndDate
+                                    endDate={this.getEndDate}
+                                />
+                            </Grid>
+                            <Grid md={4} xs={4}>
+
+                                <MaterialUIPickersEndTime
+                                    endTime={this.getEndTime}
+                                />
+                            </Grid>
+                        </Grid>
+                        :
+                        <div>
+
+                            <MaterialUIPickersEndDate
+                                endDate={this.getEndDate}
+                            />
+                        </div>
+                    }
+
+
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="desc"
+                        label="Event Description"
+                        name="description"
+                        autoComplete="desc"
+                        autoFocus
+                        multiline={true}
+                        value={description}
+                        onChange={this.handleChange}
+                    />
+                    <FormControl
+                        className={classes.root} style={{ width: '70%' }}
+                        variant="outlined" >
+                        <InputLabel htmlFor="outlined-age-native-simple">
+                            Select a button
+        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.button}
+                            onChange={this.handleChangeButton}
+                        >
+                            <option value="" />
+                            <option value={1}>Order Online</option>
+                            <option value={2}>Buy</option>
+                            <option value={3}>Learn more</option>
+                            <option value={4}>Book</option>
+                            <option value={5}>Sign Up</option>
+
+
+
+
+                        </Select>
+                    </FormControl>
+                    {
+                        this.state.button !== 0 ?
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="link"
+                                label="Link from your button"
+                                name="link"
+                                autoComplete="link"
+                                autoFocus
+                                value={link}
+                                onChange={this.handleChange}
+                                helperText="Eg: google.com"
+
+                            />
+                            :
+                            " "
+                    }
+                    <br />
+                    <Divider />
+                    <br />
+                    <Grid container spacing={2}>
+                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                        <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
+                            <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
+                        </Grid>
+                        <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                            <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
+                        </Grid>
+
+                    </Grid>
+
+                </form>
+
+
+            </div>
+        )
+    }
+}
+
+export default withStyles(styles)(Event);
+
+
+
+
+full window event
+
+
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from "@material-ui/core/styles";
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Button, Grid } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import DragAndDrop from './Drag&Drop';
+import Divider from '@material-ui/core/Divider';
+import MaterialUIPickersStartDate from './StartDate'
+import MaterialUIPickersEndDate from './EndDate'
+import MaterialUIPickersEndTime from './EndTime'
+import MaterialUIPickersStartTime from './StartTime'
+import Container from '@material-ui/core/Container';
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+const styles = theme => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+
+    },
+    contain:{
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+    },
+
+    root: {
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "initial"
+
+    }
+})
+
+class Event extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedDate: new Date(),
+            button: 0,
+            time: false,
+            file: null,
+            image: '',
+            title: ' ',
+            description: ' ',
+            start_date: ' ',
+            end_date: ' ',
+            link: ' ',
+            start_time: ' ',
+            end_time: ' '
+        }
+        this.handleChangeButton = this.handleChangeButton.bind(this)
+        this.handleChangeDate = this.handleChangeDate.bind(this)
+        this.handleChangeTime = this.handleChangeTime.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.getStartDate = this.getStartDate.bind(this);
+        this.getEndDate = this.getEndDate.bind(this);
+        this.getStartTime = this.getStartTime.bind(this);
+        this.getEndTime = this.getEndTime.bind(this);
+        this.getImage = this.getImage.bind(this);
+    }
+
+    getImage(image) {
+        this.setState({ image: image })
+    }
+
+    handleChange = e => {
+        const { name, value } = e.target
+        this.setState({
+            [name]: value
+        })
+    }
+
+    getStartDate(startDate) {
+        this.setState({ start_date: startDate })
+    }
+    getEndDate(endDate) {
+        this.setState({ end_date: endDate })
+    }
+    getStartTime(startTime) {
+        this.setState({ start_time: startTime })
+    }
+    getEndTime(endTime) {
+        this.setState({ end_time: endTime })
+    }
+
+    handleSubmit = e => {
+        e.preventDefault()
+        const { image, title, start_date, end_date, start_time, end_time, description, link } = this.state;
+        const userData = { image, title, start_date, end_date, start_time, end_time, description, link };
+        console.log(userData);
+
+    }
+
+    handleChangeDate = date => {
+        this.setState({ selectedDate: date })
+    };
+
+    handleChangeButton(p) {
+        this.setState({ button: p.target.value })
+        console.log(p.target.value)
+    };
+
+    handleChangeTime() {
+        this.setState({ time: !this.state.time })
+        console.log(this.state.time)
+    };
+
+
+
+    render() {
+        const { title, description, link } = this.state;
+
+        const { classes } = this.props;
+
+        return (
+            <div>
+<Container maxWidth="md" className={classes.contain} >
+    <CssBaseline />
+<Paper style={{width:'60%', marginTop:'10px',paddingBottom:'30px',paddingLeft:'10px'}} >
+<div className={classes.contain} >
+                <Paper variant='outlined'style={{width:'80%'}}>
+                    <div className={classes.contain} >
+                                <DragAndDrop getImage={this.getImage}/>   
+                    </div>
+                </Paper>
+                <form  noValidate  >
+                    
+                <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="event"
+                        label="Event Title"
+                        name="title"
+                        autoComplete="event"
+                        autoFocus
+                        value={title}
+                        onChange={this.handleChange}
+
+                    />
+                    <FormControlLabel
+                        value="time"
+                        onChange={this.handleChangeTime}
+                        control={<Switch color="primary" />}
+                        label="Add Time"
+                        labelPlacement="start"
+                    />
+
+
+                    {this.state.time === true
+                        ?
+                        <Grid container spacing={0}>
+                            <Grid md={8} xs={8} >
+
+                                < MaterialUIPickersStartDate
+                                    startDate={this.getStartDate}
+                                />
+
+                            </Grid>
+                            <Grid md={4} xs={4}>
+
+                                <MaterialUIPickersStartTime
+                                    startTime={this.getStartTime}
+                                />
+                            </Grid>
+                        </Grid>
+                        :
+                        <div>
+
+                            < MaterialUIPickersStartDate
+                                startDate={this.getStartDate}
+                            />
+                        </div>
+                    }
+
+                    {this.state.time === true
+                        ?
+                        <Grid container spacing={0}>
+                            <Grid md={8} xs={8}>
+
+                                <MaterialUIPickersEndDate
+                                    endDate={this.getEndDate}
+                                />
+                            </Grid>
+                            <Grid md={4} xs={4}>
+
+                                <MaterialUIPickersEndTime
+                                    endTime={this.getEndTime}
+                                />
+                            </Grid>
+                        </Grid>
+                        :
+                        <div>
+
+                            <MaterialUIPickersEndDate
+                                endDate={this.getEndDate}
+                            />
+                        </div>
+                    }
+
+
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="desc"
+                        label="Event Description"
+                        name="description"
+                        autoComplete="desc"
+                        autoFocus
+                        multiline={true}
+                        value={description}
+                        onChange={this.handleChange}
+                    />
+                    <FormControl
+                        className={classes.root} style={{ width: '70%' }}
+                        variant="outlined" >
+                        <InputLabel htmlFor="outlined-age-native-simple">
+                            Select a button
+        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.button}
+                            onChange={this.handleChangeButton}
+                        >
+                            <option value="" />
+                            <option value={1}>Order Online</option>
+                            <option value={2}>Buy</option>
+                            <option value={3}>Learn more</option>
+                            <option value={4}>Book</option>
+                            <option value={5}>Sign Up</option>
+
+
+
+
+                        </Select>
+                    </FormControl>
+                    {
+                        this.state.button !== 0 ?
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="link"
+                                label="Link from your button"
+                                name="link"
+                                autoComplete="link"
+                                autoFocus
+                                value={link}
+                                onChange={this.handleChange}
+                                helperText="Eg: google.com"
+
+                            />
+                            :
+                            " "
+                    }
+                    <br />
+                    <Divider />
+                    <br />
+                    <Grid container spacing={2}>
+                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                        <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
+                            <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
+                        </Grid>
+                        <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                            <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
+                        </Grid>
+
+                    </Grid>
+
+                </form>
+                </div>
+                </Paper>
+                </Container>
+            </div>
+        )
+    }
+}
+
+export default withStyles(styles)(Event);
+
+
+
+full window product
+
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from "@material-ui/core/styles";
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import DragAndDrop from './Drag&Drop'
+import { Button, Grid, Card } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import Container from '@material-ui/core/Container';
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+
+
+const styles = theme => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+
+    },
+    contain:{
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+    },
+
+    root: {
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "initial"
+    }
+})
+
+class Product extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            value: 0,
+            image:'',
+            button: 0,
+            image: false,
+            file: null,
+            product_name:'',
+            price:'',
+            category:'',
+            desc:'',
+            link:''
+
+        }
+        this.handleChangeCategory = this.handleChangeCategory.bind(this)
+        this.handleChangeButton = this.handleChangeButton.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit=this.handleSubmit.bind(this)
+this.getImage=this.getImage.bind(this);
+    }
+  
+
+    getImage(image){
+        this.setState({image:image})
+    }
+
+    handleChange = e => {
+        const { name, value } = e.target
+        this.setState({
+          [name]: value
+        })
+      }
+
+      handleSubmit = e => {
+        e.preventDefault()
+        const { image, product_name, category, price, desc, link} = this.state;
+        const userData = {image, product_name, category, price, desc, link };
+        console.log(userData);
+        this.props.handleData(userData);
+      }    
+
+    handleChangeCategory(e) {
+        this.setState({ value: e.target.value })
+        console.log(e.target.value)
+    };
+
+    handleChangeButton(p) {
+        this.setState({ button: p.target.value })
+        console.log(p.target.value)
+    };
+
+
+
+    // get(){
+    //     this.setState({image:true})
+    // }
+
+
+
+
+
+
+    render() {
+        const { product_name, category, price, desc, link} = this.state;
+
+
+        //         if(this.state.image === true){
+        //             return(
+        // <Image />
+        //             )
+        //         }
+        const { classes } = this.props;
+
+        return (
+            <div>
+<Container maxwidth="xs" className={classes.contain} >
+    <CssBaseline />
+<Paper style={{width:'60%', marginTop:'10px',paddingBottom:'30px',paddingLeft:'10px'}} >
+<div className={classes.contain} >
+                <Paper variant='outlined'style={{width:'80%'}}>
+                    <div className={classes.contain} >
+                                <DragAndDrop getImage={this.getImage}/>   
+                    </div>
+                </Paper>
+                <form  noValidate  >
+                    
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="product"
+                        label="Product Name"
+                        name="product_name"
+                        autoComplete="product"
+                        autoFocus
+                        value={product_name}
+                        onChange={this.handleChange}
+                    />
+                    <FormControl
+                        className={classes.root} style={{ width: '70%' }}
+                        variant="outlined" >
+                        <InputLabel htmlFor="outlined-age-native-simple">
+                            Select a category
+        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.value}
+                            onChange={this.handleChangeCategory}
+                        >
+                            <option value="" />
+                            <option value={1}>Create a new category</option>
+
+                        </Select>
+                    </FormControl>
+                    {
+                        this.state.value !== 0 ?
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="category"
+                                label="Product Category"
+                                name="category"
+                                autoComplete="category"
+                                autoFocus
+                                value={category}
+                                onChange={this.handleChange}
+                                helperText="Eg: Education, HealthCare..."
+                            />
+                            :
+                            " "
+                    }
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="price"
+                        label="Product price (INR)"
+                        name="price"
+                        autoComplete="price"
+                        autoFocus
+                        value={price}
+                        onChange={this.handleChange}
+                    />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="description"
+                        label="Product Description"
+                        name="desc"
+                        autoComplete="description"
+                        autoFocus
+                        value={desc}
+                        onChange={this.handleChange}
+                        multiline={true}
+                    />
+                    <FormControl
+                        className={classes.root} style={{ width: '70%' }}
+                        variant="outlined" >
+                        <InputLabel htmlFor="outlined-age-native-simple">
+                            Select a button
+        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.button}
+                            onChange={this.handleChangeButton}
+                        >
+                            <option value="" />
+                            <option value={1}>Order Online</option>
+                            <option value={2}>Buy</option>
+                            <option value={3}>Learn more</option>
+                            <option value={4}>Get offer</option>
+
+
+                        </Select>
+                    </FormControl>
+                    {
+                        this.state.button !== 0 ?
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="link"
+                                label="Link from your button"
+                                name="link"
+                                autoComplete="link"
+                                autoFocus
+                                value={link}
+                                onChange={this.handleChange}
+                                helperText="Eg: google.com"
+
+                            />
+                            :
+                            " "
+                    }
+<br />
+<Divider />
+<br />
+                    <Grid container spacing={2}>
+                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                        <Grid md={3} lg={3} sm={5} xs={5} style={{textAlign:'center'}}>
+                        <Button variant='contained' color='primary'  onClick={(e)=>{this.handleSubmit(e); this.props.handleOk()}}>Submit</Button>
+                            </Grid>
+                            <Grid md={3} lg={3} sm={4} xs={4} style={{textAlign:'center'}}>
+                            <Button variant='contained' color='primary'  onClick={()=>{ this.props.handleCancel()}}>Cancel</Button>
+                            </Grid>
+
+                    </Grid>
+                </form>
+                </div>
+                </Paper>
+                </Container>
+            </div>
+        )
+    }
+}
+
+export default withStyles(styles)(Product);
+
+
+full window listitem
+import React from 'react';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import EventIcon from '@material-ui/icons/Event';
+
+import CompareIcon from '@material-ui/icons/Compare';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+export const mainListItems = (handlePageChange, pageId, history) =>  console.log(history) || (
+  <div>
+
+    <Link to={`/1`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={history.location.pathname === '/dashboard'}
+    >
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItem>
+    </Link>
+    
+  
+
+    <Link to={`/2`} style={{ textDecoration: 'none', color: 'black'  }}>
+
+    <ListItem button onClick={() => handlePageChange(3)}
+    selected={history.location.pathname === '/config'}
+    >
+      <ListItemIcon>
+        <ShoppingBasketIcon />
+
+      </ListItemIcon>
+      <ListItemText primary="Add Product" />
+    </ListItem>
+    </Link>
+   
+    
+    <Link to={`/3`} style={{ textDecoration: 'none', color: 'black'  }}>
+
+<ListItem button onClick={() => handlePageChange(3)}
+selected={history.location.pathname === '/config'}
+>
+  <ListItemIcon>
+    <EventIcon />
+
+  </ListItemIcon>
+  <ListItemText primary="Add Event" />
+</ListItem>
+</Link>
+
+
+<Link to={`/4`} style={{ textDecoration: 'none', color: 'black'  }}>
+
+<ListItem button onClick={() => handlePageChange(3)}
+selected={history.location.pathname === '/config'}
+>
+  <ListItemIcon>
+    <BookmarkIcon />
+  </ListItemIcon>
+  <ListItemText primary="Add Offer" />
+</ListItem>
+</Link>
+
+
+
+    <Link to={`/5`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={history.location.pathname === '/dashboard'}
+    >
+      <ListItemIcon>
+        <InsertDriveFileIcon />
+      </ListItemIcon>
+      <ListItemText primary="My Files" />
+    </ListItem>
+    </Link>
+    <Link to={`/6`} style={{ textDecoration: 'none', color: 'black'  }}>
+    <ListItem  
+    button onClick={() => handlePageChange(1)}
+    selected={history.location.pathname === '/dashboard'}
+    >
+      <ListItemIcon>
+        <QuestionAnswerIcon />
+      </ListItemIcon>
+      <ListItemText primary="Add Questions" />
+    </ListItem>
+    </Link>
+  
+
+
+  
+  </div>
+);
+
+export const secondaryListItems = (
+  <div>
+    <ListSubheader inset>Saved reports</ListSubheader>
+    <ListItem button>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Current month" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Last quarter" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Year-end sale" />
+    </ListItem>
+  </div>
+);
+
+
+full window dashboard
+
+import React from 'react';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import ConfirmationDialog from './Dialog'
+import Container from '@material-ui/core/Container';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { mainListItems } from './listItems';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import Post from './Post'
+import { connect } from 'react-redux'
+import FileDialog from './FileModal'
+import QuestionDialog from './QuestionDialog'
+import Product from './Product'
+import Event from './Event'
+import Offer from './Offer'
+import OpenIconSpeedDial from './SpeedDial'
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+
+
+
+
+const _ = require('lodash');
+const moment = require('moment');
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  toolbar: {
+    paddingRight: 24, // keep right padding when drawer closed
+  },
+  toolbarIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  menuButtonHidden: {
+    display: 'none',
+  },
+  title: {
+    flexGrow: 1,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7),
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9),
+    },
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+  fixedHeight: {
+    height: 380,
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+    shiftTextLeft: {
+      marginLeft: '0px'
+    },
+    shiftTextRight: {
+      marginLeft: drawerWidth,
+    }
+  },
+}));
+
+
+const Dashboard = (props) => {
+
+
+
+
+
+
+
+
+
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+  const handleDrawerOpen = () => {
+
+
+    setOpen(!open);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const [data,setData] = React.useState(null);
+  const [page, setPage] = React.useState(process.env.REACT_APP_DEFAULT_PAGE);
+  const [refresh, setRefresh] = React.useState(false);
+
+  const [envIdForComponentDtl, setEnvIdForComponentDtl] = React.useState(0);
+  let history = useHistory();
+
+
+ const handleData =(item)=> {
+console.log(item);
+setData(item)
+console.log(data);
+ }
+
+  const handlePageChange = (number) => {
+
+    console.log(number);
+
+    setPage(number);
+
+
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const menuId = 'primary-search-account-menu';
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleMenuClose = (actionId) => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+
+    switch (actionId) {
+      case 3:
+        localStorage.removeItem('authToken');
+        history.replace('/login');
+
+
+
+
+        break;
+
+    }
+  };
+
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleProfileMenuOpen = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+ 
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={() => handleMenuClose(3)}>Logout</MenuItem>
+
+    </Menu>
+  );
+
+ 
+
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        className={classes.appBar}
+        position="absolute">
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(classes.menuButton)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+             DASHBOARD
+          </Typography>
+
+
+          <div className={classes.sectionDesktop}>
+
+            <Button
+              color="inherit"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >Profile</Button>
+
+          </div>
+
+        </Toolbar>
+      </AppBar>
+      {renderMenu}
+
+      <Drawer
+      className={open ? classes.shiftTextRight : classes.shiftTextLeft}
+
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>{mainListItems(handlePageChange, page, history)}</List>
+      </Drawer>
+
+
+
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+
+            
+            <Route 
+            exact path="/1"
+            // onEnter={} // CALL API ON ROUTE
+            >
+<Post />
+<OpenIconSpeedDial />
+
+            </Route>
+          
+
+
+            <Route path="/2">
+<Product />
+            </Route>
+
+            <Route path="/3">
+
+<Event />
+</Route>
+
+<Route path="/4">
+
+<Offer />
+</Route>
+           
+            <Route 
+            exact path="/5"
+            // onEnter={} // CALL API ON ROUTE
+            >
+                          <Post />
+
+<FileDialog />
+            </Route>
+            <Route 
+            exact path="/6"
+            // onEnter={} // CALL API ON ROUTE
+            >
+                          <Post />
+
+<QuestionDialog />
+            </Route>
+
+
+      </main>
+    </div>
+  );
+}
+
+
+
+const mapStateToProps = state =>  ({
+
+ 
+})
+
+
+const mapDispatchToProps = dispatch => ({
+ 
+
+})
+
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard)

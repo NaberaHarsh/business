@@ -304,7 +304,7 @@ console.log(data);
             // onEnter={} // CALL API ON ROUTE
             >
 <Post />
-{/* <OpenIconSpeedDial /> */}
+<OpenIconSpeedDial />
 
             </Route>
           

@@ -27,6 +27,13 @@ const styles = theme => ({
         alignItems: "center"
 
     },
+    inputRoot: {
+        fontSize: 14
+    },
+    labelRoot: {
+        fontSize: 14,
+
+    },
 
     root: {
         marginTop: theme.spacing(2),
@@ -129,6 +136,13 @@ class Event extends React.Component {
                 </Paper>
                 <form className={classes.root} noValidate >
                     <TextField
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}
                         variant="outlined"
                         margin="normal"
                         required
@@ -138,15 +152,17 @@ class Event extends React.Component {
                         name="title"
                         autoComplete="event"
                         autoFocus
+                        size="small"
                         value={title}
                         onChange={this.handleChange}
 
                     />
                     <FormControlLabel
+                        style={{ marginTop: '10px' }}
                         value="time"
                         onChange={this.handleChangeTime}
-                        control={<Switch color="primary" />}
-                        label="Add Time"
+                        control={<Switch color="primary" size="small" />}
+                        label={<span style={{ fontSize: '14px' }}>Add Time</span>}
                         labelPlacement="start"
                     />
 
@@ -180,7 +196,7 @@ class Event extends React.Component {
                     {this.state.time === true
                         ?
                         <Grid container spacing={0}>
-                            <Grid md={8} xs={8}>
+                            <Grid md={8} xs={8} >
 
                                 <MaterialUIPickersEndDate
                                     endDate={this.getEndDate}
@@ -204,6 +220,13 @@ class Event extends React.Component {
 
 
                     <TextField
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}
                         variant="outlined"
                         margin="normal"
                         required
@@ -213,17 +236,30 @@ class Event extends React.Component {
                         name="description"
                         autoComplete="desc"
                         autoFocus
+                        size="small"
                         multiline={true}
                         value={description}
                         onChange={this.handleChange}
                     />
                     <FormControl
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}
                         className={classes.root} style={{ width: '70%' }}
-                        variant="outlined" >
-                        <InputLabel htmlFor="outlined-age-native-simple">
+                        variant="outlined"
+                        size="small" >
+                        <InputLabel htmlFor="outlined-age-native-simple"
+                            style={{ fontSize: "14px" }}
+                        >
                             Select a button
         </InputLabel>
                         <Select
+                            style={{ fontSize: "14px" }}
+
                             native
                             value={this.state.button}
                             onChange={this.handleChangeButton}
@@ -243,6 +279,13 @@ class Event extends React.Component {
                     {
                         this.state.button !== 0 ?
                             <TextField
+                                InputProps={{ classes: { root: classes.inputRoot } }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelRoot,
+                                        focused: classes.labelFocused
+                                    }
+                                }}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -252,6 +295,7 @@ class Event extends React.Component {
                                 name="link"
                                 autoComplete="link"
                                 autoFocus
+                                size="small"
                                 value={link}
                                 onChange={this.handleChange}
                                 helperText="Eg: google.com"
@@ -266,10 +310,14 @@ class Event extends React.Component {
                     <Grid container spacing={2}>
                         <Grid md={6} lg={6} sm={3} xs={3}></Grid>
                         <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                            <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
+                            <Button variant='contained'
+                                style={{ fontSize: '12px' }}
+                                color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
                         </Grid>
                         <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                            <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
+                            <Button variant='contained'
+                                style={{ fontSize: '12px' }}
+                                color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
                         </Grid>
 
                     </Grid>

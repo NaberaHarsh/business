@@ -17,7 +17,14 @@ const styles = theme => ({
         marginBottom: theme.spacing(8),
         display: "flex",
         flexDirection: "column",
-        alignItems: "center"
+        alignItems: "center",
+
+    },
+    inputRoot: {
+        fontSize: 14
+    },
+    labelRoot: {
+        fontSize: 14,
 
     },
 
@@ -25,7 +32,7 @@ const styles = theme => ({
         marginTop: theme.spacing(2),
         display: "flex",
         flexDirection: "column",
-        alignItems: "initial"
+        alignItems: "initial",
 
     }
 })
@@ -35,43 +42,43 @@ class Product extends React.Component {
         super(props)
         this.state = {
             value: 0,
-            image:'',
+            image: '',
             button: 0,
             image: false,
             file: null,
-            product_name:'',
-            price:'',
-            category:'',
-            desc:'',
-            link:''
+            product_name: '',
+            price: '',
+            category: '',
+            desc: '',
+            link: ''
 
         }
         this.handleChangeCategory = this.handleChangeCategory.bind(this)
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit=this.handleSubmit.bind(this)
-this.getImage=this.getImage.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.getImage = this.getImage.bind(this);
     }
-  
 
-    getImage(image){
-        this.setState({image:image})
+
+    getImage(image) {
+        this.setState({ image: image })
     }
 
     handleChange = e => {
         const { name, value } = e.target
         this.setState({
-          [name]: value
+            [name]: value
         })
-      }
+    }
 
-      handleSubmit = e => {
+    handleSubmit = e => {
         e.preventDefault()
-        const { image, product_name, category, price, desc, link} = this.state;
-        const userData = {image, product_name, category, price, desc, link };
+        const { image, product_name, category, price, desc, link } = this.state;
+        const userData = { image, product_name, category, price, desc, link };
         console.log(userData);
         this.props.handleData(userData);
-      }    
+    }
 
     handleChangeCategory(e) {
         this.setState({ value: e.target.value })
@@ -95,7 +102,7 @@ this.getImage=this.getImage.bind(this);
 
 
     render() {
-        const { product_name, category, price, desc, link} = this.state;
+        const { product_name, category, price, desc, link } = this.state;
 
 
         //         if(this.state.image === true){
@@ -110,12 +117,19 @@ this.getImage=this.getImage.bind(this);
 
                 <Paper variant='outlined'>
                     <div>
-                                <DragAndDrop getImage={this.getImage}/>   
+                        <DragAndDrop getImage={this.getImage} />
                     </div>
                 </Paper>
                 <form className={classes.root} noValidate >
-                    
+
                     <TextField
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}
                         variant="outlined"
                         margin="normal"
                         required
@@ -125,16 +139,29 @@ this.getImage=this.getImage.bind(this);
                         name="product_name"
                         autoComplete="product"
                         autoFocus
+                        size="small"
                         value={product_name}
                         onChange={this.handleChange}
                     />
                     <FormControl
                         className={classes.root} style={{ width: '70%' }}
-                        variant="outlined" >
-                        <InputLabel htmlFor="outlined-age-native-simple">
+                        variant="outlined"
+                        size="small"
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}>
+
+                        <InputLabel htmlFor="outlined-age-native-simple"
+                            style={{ fontSize: "14px" }}
+                        >
                             Select a category
         </InputLabel>
                         <Select
+                            style={{ fontSize: "14px" }}
                             native
                             value={this.state.value}
                             onChange={this.handleChangeCategory}
@@ -147,6 +174,13 @@ this.getImage=this.getImage.bind(this);
                     {
                         this.state.value !== 0 ?
                             <TextField
+                                InputProps={{ classes: { root: classes.inputRoot } }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelRoot,
+                                        focused: classes.labelFocused
+                                    }
+                                }}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -156,6 +190,7 @@ this.getImage=this.getImage.bind(this);
                                 name="category"
                                 autoComplete="category"
                                 autoFocus
+                                size="small"
                                 value={category}
                                 onChange={this.handleChange}
                                 helperText="Eg: Education, HealthCare..."
@@ -164,6 +199,13 @@ this.getImage=this.getImage.bind(this);
                             " "
                     }
                     <TextField
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}
                         variant="outlined"
                         margin="normal"
                         required
@@ -173,10 +215,18 @@ this.getImage=this.getImage.bind(this);
                         name="price"
                         autoComplete="price"
                         autoFocus
+                        size="small"
                         value={price}
                         onChange={this.handleChange}
                     />
                     <TextField
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }}
                         variant="outlined"
                         margin="normal"
                         required
@@ -186,17 +236,29 @@ this.getImage=this.getImage.bind(this);
                         name="desc"
                         autoComplete="description"
                         autoFocus
+                        size="small"
                         value={desc}
                         onChange={this.handleChange}
                         multiline={true}
                     />
                     <FormControl
                         className={classes.root} style={{ width: '70%' }}
-                        variant="outlined" >
-                        <InputLabel htmlFor="outlined-age-native-simple">
+                        variant="outlined"
+                        size="small"
+                        InputProps={{ classes: { root: classes.inputRoot } }}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.labelRoot,
+                                focused: classes.labelFocused
+                            }
+                        }} >
+                        <InputLabel htmlFor="outlined-age-native-simple"
+                            style={{ fontSize: "14px" }}
+                        >
                             Select a button
         </InputLabel>
                         <Select
+                            style={{ fontSize: "14px" }}
                             native
                             value={this.state.button}
                             onChange={this.handleChangeButton}
@@ -213,6 +275,13 @@ this.getImage=this.getImage.bind(this);
                     {
                         this.state.button !== 0 ?
                             <TextField
+                                InputProps={{ classes: { root: classes.inputRoot } }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelRoot,
+                                        focused: classes.labelFocused
+                                    }
+                                }}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -222,6 +291,7 @@ this.getImage=this.getImage.bind(this);
                                 name="link"
                                 autoComplete="link"
                                 autoFocus
+                                size="small"
                                 value={link}
                                 onChange={this.handleChange}
                                 helperText="Eg: google.com"
@@ -230,17 +300,19 @@ this.getImage=this.getImage.bind(this);
                             :
                             " "
                     }
-<br />
-<Divider />
-<br />
+                    <br />
+                    <Divider />
+                    <br />
                     <Grid container spacing={2}>
                         <Grid md={6} lg={6} sm={3} xs={3}></Grid>
-                        <Grid md={3} lg={3} sm={5} xs={5} style={{textAlign:'center'}}>
-                        <Button variant='contained' color='primary'  onClick={(e)=>{this.handleSubmit(e); this.props.handleOk()}}>Submit</Button>
-                            </Grid>
-                            <Grid md={3} lg={3} sm={4} xs={4} style={{textAlign:'center'}}>
-                            <Button variant='contained' color='primary'  onClick={()=>{ this.props.handleCancel()}}>Cancel</Button>
-                            </Grid>
+                        <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
+                            <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}
+                                style={{ fontSize: '12px' }}>Submit</Button>
+                        </Grid>
+                        <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                            <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}
+                                style={{ fontSize: '12px' }}>Cancel</Button>
+                        </Grid>
 
                     </Grid>
                 </form>

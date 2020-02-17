@@ -103,13 +103,13 @@ ConfirmationDialogRaw.propTypes = {
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: '100%',
-        maxWidth: 360,
+        width: '80%',
+        maxWidth: 300,
         backgroundColor: theme.palette.background.paper,
     },
     paper: {
-        width: '80%',
-        height: 400,
+        width: '40%',
+        height: 600,
     },
 }));
 

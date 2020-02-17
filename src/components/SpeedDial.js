@@ -13,6 +13,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import FileDialog from './FileModal'
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import QuestionDialog from './QuestionDialog'
+import CreateIcon from '@material-ui/icons/Create';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+
 
 import {
   BrowserRouter as Router,
@@ -73,12 +76,12 @@ return (
     open={open}
     // onClick={handleOpen}
       ariaLabel="SpeedDial openIcon example"
-      icon={<InsertDriveFileIcon openIcon={< InsertDriveFileIcon/>} />}
+      icon={<CreateIcon openIcon={< CreateIcon/>} />}
     >
       <SpeedDialAction
           key=""
-          icon={<InsertDriveFileIcon />}
-          tooltipTitle="File"
+          icon={<QuestionAnswerIcon />}
+          tooltipTitle="Add Question"
           onClick={handleClick}
         />
     </SpeedDial>

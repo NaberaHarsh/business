@@ -6,11 +6,25 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  inputRoot: {
+    fontSize: 14
+},
+labelRoot: {
+    fontSize: 14,
+
+},
+}));
+
 
 export default function MaterialUIPickersEndDate(props) {
   // The first commit of Material-UI
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 const {endDate} =props;
+const classes = useStyles();
+
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -23,6 +37,13 @@ const {endDate} =props;
       <Grid container justify="space-around">
         
         <KeyboardDatePicker
+        InputProps={{ classes: { root: classes.inputRoot } }}
+        InputLabelProps={{
+            classes: {
+                root: classes.labelRoot,
+                focused: classes.labelFocused
+            }
+        }} 
           margin="normal"
           style={{width:'95%'}}
           id="date-picker-dialog"

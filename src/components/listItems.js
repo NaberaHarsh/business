@@ -48,11 +48,7 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
       <ListItemText primary="Create Post" />
     </ListItem>
     </Link>
-    <ListItem>
-    <ListItemIcon>
-      </ListItemIcon>
-      <ListItemText secondary="product 1" />
-    </ListItem>
+   
     
     <Link to={`/3`} style={{ textDecoration: 'none', color: 'black'  }}>
     <ListItem  

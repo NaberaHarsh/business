@@ -9,9 +9,12 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
     paper: {
+        marginTop: theme.spacing(0),
+        marginBottom: theme.spacing(0),
         minWidth: 132,
-        width: 132
-    },
+        width: 132,
+        fontSize: '12px',
+            },
     sectionDesktop: {
         display: "none",
         [theme.breakpoints.up("md")]: {
@@ -41,8 +44,6 @@ class Tabbar extends React.Component {
         this.props.getValue(newValue)
     };
 
-
-
     render() {
         const { classes } = this.props;
 
@@ -60,6 +61,7 @@ class Tabbar extends React.Component {
                 >
                     <Tab icon={<ShoppingBasketIcon />}
                         className={classes.paper}
+                        
                         value={0} label="Product" aria-label="product" />
                     <Tab icon={<EventIcon />}
                         className={classes.paper}
