@@ -58,7 +58,7 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
       <ListItemIcon>
         <InsertDriveFileIcon />
       </ListItemIcon>
-      <ListItemText primary="My Files" />
+      <ListItemText primary="Album" />
     </ListItem>
     </Link>
     <Link to={`/4`} style={{ textDecoration: 'none', color: 'black'  }}>

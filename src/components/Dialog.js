@@ -26,6 +26,8 @@ function ConfirmationDialogRaw(props) {
   const [value, setValue] = React.useState(valueProp);
   const [tab, setTab] = React.useState('product');
   const [display, setDisplay] = React.useState(true)
+  const [unit, setUnit] = React.useState(0)
+
 
   React.useEffect(() => {
     if (!open) {
@@ -61,8 +63,24 @@ function ConfirmationDialogRaw(props) {
     onClose(value);
   };
 
+const forTab= (p) =>{
+  console.log(p)
+  if (p === 1) {
+    setTab('event')
+  }
+  else
+    if (p === 2) {
+      setTab('offer')
+    }
+    else
+    if(p===0){
+     setTab('product')
+    }
+}
+
   const getValue = (e) => {
     console.log(e);
+    setUnit(e)
     if (e === 1) {
       setTab('event')
     }
@@ -94,17 +112,17 @@ function ConfirmationDialogRaw(props) {
       <DialogContent dividers>
         {tab === 'product'
           ?
-          <Product handleOk={handleOk} handleCancel={handleCancel} handleData={handleData}/>
+          <Product forTab={forTab} unit={unit} handleOk={handleOk} handleCancel={handleCancel} handleData={handleData}/>
           :
           ""}
         {tab === 'event'
           ?
-          <Event  handleOk={handleOk} handleCancel={handleCancel}/>
+          <Event forTab={forTab} unit={unit} handleOk={handleOk} handleCancel={handleCancel}/>
           :
           ""}
         {tab === 'offer'
           ?
-          <Offer  handleOk={handleOk} handleCancel={handleCancel}/>
+          <Offer forTab={forTab} unit={unit} handleOk={handleOk} handleCancel={handleCancel}/>
           :
           ""}
 

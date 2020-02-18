@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,17 +11,19 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DragAndDrop from './Drag&Drop'
-
+import ImageTab from './ImageTab'
+import Files from './Files'
 
 
 const styles = theme => ({
     paper: {
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(3),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-
+        width: '80%',
+        maxHeight: 580,
+    },
+    dialog: {
+        width: '100%',
+        maxWidth: 500,
+        backgroundColor: theme.palette.background.paper,
     },
     root: {
         margin: 0,
@@ -64,103 +66,77 @@ const DialogActions = withStyles(theme => ({
     },
 }))(MuiDialogActions);
 
-class  extends React.Component {
+class Image extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             open: false,
-            file: null
+            image: '',
+            tab: "upload"
+
         }
-        this.handleClick = this.handleClick.bind(this);
-        this.handleChange = this.handleChange.bind(this)
+
+        this.getImage = this.getImage.bind(this);
+        this.getValue = this.getValue.bind(this);
+
+    }
+    componentDidMount() {
+        this.setState({ open: true })
 
     }
 
+    getImage(image) {
+        this.setState({ image: image })
+    }
 
-    handleClickOpen = () => {
-        this.setState({ open: true });
-    };
     handleClose = () => {
-        this.setState({ open: false });
+        this.setState({ open: false })
+        console.log(this.props.unit)
+        this.props.forTab(this.props.unit)
+
     };
 
-    handleDrop = (files) => {
-        let fileList = this.state.files
-        for (var i = 0; i < files.length; i++) {
-            if (!files[i].name) return
-            fileList.push(files[i].name)
+    getValue(e) {
+        console.log(e);
+        if (e == 1) {
+            this.setState({ tab: 'album' })
         }
-        this.setState({ files: fileList })
+        else {
+            this.setState({ tab: 'upload' })
+        }
     }
-    handleClick(e) {
-        this.refs.fileUploader.click();
 
-    }
-    handleChange(event) {
-        this.setState({
-            file: URL.createObjectURL(event.target.files[0])
-        })
-        console.log("hello")
-    }
 
     render() {
         const { classes } = this.props;
+        const { tab } = this.state;
+
 
         return (
-            <div>
-                <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-                    Open dialog
-      </Button>
-                <Dialog onClose={this.handleClose} aria-labelledby="customized-dialog-title" open={this.state.open}>
+            <div className={classes.dialog}>
+                <Dialog onClose={this.handleClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.open}>
                     <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
                         Select a file
-        </DialogTitle>
+          <ImageTab getValue={this.getValue} />
+                    </DialogTitle>
                     <DialogContent dividers>
+                        {tab == "upload" ? <DragAndDrop getImage={this.getImage} /> : ""}
+                        {tab == "album" ? <Files /> : ""}
 
-
-                        <Typography gutterBottom>
-                            <Paper variant='outlined'>
-                                <div class={classes.paper} style={{ paddingBottom: '40px' }}>
-                                    {
-                                        this.state.file != null
-                                            ?
-                                            <img src={this.state.file} />
-                                            :
-                                            <div className={classes.paper}>
-                                                <AddAPhotoIcon style={{ color: '#1a73e8', fontSize: '36px' }} onClick={this.handleClick} onChange={this.handleChange} accept="image/*" />
-                                                <br />
-                                                <input type="file" id="file" ref="fileUploader" style={{ display: "none" }} />
-                                                <div style={{ color: '#1a73e8', fontSize: "16px", paddingLeft: '40px', paddingRight: '40px' }}>Drag your photo here</div>
-
-                                            </div>}
-                                </div>
-                            </Paper>
-                        </Typography>
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={this.handleClose} color="primary">
-                            Done          </Button>
+                            Done
+          </Button>
                     </DialogActions>
                 </Dialog>
-
-                <DragAndDrop handleDrop={this.handleDrop}>
-                    <div style={{ height: 300, width: 250 }}>
-                        {
-                            this.state.file != null
-                                ?
-                                <div>
-                                    <img src={this.state.file} ></img>
-                                    <div>{this.state.file}</div>
-                                </div>
-                                :
-                                ""
-                        }
-                        <div >
-                        </div>
-                    </div>
-                </DragAndDrop>
             </div>
-        )
+        );
+
     }
+
 }
-export default withStyles(styles)(Image);
+export default withStyles(styles)(Image)
+
+
+

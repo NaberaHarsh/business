@@ -20,7 +20,7 @@ const styles = theme => ({
         flexDirection: "row",
     },
     root: {
-        width:204
+        width:160
         
             }
 })
@@ -84,7 +84,7 @@ class Files extends React.Component{
                   {this.state.data.map((product)=>
                   <Card className={classes.root} style={{marginLeft:'20px', marginTop:'10px'}}>                        
       <CardMedia
-    style={{height:'140px', width:'100%'}}
+    style={{height:'120px', width:'100%'}}
         image={product.image}
       />
       <CardHeader
@@ -107,7 +107,7 @@ class Files extends React.Component{
           </IconButton>
           
         }
-    title={ <span style={{fontSize:'14px' }}>{product.title}</span>}
+    title={ <span style={{fontSize:'12px' }}>{product.title}</span>}
       />
      
           </Card>

@@ -3,10 +3,13 @@ import Dropzone from "react-dropzone";
 import { withStyles } from "@material-ui/core/styles";
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import CloseIcon from '@material-ui/icons/Close';
+import Paper from '@material-ui/core/Paper';
+import { Button, Grid } from '@material-ui/core';
+
 
 const styles = theme => ({
     paper1: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(6),
         marginBottom: theme.spacing(8),
         display: "flex",
         flexDirection: "column",
@@ -20,9 +23,13 @@ const styles = theme => ({
         alignItems: "center"
     }, 
     root: {
+      marginTop: theme.spacing(4),
         display: "flex",
         flexDirection: "column",
-        alignItems: "center"
+        alignItems: "center",
+        height: 140,
+        width:600
+
 
     }
 })
@@ -92,25 +99,29 @@ height:'100%'
         {files.map(file => <aside>{thumbs}</aside>)}
       </div> 
       : (
-        <div className={classes.root}>
-             <AddAPhotoIcon style={{ color: '#1a73e8', fontSize: '32px' }} />
+        <div className={classes.root} >
+             <AddAPhotoIcon style={{ color: '#B5B9B7', fontSize: '32px' }} />
                                 {/* <input type="file" id="file" ref="fileUploader"  accept="image/*" style={{ display: "none" }} /> */}
                                 <br />
-                                <div style={{ color: '#1a73e8',textAlign:"center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+                                <div style={{ color: '#B5B9B7',textAlign:"center", fontSize: "18px" }}>Drag your photo here
+                                <br />
+                                or<br></br></div>
+                                <Button variant="contained" color="primary" style={{fontSize:'10px'}}>select from your computer</Button>
         </div>
       );
 
 
     return (
-      <div>
+      <div style={{border:'dashed #C3C9C6 2px'}}>
         <p>{this.state.warningMsg}</p>
 
-        <Dropzone
+        <Dropzone 
         className={Object.keys(files).length !== 0 ?   classes.paper2: classes.paper1}
           multiple={false}
           accept="image/*"
           // accept="video/*"
           onDrop={(accepted, rejected) => this.onDrop(accepted, rejected)}
+          
         >
           {({ isDragAccept, isDragReject, acceptedFiles, rejectedFiles }) => {
             // for drag and drop warning statement

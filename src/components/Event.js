@@ -16,7 +16,8 @@ import MaterialUIPickersStartDate from './StartDate'
 import MaterialUIPickersEndDate from './EndDate'
 import MaterialUIPickersEndTime from './EndTime'
 import MaterialUIPickersStartTime from './StartTime'
-
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import Image from './Image'
 
 const styles = theme => ({
     paper: {
@@ -26,6 +27,14 @@ const styles = theme => ({
         flexDirection: "column",
         alignItems: "center"
 
+    },
+    image:{
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    
     },
     inputRoot: {
         fontSize: 14
@@ -52,7 +61,7 @@ class Event extends React.Component {
             button: 0,
             time: false,
             file: null,
-            image: '',
+            image: false,
             title: ' ',
             description: ' ',
             start_date: ' ',
@@ -70,12 +79,9 @@ class Event extends React.Component {
         this.getEndDate = this.getEndDate.bind(this);
         this.getStartTime = this.getStartTime.bind(this);
         this.getEndTime = this.getEndTime.bind(this);
-        this.getImage = this.getImage.bind(this);
+        this.get = this.get.bind(this);
     }
 
-    getImage(image) {
-        this.setState({ image: image })
-    }
 
     handleChange = e => {
         const { name, value } = e.target
@@ -120,8 +126,19 @@ class Event extends React.Component {
     };
 
 
+    get(){
+        this.setState({image:true})
+    }
+
 
     render() {
+
+        if(this.state.image === true){
+            return(
+<Image  unit={this.props.unit} forTab={this.props.forTab}/>
+            )
+        }
+
         const { title, description, link } = this.state;
 
         const { classes } = this.props;
@@ -129,10 +146,16 @@ class Event extends React.Component {
         return (
             <div>
 
-                <Paper variant='outlined'>
-                    <div >
-                        <DragAndDrop getImage={this.getImage} />
-                    </div>
+<Paper variant='outlined'>
+                        {/* <DragAndDrop getImage={this.getImage} />
+                         */}
+ <div className={classes.image} >
+             <AddAPhotoIcon onClick={this.get} style={{ color: '#1a73e8', fontSize: '32px' }} />
+                                {/* <input type="file" id="file" ref="fileUploader"  accept="image/*" style={{ display: "none" }} /> */}
+                                <br />
+                                <div style={{ color: '#1a73e8',textAlign:"center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+        </div>
+    
                 </Paper>
                 <form className={classes.root} noValidate >
                     <TextField

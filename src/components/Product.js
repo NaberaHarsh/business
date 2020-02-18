@@ -8,6 +8,8 @@ import FormControl from '@material-ui/core/FormControl';
 import DragAndDrop from './Drag&Drop'
 import { Button, Grid } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import Image from './Image'
 
 
 
@@ -27,7 +29,14 @@ const styles = theme => ({
         fontSize: 14,
 
     },
+image:{
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
 
+},
     root: {
         marginTop: theme.spacing(2),
         display: "flex",
@@ -43,27 +52,37 @@ class Product extends React.Component {
         this.state = {
             value: 0,
             image: '',
-            button: 0,
+            button: 0,   
+               display:false,
             image: false,
             file: null,
             product_name: '',
             price: '',
             category: '',
             desc: '',
-            link: ''
+            link: '',
+            imageDialog:true
 
         }
         this.handleChangeCategory = this.handleChangeCategory.bind(this)
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.getImage = this.getImage.bind(this);
+        this.get = this.get.bind(this);
     }
 
 
-    getImage(image) {
-        this.setState({ image: image })
-    }
+    // getImage(image) {
+    //     this.setState({ image: image })
+    // }
+
+
+ handleDisplay = () => {
+    this.setState({display:false});
+  };
+ handleToggle = () => {
+    this.setState({display: ! this.state.display});
+  };
 
     handleChange = e => {
         const { name, value } = e.target
@@ -92,9 +111,10 @@ class Product extends React.Component {
 
 
 
-    // get(){
-    //     this.setState({image:true})
-    // }
+    get(){
+        this.setState({image:true})
+        console.log(this.props.unit)
+    }
 
 
 
@@ -105,20 +125,26 @@ class Product extends React.Component {
         const { product_name, category, price, desc, link } = this.state;
 
 
-        //         if(this.state.image === true){
-        //             return(
-        // <Image />
-        //             )
-        //         }
+                if(this.state.image === true){
+                    return(
+        <Image unit={this.props.unit} forTab={this.props.forTab}/>
+                    )
+                }
         const { classes } = this.props;
 
         return (
             <div>
 
                 <Paper variant='outlined'>
-                    <div>
-                        <DragAndDrop getImage={this.getImage} />
-                    </div>
+                        {/* <DragAndDrop getImage={this.getImage} />
+                         */}
+ <div className={classes.image} >
+             <AddAPhotoIcon onClick={this.get}  style={{ color: '#1a73e8', fontSize: '32px' }} />
+                                {/* <input type="file" id="file" ref="fileUploader"  accept="image/*" style={{ display: "none" }} /> */}
+                                <br />
+                                <div style={{ color: '#1a73e8',textAlign:"center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+        </div>
+    
                 </Paper>
                 <form className={classes.root} noValidate >
 
