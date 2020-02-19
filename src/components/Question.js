@@ -9,6 +9,17 @@ import DragAndDrop from './Drag&Drop'
 import { Button, Grid } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import { isThisHour } from 'date-fns';
+import Container from '@material-ui/core/Container';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import ImageTab from './ImageTab'
+import Files from './Files'
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 
 
 
@@ -21,6 +32,12 @@ const styles = theme => ({
         alignItems: "center"
 
     }, 
+    contain: {
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+    },
     inputRoot: {
         fontSize: 14
       },
@@ -28,6 +45,14 @@ const styles = theme => ({
         fontSize: 14,
        
       },
+      image: {
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+
+    },
 
     root: {
         marginTop: theme.spacing(2),
@@ -38,15 +63,40 @@ const styles = theme => ({
     }
 })
 
+
+const DialogTitle = withStyles(styles)(props => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+        <MuiDialogTitle disableTypography className={classes.root} {...other}>
+            <Typography variant="h6">{children}</Typography>
+
+        </MuiDialogTitle>
+    );
+});
+
+const DialogContent = withStyles(theme => ({
+    root: {
+        padding: theme.spacing(2),
+    },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles(theme => ({
+    root: {
+        margin: 0,
+        padding: theme.spacing(1),
+    },
+}))(MuiDialogActions);
+
+
 class Question extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             value: 0,
-            file: '',
             button: 0,
-            file: false,
-            file: null,
+            file:[],
+            // file: false,
+            // file: null,
             question: '',
             answer:'',
             option1:'',
@@ -59,7 +109,8 @@ class Question extends React.Component {
             option8:'',
             option9:'',
             option10:'',
-            count: 2,
+            count: 2,         
+               tab: "upload",
             options: ["Add option " + 1],
 
         }
@@ -69,6 +120,9 @@ class Question extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.getFile = this.getFile.bind(this);
         this.addQuestion = this.addQuestion.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
+        this.getImage = this.getImage.bind(this);
+        this.getValue = this.getValue.bind(this);
     }
 
     addQuestion = e => {
@@ -100,6 +154,7 @@ class Question extends React.Component {
         const { file, question, answer, option1,option2, option3, option4,option5, option6, option7,option8, option9,option10} = this.state;
         const userData = { file, question, answer, option1,option2, option3, option4,option5, option6, option7,option8, option9,option10 };
         console.log(userData);
+        this.setState({file:'',question:'', answer:''})
     }
 
     handleChangeCategory(e) {
@@ -112,13 +167,34 @@ class Question extends React.Component {
         console.log(p.target.value)
     };
 
-
-
     // get(){
     //     this.setState({file:true})
     // }
 
+    getImage(file) {
+        this.setState({ file: file })
+    }
 
+    handleOpen() {
+        this.setState({ open: true })
+    }
+
+    handleClose = () => {
+        this.setState({ open: false })
+        console.log(this.props.unit)
+        // this.props.forTab(this.props.unit)
+
+    };
+
+    getValue(e) {
+        console.log(e);
+        if (e == 1) {
+            this.setState({ tab: 'album' })
+        }
+        else {
+            this.setState({ tab: 'upload' })
+        }
+    }
 
 
 
@@ -126,22 +202,28 @@ class Question extends React.Component {
     render() {
         const { question, answer, option1,option2, option3, option4,option5, option6, option7,option8, option9,option10 } = this.state;
 
-
-        //         if(this.state.file === true){
-        //             return(
-        // <file />
-        //             )
-        //         }
         const { classes } = this.props;
+        const { tab } = this.state;
 
         return (
             <div>
-                <Paper variant='outlined'>
-                    <div>
-                        <DragAndDrop getImage={this.getFile} />
-                    </div>
+                 <Container maxWidth="xs" className={classes.contain} >
+                    <Paper style={{ marginTop: '10px', paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
+                        <div className={classes.contain}>
+                            <Paper variant='outlined' style={{ width: "90%" }} >
+                            {this.state.file.length != 0 
+                              ?
+                              <div className={classes.showImage}>
+                              {this.state.file.map(file=> <img style={{width:'100%',height:'100%', paddingBottom:'0px'}} src={file.preview} /> )}
+                                  </div>
+                            :
+                            <div className={classes.image} >
+                            <AddAPhotoIcon onClick={() => { this.handleOpen() }} style={{ color: '#1a73e8', fontSize: '32px' }} />
+                            <br />
+                            <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+                        </div>}
                 </Paper>
-                <form className={classes.root} noValidate >
+                <form  noValidate >
 
                     <TextField
                     InputProps={{ classes: { root: classes.inputRoot } }}
@@ -173,7 +255,7 @@ class Question extends React.Component {
                         focused: classes.labelFocused
                       }
                     }}
-                        className={classes.root} style={{ width: '80%' }}
+                         style={{ width: '80%' }}
                         variant="outlined"
                         size="small" >
                         <InputLabel htmlFor="outlined-age-native-simple"
@@ -243,143 +325,38 @@ class Question extends React.Component {
                         </span>
 
                     ))}
-                    {/*                     
-                    {
-                        this.state.value == 1 || this.state.value == 2 ?
-                        <>
-                            <TextField                            
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="option"
-                                label="Add option 1"
-                                name="option1"
-                                autoComplete="option"
-                                autoFocus
-                                value={option1}
-                                onChange={this.handleChange}
-                            />
-                            <TextField                            
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="option"
-                            label="Add option 2"
-                            name="option2"
-                            autoComplete="option"
-                            autoFocus
-                            value={option2}
-                            onChange={this.handleChange}
-                        />
-                        <TextField                            
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="option"
-                        label="Add option 3"
-                        name="option3"
-                        autoComplete="option"
-                        autoFocus
-                        value={option3}
-                        onChange={this.handleChange}
-                    />
-                    <TextField                            
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="option"
-                    label="Add option 4"
-                    name="option4"
-                    autoComplete="option"
-                    autoFocus
-                    value={option4}
-                    onChange={this.handleChange}
-                />
-                </>
-                            :
-                            <>
-                            <TextField                            
-                            variant="outlined"
-                            margin="normal"
-                            disabled
-                            fullWidth
-                            id="option"
-                            label="Add option 1"
-                            name="option1"
-                            autoComplete="option"
-                            autoFocus
-                            value={option1}
-                            onChange={this.handleChange}
-                        />
-                        <TextField                            
-                        variant="outlined"
-                        margin="normal"
-                        disabled
-                        fullWidth
-                        id="option"
-                        label="Add option 2"
-                        name="option2"
-                        autoComplete="option"
-                        autoFocus
-                        value={option2}
-                        onChange={this.handleChange}
-                    />
-                    <TextField                            
-                    variant="outlined"
-                    margin="normal"
-                    disabled
-                    fullWidth
-                    id="option"
-                    label="Add option 3"
-                    name="option3"
-                    autoComplete="option"
-                    autoFocus
-                    value={option3}
-                    onChange={this.handleChange}
-                />
-                <TextField                            
-                variant="outlined"
-                margin="normal"
-                disabled
-                fullWidth
-                id="option"
-                label="Add option 4"
-                name="option4"
-                autoComplete="option"
-                autoFocus
-                value={option4}
-                onChange={this.handleChange}
-            />
-            </>
-                    } */}
                     <Button variant='contained' color='primary'
                         onClick={this.addQuestion}  
-                        style={{fontSize:"12px"}}                  >
+                        style={{fontSize:"12px", width:'100%'}}                  >
                         Add Option</Button>
 
 
                     <br />
                     <Divider />
                     <br />
-                    <Grid container spacing={2}>
-                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
-                        <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                            <Button variant='contained' color='primary'
-                            style={{fontSize:"12px"}}
-                             onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
-                        </Grid>
-                        <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                            <Button variant='contained' 
-                            style={{fontSize:"12px"}}
-                            color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
-                        </Grid>
-
-                    </Grid>
+                    <Grid style={{ textAlign: "right" }}>
+                                    <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                        style={{ fontSize: '12px' }}>Submit</Button>
+                                </Grid>
                 </form>
+</div></Paper>
+</Container>
+<Dialog onClose={this.handleClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.open}>
+                    <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
+                        Select a file
+          <ImageTab getValue={this.getValue} />
+                    </DialogTitle>
+                    <DialogContent dividers>
+                        {tab == "upload" ? <DragAndDrop getImage={this.getImage} /> : ""}
+                        {tab == "album" ? <Files /> : ""}
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={this.handleClose} color="primary">
+                            Done
+          </Button>
+                    </DialogActions>
+                </Dialog>
 
             </div>
         )

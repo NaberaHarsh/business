@@ -9,7 +9,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Button, Grid } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import DragAndDrop from './Drag&Drop';
 import Divider from '@material-ui/core/Divider';
 import MaterialUIPickersStartDate from './StartDate'
@@ -18,6 +17,16 @@ import MaterialUIPickersEndTime from './EndTime'
 import MaterialUIPickersStartTime from './StartTime'
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import Image from './Image'
+import Container from '@material-ui/core/Container';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import ImageTab from './ImageTab'
+import Files from './Files'
+import Typography from '@material-ui/core/Typography';
+
 
 const styles = theme => ({
     paper: {
@@ -28,13 +37,24 @@ const styles = theme => ({
         alignItems: "center"
 
     },
-    image:{
+    image: {
         marginTop: theme.spacing(8),
         marginBottom: theme.spacing(8),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-    
+
+    },
+    showImage:{
+        marginBottom: theme.spacing(0),
+        width:"100%",
+        height:'100%'
+    }, 
+    contain: {
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
     },
     inputRoot: {
         fontSize: 14
@@ -53,6 +73,32 @@ const styles = theme => ({
     }
 })
 
+
+const DialogTitle = withStyles(styles)(props => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+        <MuiDialogTitle disableTypography className={classes.root} {...other}>
+            <Typography variant="h6">{children}</Typography>
+
+        </MuiDialogTitle>
+    );
+});
+
+const DialogContent = withStyles(theme => ({
+    root: {
+        padding: theme.spacing(2),
+    },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles(theme => ({
+    root: {
+        margin: 0,
+        padding: theme.spacing(1),
+    },
+}))(MuiDialogActions);
+
+
+
 class Event extends React.Component {
     constructor(props) {
         super(props)
@@ -61,14 +107,17 @@ class Event extends React.Component {
             button: 0,
             time: false,
             file: null,
-            image: false,
+            image: [],
             title: ' ',
             description: ' ',
             start_date: ' ',
             end_date: ' ',
             link: ' ',
             start_time: ' ',
-            end_time: ' '
+            end_time: ' ',
+            tab: "upload",
+            open: false
+
         }
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChangeDate = this.handleChangeDate.bind(this)
@@ -79,7 +128,9 @@ class Event extends React.Component {
         this.getEndDate = this.getEndDate.bind(this);
         this.getStartTime = this.getStartTime.bind(this);
         this.getEndTime = this.getEndTime.bind(this);
-        this.get = this.get.bind(this);
+        // this.get = this.get.bind(this);
+        this.getImage = this.getImage.bind(this);
+        this.getValue = this.getValue.bind(this);
     }
 
 
@@ -108,6 +159,8 @@ class Event extends React.Component {
         const { image, title, start_date, end_date, start_time, end_time, description, link } = this.state;
         const userData = { image, title, start_date, end_date, start_time, end_time, description, link };
         console.log(userData);
+        this.setState({image:[],title:'',start_date:'',end_date:'',start_time:'',end_time:'', description:'',link:''})
+
 
     }
 
@@ -126,18 +179,39 @@ class Event extends React.Component {
     };
 
 
-    get(){
-        this.setState({image:true})
+    // get(){
+    //     this.setState({image:true})
+    // }
+
+    getImage(image) {
+        this.setState({ image: image })
+    }
+
+    handleOpen() {
+        this.setState({ open: true })
+    }
+
+    handleClose = () => {
+        this.setState({ open: false })
+        console.log(this.props.unit)
+        // this.props.forTab(this.props.unit)
+
+    };
+
+    getValue(e) {
+        console.log(e);
+        if (e == 1) {
+            this.setState({ tab: 'album' })
+        }
+        else {
+            this.setState({ tab: 'upload' })
+        }
     }
 
 
     render() {
 
-        if(this.state.image === true){
-            return(
-<Image  unit={this.props.unit} forTab={this.props.forTab}/>
-            )
-        }
+        const { tab } = this.state;
 
         const { title, description, link } = this.state;
 
@@ -145,42 +219,47 @@ class Event extends React.Component {
 
         return (
             <div>
+                <Container maxWidth="xs" className={classes.contain} >
+                    <Paper style={{ marginTop: '10px', paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
+                        <div className={classes.contain}>
+                            <Paper variant='outlined' style={{ width: "90%" }}>
+                            {this.state.image.length != 0 
+                              ?
+                              <div className={classes.showImage}>
+                              {this.state.image.map(file=> <img style={{width:'100%',height:'100%', paddingBottom:'0px'}} src={file.preview} /> )}
+                                  </div>
+                            :
+                            <div className={classes.image} >
+                            <AddAPhotoIcon onClick={() => { this.handleOpen() }} style={{ color: '#1a73e8', fontSize: '32px' }} />
+                            <br />
+                            <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+                        </div>}
 
-<Paper variant='outlined'>
-                        {/* <DragAndDrop getImage={this.getImage} />
-                         */}
- <div className={classes.image} >
-             <AddAPhotoIcon onClick={this.get} style={{ color: '#1a73e8', fontSize: '32px' }} />
-                                {/* <input type="file" id="file" ref="fileUploader"  accept="image/*" style={{ display: "none" }} /> */}
-                                <br />
-                                <div style={{ color: '#1a73e8',textAlign:"center", fontSize: "14px" }}>Make your post stand out with a photo</div>
-        </div>
-    
-                </Paper>
-                <form className={classes.root} noValidate >
-                    <TextField
-                        InputProps={{ classes: { root: classes.inputRoot } }}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.labelRoot,
-                                focused: classes.labelFocused
-                            }
-                        }}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="event"
-                        label="Event Title"
-                        name="title"
-                        autoComplete="event"
-                        autoFocus
-                        size="small"
-                        value={title}
-                        onChange={this.handleChange}
+                            </Paper>
+                            <form noValidate >
+                                <TextField
+                                    InputProps={{ classes: { root: classes.inputRoot } }}
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelRoot,
+                                            focused: classes.labelFocused
+                                        }
+                                    }}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="event"
+                                    label="Event Title"
+                                    name="title"
+                                    autoComplete="event"
+                                    autoFocus
+                                    size="small"
+                                    value={title}
+                                    onChange={this.handleChange}
 
-                    />
-                    <FormControlLabel
+                                />
+                                {/* <FormControlLabel
                         style={{ marginTop: '10px' }}
                         value="time"
                         onChange={this.handleChangeTime}
@@ -191,23 +270,23 @@ class Event extends React.Component {
 
 
                     {this.state.time === true
-                        ?
-                        <Grid container spacing={0}>
-                            <Grid md={8} xs={8} >
+                        ? */}
+                                <Grid container spacing={0}>
+                                    <Grid md={8} xs={8} >
 
-                                < MaterialUIPickersStartDate
-                                    startDate={this.getStartDate}
-                                />
+                                        < MaterialUIPickersStartDate
+                                            startDate={this.getStartDate}
+                                        />
 
-                            </Grid>
-                            <Grid md={4} xs={4}>
+                                    </Grid>
+                                    <Grid md={4} xs={4}>
 
-                                <MaterialUIPickersStartTime
-                                    startTime={this.getStartTime}
-                                />
-                            </Grid>
-                        </Grid>
-                        :
+                                        <MaterialUIPickersStartTime
+                                            startTime={this.getStartTime}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                {/* :
                         <div>
 
                             < MaterialUIPickersStartDate
@@ -217,135 +296,144 @@ class Event extends React.Component {
                     }
 
                     {this.state.time === true
-                        ?
-                        <Grid container spacing={0}>
-                            <Grid md={8} xs={8} >
+                        ? */}
+                                <Grid container spacing={0}>
+                                    <Grid md={8} xs={8} >
 
-                                <MaterialUIPickersEndDate
-                                    endDate={this.getEndDate}
-                                />
-                            </Grid>
-                            <Grid md={4} xs={4}>
+                                        <MaterialUIPickersEndDate
+                                            endDate={this.getEndDate}
+                                        />
+                                    </Grid>
+                                    <Grid md={4} xs={4}>
 
-                                <MaterialUIPickersEndTime
-                                    endTime={this.getEndTime}
-                                />
-                            </Grid>
-                        </Grid>
-                        :
+                                        <MaterialUIPickersEndTime
+                                            endTime={this.getEndTime}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                {/* :
                         <div>
 
                             <MaterialUIPickersEndDate
                                 endDate={this.getEndDate}
                             />
                         </div>
-                    }
+                    } */}
 
 
-                    <TextField
-                        InputProps={{ classes: { root: classes.inputRoot } }}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.labelRoot,
-                                focused: classes.labelFocused
-                            }
-                        }}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="desc"
-                        label="Event Description"
-                        name="description"
-                        autoComplete="desc"
-                        autoFocus
-                        size="small"
-                        multiline={true}
-                        value={description}
-                        onChange={this.handleChange}
-                    />
-                    <FormControl
-                        InputProps={{ classes: { root: classes.inputRoot } }}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.labelRoot,
-                                focused: classes.labelFocused
-                            }
-                        }}
-                        className={classes.root} style={{ width: '70%' }}
-                        variant="outlined"
-                        size="small" >
-                        <InputLabel htmlFor="outlined-age-native-simple"
-                            style={{ fontSize: "14px" }}
-                        >
-                            Select a button
+                                <TextField
+                                    InputProps={{ classes: { root: classes.inputRoot } }}
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelRoot,
+                                            focused: classes.labelFocused
+                                        }
+                                    }}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="desc"
+                                    label="Event Description"
+                                    name="description"
+                                    autoComplete="desc"
+                                    autoFocus
+                                    size="small"
+                                    multiline={true}
+                                    value={description}
+                                    onChange={this.handleChange}
+                                />
+                                <FormControl
+                                    InputProps={{ classes: { root: classes.inputRoot } }}
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelRoot,
+                                            focused: classes.labelFocused
+                                        }
+                                    }}
+                                    className={classes.root} style={{ width: '70%' }}
+                                    variant="outlined"
+                                    size="small" >
+                                    <InputLabel htmlFor="outlined-age-native-simple"
+                                        style={{ fontSize: "14px" }}
+                                    >
+                                        Select a button
         </InputLabel>
-                        <Select
-                            style={{ fontSize: "14px" }}
+                                    <Select
+                                        style={{ fontSize: "14px" }}
 
-                            native
-                            value={this.state.button}
-                            onChange={this.handleChangeButton}
-                        >
-                            <option value="" />
-                            <option value={1}>Order Online</option>
-                            <option value={2}>Buy</option>
-                            <option value={3}>Learn more</option>
-                            <option value={4}>Book</option>
-                            <option value={5}>Sign Up</option>
-
-
+                                        native
+                                        value={this.state.button}
+                                        onChange={this.handleChangeButton}
+                                    >
+                                        <option value="" />
+                                        <option value={1}>Order Online</option>
+                                        <option value={2}>Buy</option>
+                                        <option value={3}>Learn more</option>
+                                        <option value={4}>Book</option>
+                                        <option value={5}>Sign Up</option>
 
 
-                        </Select>
-                    </FormControl>
-                    {
-                        this.state.button !== 0 ?
-                            <TextField
-                                InputProps={{ classes: { root: classes.inputRoot } }}
-                                InputLabelProps={{
-                                    classes: {
-                                        root: classes.labelRoot,
-                                        focused: classes.labelFocused
-                                    }
-                                }}
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="link"
-                                label="Link from your button"
-                                name="link"
-                                autoComplete="link"
-                                autoFocus
-                                size="small"
-                                value={link}
-                                onChange={this.handleChange}
-                                helperText="Eg: google.com"
 
-                            />
-                            :
-                            " "
-                    }
-                    <br />
-                    <Divider />
-                    <br />
-                    <Grid container spacing={2}>
-                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
-                        <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                            <Button variant='contained'
-                                style={{ fontSize: '12px' }}
-                                color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
-                        </Grid>
-                        <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                            <Button variant='contained'
-                                style={{ fontSize: '12px' }}
-                                color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
-                        </Grid>
 
-                    </Grid>
+                                    </Select>
+                                </FormControl>
+                                {
+                                    this.state.button !== 0 ?
+                                        <TextField
+                                            InputProps={{ classes: { root: classes.inputRoot } }}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.labelRoot,
+                                                    focused: classes.labelFocused
+                                                }
+                                            }}
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="link"
+                                            label="Link from your button"
+                                            name="link"
+                                            autoComplete="link"
+                                            autoFocus
+                                            size="small"
+                                            value={link}
+                                            onChange={this.handleChange}
+                                            helperText="Eg: google.com"
 
-                </form>
+                                        />
+                                        :
+                                        " "
+                                }
+                                <br />
+                                <Divider />
+                                <br />
+                                <Grid style={{ textAlign: "right" }}>
+                                    <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                        style={{ fontSize: '12px' }}>Submit</Button>
+                                </Grid>
+                            </form>
+
+                        </div>
+                    </Paper>
+                </Container>
+                <Dialog onClose={this.handleClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.open}>
+                    <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
+                        Select a file
+          <ImageTab getValue={this.getValue} />
+                    </DialogTitle>
+                    <DialogContent dividers>
+                        {tab == "upload" ? <DragAndDrop getImage={this.getImage} /> : ""}
+                        {tab == "album" ? <Files /> : ""}
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={this.handleClose} color="primary">
+                            Done
+          </Button>
+                    </DialogActions>
+                </Dialog>
 
 
             </div>

@@ -80,7 +80,7 @@ class Image extends React.Component {
         this.getValue = this.getValue.bind(this);
 
     }
-    componentDidMount() {
+    handleOpen() {
         this.setState({ open: true })
 
     }
@@ -92,7 +92,7 @@ class Image extends React.Component {
     handleClose = () => {
         this.setState({ open: false })
         console.log(this.props.unit)
-        this.props.forTab(this.props.unit)
+        // this.props.forTab(this.props.unit)
 
     };
 

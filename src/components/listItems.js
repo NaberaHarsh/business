@@ -8,7 +8,10 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import EventIcon from '@material-ui/icons/Event';
+import Tooltip from '@material-ui/core/Tooltip';
 import CompareIcon from '@material-ui/icons/Compare';
 import {
   BrowserRouter as Router,
@@ -28,7 +31,9 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
     selected={history.location.pathname === '/dashboard'}
     >
       <ListItemIcon>
-        <DashboardIcon />
+      <Tooltip title="Dashboard">
+ <DashboardIcon />
+ </Tooltip>
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
@@ -42,15 +47,47 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
     selected={history.location.pathname === '/config'}
     >
       <ListItemIcon>
-        <AddBoxIcon />
-
+      <Tooltip title="Add Product">
+        <ShoppingBasketIcon />
+</Tooltip>
       </ListItemIcon>
-      <ListItemText primary="Create Post" />
+      <ListItemText primary="Add Product" />
     </ListItem>
     </Link>
    
     
     <Link to={`/3`} style={{ textDecoration: 'none', color: 'black'  }}>
+
+<ListItem button onClick={() => handlePageChange(3)}
+selected={history.location.pathname === '/config'}
+>
+  <ListItemIcon>
+  <Tooltip title="Add Event">
+    <EventIcon />
+</Tooltip>
+  </ListItemIcon>
+  <ListItemText primary="Add Event" />
+</ListItem>
+</Link>
+
+
+<Link to={`/4`} style={{ textDecoration: 'none', color: 'black'  }}>
+
+<ListItem button onClick={() => handlePageChange(3)}
+selected={history.location.pathname === '/config'}
+>
+  <ListItemIcon>
+  <Tooltip title="Add Offer">
+    <BookmarkIcon />
+    </Tooltip>
+  </ListItemIcon>
+  <ListItemText primary="Add Offer" />
+</ListItem>
+</Link>
+
+
+{/* 
+    <Link to={`/5`} style={{ textDecoration: 'none', color: 'black'  }}>
     <ListItem  
     button onClick={() => handlePageChange(1)}
     selected={history.location.pathname === '/dashboard'}
@@ -58,16 +95,18 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
       <ListItemIcon>
         <InsertDriveFileIcon />
       </ListItemIcon>
-      <ListItemText primary="Album" />
+      <ListItemText primary="My Files" />
     </ListItem>
-    </Link>
-    <Link to={`/4`} style={{ textDecoration: 'none', color: 'black'  }}>
+    </Link> */}
+    <Link to={`/5`} style={{ textDecoration: 'none', color: 'black'  }}>
     <ListItem  
     button onClick={() => handlePageChange(1)}
     selected={history.location.pathname === '/dashboard'}
     >
       <ListItemIcon>
+      <Tooltip title="Add Question">
         <QuestionAnswerIcon />
+        </Tooltip>
       </ListItemIcon>
       <ListItemText primary="Add Questions" />
     </ListItem>

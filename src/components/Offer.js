@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CloseIcon from '@material-ui/icons/Close';
 import { Button, Grid } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -19,6 +18,14 @@ import MaterialUIPickersEndTime from './EndTime'
 import MaterialUIPickersStartTime from './StartTime'
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import Image from './Image'
+import Container from '@material-ui/core/Container';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import ImageTab from './ImageTab'
+import Files from './Files'
 
 const styles = theme => ({
     paper: {
@@ -29,6 +36,12 @@ const styles = theme => ({
         alignItems: "center"
 
     },
+    contain: {
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+    },
     inputRoot: {
         fontSize: 14
     },
@@ -36,13 +49,18 @@ const styles = theme => ({
         fontSize: 14,
 
     },
-    image:{
+    showImage:{
+        marginBottom: theme.spacing(0),
+        width:"100%",
+        height:'100%'
+    }, 
+    image: {
         marginTop: theme.spacing(8),
         marginBottom: theme.spacing(8),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-    
+
     },
     root: {
         marginTop: theme.spacing(2),
@@ -53,6 +71,32 @@ const styles = theme => ({
     }
 })
 
+
+const DialogTitle = withStyles(styles)(props => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+        <MuiDialogTitle disableTypography className={classes.root} {...other}>
+            <Typography variant="h6">{children}</Typography>
+
+        </MuiDialogTitle>
+    );
+});
+
+const DialogContent = withStyles(theme => ({
+    root: {
+        padding: theme.spacing(2),
+    },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles(theme => ({
+    root: {
+        margin: 0,
+        padding: theme.spacing(1),
+    },
+}))(MuiDialogActions);
+
+
+
 class Offer extends React.Component {
     constructor(props) {
         super(props)
@@ -61,7 +105,7 @@ class Offer extends React.Component {
             button: 0,
             time: false,
             file: null,
-            image: false,
+            image: [],
             title: ' ',
             description: ' ',
             start_date: ' ',
@@ -69,7 +113,9 @@ class Offer extends React.Component {
             start_time: ' ',
             end_time: ' ',
             Voucher: ' ',
-            terms: ' '
+            terms: ' ',
+            tab: "upload",
+            open: false
         }
 
 
@@ -82,10 +128,12 @@ class Offer extends React.Component {
         this.getEndDate = this.getEndDate.bind(this);
         this.getStartTime = this.getStartTime.bind(this);
         this.getEndTime = this.getEndTime.bind(this);
-        this.get = this.get.bind(this);
+        // this.get = this.get.bind(this);
+        this.getImage = this.getImage.bind(this);
+        this.getValue = this.getValue.bind(this);
     }
 
-  
+
     handleChange = e => {
         const { name, value } = e.target
         this.setState({
@@ -111,6 +159,7 @@ class Offer extends React.Component {
         const { image, title, start_date, end_date, start_time, end_time, description, voucher, terms } = this.state;
         const userData = { image, title, start_date, end_date, start_time, end_time, description, voucher, terms };
         console.log(userData);
+        this.setState({image:[],title:'',start_date:'',end_date:'',start_time:'',end_time:'', description:'',voucher:'',terms:''})
     }
 
     handleChangeDate = date => {
@@ -127,60 +176,87 @@ class Offer extends React.Component {
         console.log(this.state.time)
     };
 
-    
-    get(){
-        this.setState({image:true})
+
+    // get(){
+    //     this.setState({image:true})
+    // }
+    getImage(image) {
+        this.setState({ image: image })
+    }
+
+    handleOpen() {
+        this.setState({ open: true })
+    }
+
+    handleClose = () => {
+        this.setState({ open: false })
+        console.log(this.props.unit)
+        // this.props.forTab(this.props.unit)
+
+    };
+
+    getValue(e) {
+        console.log(e);
+        if (e == 1) {
+            this.setState({ tab: 'album' })
+        }
+        else {
+            this.setState({ tab: 'upload' })
+        }
     }
 
 
     render() {
-        if(this.state.image === true){
-            return(
-<Image  unit={this.props.unit} forTab={this.props.forTab}/>
-            )
-        }
+
+        //        
+        const { tab } = this.state;
 
         const { classes } = this.props;
         const { title, description, voucher, terms } = this.state;
 
         return (
             <div>
+                <Container maxWidth="xs" className={classes.contain} >
+                    <Paper style={{ marginTop: '10px', paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
+                        <div className={classes.contain}>
+                            <Paper variant='outlined' style={{ width: "90%" }} >
+                            {this.state.image.length != 0 
+                              ?
+                              <div className={classes.showImage}>
+                              {this.state.image.map(file=> <img style={{width:'100%',height:'100%', paddingBottom:'0px'}} src={file.preview} /> )}
+                                  </div>
+                            :
+                            <div className={classes.image} >
+                            <AddAPhotoIcon onClick={() => { this.handleOpen() }} style={{ color: '#1a73e8', fontSize: '32px' }} />
+                            <br />
+                            <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+                        </div>}
 
-<Paper variant='outlined'>
-                        {/* <DragAndDrop getImage={this.getImage} />
-                         */}
- <div className={classes.image} >
-             <AddAPhotoIcon onClick={this.get} style={{ color: '#1a73e8', fontSize: '32px' }} />
-                                {/* <input type="file" id="file" ref="fileUploader"  accept="image/*" style={{ display: "none" }} /> */}
-                                <br />
-                                <div style={{ color: '#1a73e8',textAlign:"center", fontSize: "14px" }}>Make your post stand out with a photo</div>
-        </div>
-    
-                </Paper>
-                <form className={classes.root} noValidate >
-                    <TextField
-                        InputProps={{ classes: { root: classes.inputRoot } }}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.labelRoot,
-                                focused: classes.labelFocused
-                            }
-                        }}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="offer"
-                        label="Offer Title"
-                        name="title"
-                        autoComplete="offer"
-                        autoFocus
-                        size="small"
-                        value={title}
-                        onChange={this.handleChange}
-                        helperText="Eg: 20% off on this store"
-                    />
-                    <FormControlLabel
+                            </Paper>
+                            <form className={classes.root} noValidate >
+                                <TextField
+                                    InputProps={{ classes: { root: classes.inputRoot } }}
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelRoot,
+                                            focused: classes.labelFocused
+                                        }
+                                    }}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="offer"
+                                    label="Offer Title"
+                                    name="title"
+                                    autoComplete="offer"
+                                    autoFocus
+                                    size="small"
+                                    value={title}
+                                    onChange={this.handleChange}
+                                    helperText="Eg: 20% off on this store"
+                                />
+                                {/* <FormControlLabel
                         InputProps={{ classes: { root: classes.inputRoot } }}
                         InputLabelProps={{
                             classes: {
@@ -194,167 +270,177 @@ class Offer extends React.Component {
                         label={<span style={{ fontSize: '14px' }}>Add Time</span>}
                         labelPlacement="start"
 
-                    />
+                    /> */}
 
 
-                    {this.state.time === true
-                        ?
-                        <Grid container spacing={0}>
-                            <Grid md={8} xs={8}>
+                                {/* {this.state.time === true
+                        ? */}
+                                <Grid container spacing={0}>
+                                    <Grid md={8} xs={8}>
 
-                                < MaterialUIPickersStartDate
-                                    startDate={this.getStartDate}
-                                />
+                                        < MaterialUIPickersStartDate
+                                            startDate={this.getStartDate}
+                                        />
 
-                            </Grid>
-                            <Grid md={4} xs={4}>
+                                    </Grid>
+                                    <Grid md={4} xs={4}>
 
-                                <MaterialUIPickersStartTime
-                                    startTime={this.getStartTime}
-                                />
+                                        <MaterialUIPickersStartTime
+                                            startTime={this.getStartTime}
+                                        />
 
-                            </Grid>
-                        </Grid>
-                        :
-
+                                    </Grid>
+                                </Grid>
+                                {/* :
+<Grid md={12} xs={12}>
                         < MaterialUIPickersStartDate
                             startDate={this.getStartDate}
                         />
-                    }
+                        </Grid>
+                     }
 
                     {this.state.time === true
-                        ?
-                        <Grid container spacing={0}>
-                            <Grid md={8} xs={8}>
+                        ? 
+                         */}
+                                <Grid container spacing={0}>
+                                    <Grid md={8} xs={8}>
 
-                                <MaterialUIPickersEndDate
-                                    endDate={this.getEndDate}
-                                />
+                                        <MaterialUIPickersEndDate
+                                            endDate={this.getEndDate}
+                                        />
 
-                            </Grid>
-                            <Grid md={4} xs={4}>
+                                    </Grid>
+                                    <Grid md={4} xs={4}>
 
-                                <MaterialUIPickersEndTime
-                                    endTime={this.getEndTime}
-                                />
+                                        <MaterialUIPickersEndTime
+                                            endTime={this.getEndTime}
+                                        />
 
-                            </Grid>
-                        </Grid>
-                        :
+                                    </Grid>
+                                </Grid>
+                                {/* :
 
                         <MaterialUIPickersEndDate
                             endDate={this.getEndDate}
                         />
 
-                    }
+                    } */}
 
-                    <ExpansionPanel elevation={0} className={classes.root}>
-                        <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                            size="small"
-                        >
-                            <Typography
-                                style={{ fontSize: "14px" }}
-                            >
-                                Additional Details(optional)</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <TextField
-                                InputProps={{ classes: { root: classes.inputRoot } }}
-                                InputLabelProps={{
-                                    classes: {
-                                        root: classes.labelRoot,
-                                        focused: classes.labelFocused
-                                    }
-                                }}
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="desc"
-                                label="Offer Description"
-                                name="description"
-                                autoComplete="desc"
-                                autoFocus
-                                size="small"
-                                value={description}
-                                onChange={this.handleChange}
-                                multiline={true}
-                            />
-                        </ExpansionPanelDetails>
+                                <ExpansionPanel elevation={0} className={classes.root}>
+                                    <ExpansionPanelSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1a-content"
+                                        id="panel1a-header"
+                                        size="small"
+                                    >
+                                        <Typography
+                                            style={{ fontSize: "14px" }}
+                                        >
+                                            Additional Details(optional)</Typography>
+                                    </ExpansionPanelSummary>
+                                    <ExpansionPanelDetails>
+                                        <TextField
+                                            InputProps={{ classes: { root: classes.inputRoot } }}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.labelRoot,
+                                                    focused: classes.labelFocused
+                                                }
+                                            }}
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="desc"
+                                            label="Offer Description"
+                                            name="description"
+                                            autoComplete="desc"
+                                            autoFocus
+                                            size="small"
+                                            value={description}
+                                            onChange={this.handleChange}
+                                            multiline={true}
+                                        />
+                                    </ExpansionPanelDetails>
 
-                        <ExpansionPanelDetails>
+                                    <ExpansionPanelDetails>
 
-                            <TextField
-                                InputProps={{ classes: { root: classes.inputRoot } }}
-                                InputLabelProps={{
-                                    classes: {
-                                        root: classes.labelRoot,
-                                        focused: classes.labelFocused
-                                    }
-                                }}
-                                variant="outlined"
-                                margin="normal"
-                                fullWidth
-                                id="code"
-                                label="Voucher code"
-                                name="voucher"
-                                autoComplete="code"
-                                autoFocus
-                                size="small"
-                                value={voucher}
-                                onChange={this.handleChange}
-                                helperText="optional"
-                            />
-                        </ExpansionPanelDetails>
-                        <ExpansionPanelDetails>
+                                        <TextField
+                                            InputProps={{ classes: { root: classes.inputRoot } }}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.labelRoot,
+                                                    focused: classes.labelFocused
+                                                }
+                                            }}
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            id="code"
+                                            label="Voucher code"
+                                            name="voucher"
+                                            autoComplete="code"
+                                            autoFocus
+                                            size="small"
+                                            value={voucher}
+                                            onChange={this.handleChange}
+                                            helperText="optional"
+                                        />
+                                    </ExpansionPanelDetails>
+                                    <ExpansionPanelDetails>
 
 
-                            <TextField
-                                InputProps={{ classes: { root: classes.inputRoot } }}
-                                InputLabelProps={{
-                                    classes: {
-                                        root: classes.labelRoot,
-                                        focused: classes.labelFocused
-                                    }
-                                }}
-                                variant="outlined"
-                                margin="normal"
-                                fullWidth
-                                id="terms and conditions"
-                                label="Terms and Conditions"
-                                name="terms"
-                                autoComplete="terms and conditions"
-                                autoFocus
-                                size="small"
-                                value={terms}
-                                onChange={this.handleChange}
-                                helperText="optional"
-                            />
+                                        <TextField
+                                            InputProps={{ classes: { root: classes.inputRoot } }}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.labelRoot,
+                                                    focused: classes.labelFocused
+                                                }
+                                            }}
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            id="terms and conditions"
+                                            label="Terms and Conditions"
+                                            name="terms"
+                                            autoComplete="terms and conditions"
+                                            autoFocus
+                                            size="small"
+                                            value={terms}
+                                            onChange={this.handleChange}
+                                            helperText="optional"
+                                        />
 
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                                    </ExpansionPanelDetails>
+                                </ExpansionPanel>
 
-                    <Divider />
-                    <br />
-                    <Grid container spacing={2}>
-                        <Grid md={6} lg={6} sm={3} xs={3}></Grid>
-                        <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                            <Button variant='contained'
-                                style={{ fontSize: '12px' }}
-                                color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleOk() }}>Submit</Button>
-                        </Grid>
-                        <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                            <Button variant='contained'
-                                style={{ fontSize: '12px' }}
-                                color='primary' onClick={() => { this.props.handleCancel() }}>Cancel</Button>
-                        </Grid>
+                                <Divider />
+                                <br />
+                                <Grid style={{ textAlign: "right" }}>
+                                    <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                        style={{ fontSize: '12px' }}>Submit</Button>
+                                </Grid>
 
-                    </Grid>
+                            </form>
 
-                </form>
+                        </div></Paper></Container>
+                <Dialog onClose={this.handleClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.open}>
+                    <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
+                        Select a file
+          <ImageTab getValue={this.getValue} />
+                    </DialogTitle>
+                    <DialogContent dividers>
+                        {tab == "upload" ? <DragAndDrop getImage={this.getImage} /> : ""}
+                        {tab == "album" ? <Files /> : ""}
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={this.handleClose} color="primary">
+                            Done
+          </Button>
+                    </DialogActions>
+                </Dialog>
 
 
             </div>

@@ -12,7 +12,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import EditIcon from '@material-ui/icons/Edit';
 import FileDialog from './FileModal'
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import QuestionDialog from './QuestionDialog'
+import Question from './Question'
 import CreateIcon from '@material-ui/icons/Create';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
@@ -62,7 +62,7 @@ export default function OpenIconSpeedDial(props) {
 
   if(display === true){
     return(
-<QuestionDialog />    
+<Question />    
 )
 }
 else{
