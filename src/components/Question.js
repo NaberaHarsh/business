@@ -208,7 +208,7 @@ class Question extends React.Component {
         return (
             <div>
                  <Container maxWidth="xs" className={classes.contain} >
-                    <Paper style={{ marginTop: '10px', paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
+                    <Paper style={{ paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
                             <Paper variant='outlined' style={{ width: "90%" }} >
                             {this.state.file.length != 0 
@@ -247,39 +247,11 @@ class Question extends React.Component {
                         value={question}
                         onChange={this.handleChange}
                     />
-                    <FormControl
-                    InputProps={{ classes: { root: classes.inputRoot } }}
-                    InputLabelProps={{
-                      classes: {
-                        root: classes.labelRoot,
-                        focused: classes.labelFocused
-                      }
-                    }}
-                         style={{ width: '80%' }}
-                        variant="outlined"
-                        size="small" >
-                        <InputLabel htmlFor="outlined-age-native-simple"
-                        style={{fontSize:"14px"}}>
-                            Select answer type
-        </InputLabel>
-                        <Select
-                        style={{fontSize:"14px"}}
-                            native
-                            value={this.state.value}
-                            onChange={this.handleChangeCategory}
-                        >
-                            <option value="" />
-                            <option value={1}>Single Answer</option>
-                            <option value={2}>Multiple Answer</option>
-
-
-                        </Select>
-                    </FormControl>
+                    
+                        
                     {this.state.options.map((option, index) => (
                         <span key={index}>
-                            {
-                                this.state.value == 1 || this.state.value == 2 ?
-                                    <TextField
+                             <TextField
                                     InputProps={{ classes: { root: classes.inputRoot } }}
                      InputLabelProps={{
                        classes: {
@@ -299,29 +271,7 @@ class Question extends React.Component {
                                         autoFocus
                                         value={answer}
                                         onChange={this.handleChange} />
-                                    :
-                                    <TextField
-                                    InputProps={{ classes: { root: classes.inputRoot } }}
-                     InputLabelProps={{
-                       classes: {
-                         root: classes.labelRoot,
-                         focused: classes.labelFocused
-                       }
-                     }}
-                     size="small"
-                                        variant="outlined"
-                                        margin="normal"
-                                        disabled
-                                        fullWidth
-                                        id="option"
-                                        label={option}
-                                        name="answer"
-                                        autoComplete="option"
-                                        autoFocus
-                                        value={answer}
-                                        onChange={this.handleChange}
-                                    />
-                            }
+                                    
                         </span>
 
                     ))}

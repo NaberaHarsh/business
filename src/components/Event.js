@@ -26,7 +26,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ImageTab from './ImageTab'
 import Files from './Files'
 import Typography from '@material-ui/core/Typography';
-
+import "./styles.css";
 
 const styles = theme => ({
     paper: {
@@ -116,7 +116,10 @@ class Event extends React.Component {
             start_time: ' ',
             end_time: ' ',
             tab: "upload",
-            open: false
+            open: false,
+            items: [],
+            tag: "",
+            error: null,
 
         }
         this.handleChangeButton = this.handleChangeButton.bind(this)
@@ -132,6 +135,81 @@ class Event extends React.Component {
         this.getImage = this.getImage.bind(this);
         this.getValue = this.getValue.bind(this);
     }
+
+    handleKeyDown = evt => {
+        if (["Enter", "Tab",","].includes(evt.key)) {
+          evt.preventDefault();
+    
+          var tag = this.state.tag.trim();
+    
+          if (tag && this.isValid(tag)) {
+            this.setState({
+              items: [...this.state.items, this.state.tag],
+              tag: ""
+            });
+          }
+        }
+
+      };
+    
+      handleChangeTag = evt => {
+        this.setState({
+          tag: evt.target.tag,
+          error: null
+        });
+      };
+    
+      handleDelete = item => {
+        this.setState({
+          items: this.state.items.filter(i => i !== item)
+        });
+      };
+    
+      handlePaste = evt => {
+        evt.preventDefault();
+    
+        var paste = evt.clipboardData.getData("text");
+        var content = paste.match(/[\w\d\.-]+/g);
+    
+        if (content) {
+          var toBeAdded = content.filter(item => !this.isInList(item));
+    
+          this.setState({
+            items: [...this.state.items, ...toBeAdded]
+          });
+        }
+      };
+    
+      isValid(item) {
+        let error = null;
+    
+        if (this.isInList(item)) {
+          error = `${item} has already been added.`;
+        }
+    
+        if (!this.isItem(item)) {
+          error = `${item} is not a valid item.`;
+        }
+    
+        if (error) {
+          this.setState({ error });
+          return false;
+        }
+        else{
+            this.setState({error:null})
+        }
+    
+        return true;
+      }
+    
+      isInList(item) {
+        return this.state.items.includes(item);
+      }
+    
+      isItem(item) {
+        return /[\w\d\.-]+/.test(item);
+      }
+
 
 
     handleChange = e => {
@@ -156,10 +234,10 @@ class Event extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault()
-        const { image, title, start_date, end_date, start_time, end_time, description, link } = this.state;
-        const userData = { image, title, start_date, end_date, start_time, end_time, description, link };
+        const { image, title, start_date, end_date, start_time, end_time, description, link, items } = this.state;
+        const userData = { image, title, start_date, end_date, start_time, end_time, description, link, items };
         console.log(userData);
-        this.setState({image:[],title:'',start_date:'',end_date:'',start_time:'',end_time:'', description:'',link:''})
+        this.setState({image:[],title:'',start_date:'',end_date:'',start_time:'',end_time:'', description:'',link:'', tag:'',items:[], error:null })
 
 
     }
@@ -213,14 +291,14 @@ class Event extends React.Component {
 
         const { tab } = this.state;
 
-        const { title, description, link } = this.state;
+        const { title, description, link, tag } = this.state;
 
         const { classes } = this.props;
 
         return (
             <div>
                 <Container maxWidth="xs" className={classes.contain} >
-                    <Paper style={{ marginTop: '10px', paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
+                    <Paper style={{ paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
                             <Paper variant='outlined' style={{ width: "90%" }}>
                             {this.state.image.length != 0 
@@ -406,6 +484,54 @@ class Event extends React.Component {
                                         :
                                         " "
                                 }
+                                 {this.state.items.length !== 0 
+                                ?
+                                <br />
+                            :
+                            undefined
+                            }
+                            
+
+{this.state.items.map(item => (
+          <div className="tag-item" key={item}>
+            {item}
+            <button
+              type="button"
+              className="button"
+              onClick={() => this.handleDelete(item)}
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+                                 <TextField
+                                  className={"input " + (this.state.error && " has-error")}
+                                  onKeyDown={this.handleKeyDown}
+                                  onChange={this.handleChangeTag}
+                                  onPaste={this.handlePaste}
+                                    InputProps={{ classes: { root: classes.inputRoot } }}
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelRoot,
+                                            focused: classes.labelFocused
+                                        }
+                                    }}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="tag"
+                                    label="Add Tag"
+                                    name="tag"
+                                    autoComplete="tag"
+                                    autoFocus
+                                    size="small"
+                                    multiline={true}
+                                    value={ tag  }
+                                    onChange={this.handleChange}
+                                />
+                                       {this.state.error && <p className="error">{this.state.error}</p>}
+
                                 <br />
                                 <Divider />
                                 <br />

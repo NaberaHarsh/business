@@ -20,6 +20,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import ImageTab from './ImageTab'
 import Files from './Files'
+import "./styles.css";
+
 
 const styles = theme => ({
     paper: {
@@ -106,20 +108,99 @@ class Product extends React.Component {
             category: '',
             desc: '',
             link: '',
+            tag:'',
             open: false,
             imageDialog: true,
-            tab: "upload"
-
+            tab: "upload",
+            items: [],
+            tag: "",
+            error: null,
         }
+
         this.handleChangeCategory = this.handleChangeCategory.bind(this)
         this.handleChangeButton = this.handleChangeButton.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        // this.get = this.get.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.getImage = this.getImage.bind(this);
         this.getValue = this.getValue.bind(this);
     }
+
+
+    handleKeyDown = evt => {
+        if (["Enter", "Tab",","].includes(evt.key)) {
+          evt.preventDefault();
+    
+          var tag = this.state.tag.trim();
+    
+          if (tag && this.isValid(tag)) {
+            this.setState({
+              items: [...this.state.items, this.state.tag],
+              tag: ""
+            });
+          }
+        }
+
+      };
+    
+      handleChangeTag = evt => {
+        this.setState({
+          tag: evt.target.tag,
+          error: null
+        });
+      };
+    
+      handleDelete = item => {
+        this.setState({
+          items: this.state.items.filter(i => i !== item)
+        });
+      };
+    
+      handlePaste = evt => {
+        evt.preventDefault();
+    
+        var paste = evt.clipboardData.getData("text");
+        var content = paste.match(/[\w\d\.-]+/g);
+    
+        if (content) {
+          var toBeAdded = content.filter(item => !this.isInList(item));
+    
+          this.setState({
+            items: [...this.state.items, ...toBeAdded]
+          });
+        }
+      };
+    
+      isValid(item) {
+        let error = null;
+    
+        if (this.isInList(item)) {
+          error = `${item} has already been added.`;
+        }
+    
+        if (!this.isItem(item)) {
+          error = `${item} is not a valid item.`;
+        }
+    
+        if (error) {
+          this.setState({ error });
+          return false;
+        }
+        else{
+            this.setState({error:null})
+        }
+    
+        return true;
+      }
+    
+      isInList(item) {
+        return this.state.items.includes(item);
+      }
+    
+      isItem(item) {
+        return /[\w\d\.-]+/.test(item);
+      }
+
 
     handleDisplay = () => {
         this.setState({ display: false });
@@ -129,7 +210,7 @@ class Product extends React.Component {
     };
 
     handleChange = e => {
-        const { name, value } = e.target
+        const { name, value} = e.target
         this.setState({
             [name]: value
         })
@@ -137,11 +218,11 @@ class Product extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault()
-        const { image, product_name, category, price, desc, link } = this.state;
-        const userData = { image, product_name, category, price, desc, link };
+        const { image, product_name, category, price, desc, link, items } = this.state;
+        const userData = { image, product_name, category, price, desc, link, items };
         console.log(userData);
         // this.props.handleData(userData);
-        this.setState({image:'',product_name:'',category:'',price:'',desc:'',link:''})
+        this.setState({image:'',product_name:'',category:'',price:'',desc:'',link:'', tag:'',items:[], error:null})
     }
 
     handleChangeCategory(e) {
@@ -181,21 +262,15 @@ class Product extends React.Component {
     }
 
     render() {
-        const { product_name, category, price, desc, link } = this.state;
+        const { product_name, category, price, desc, link, tag } = this.state;
 
-
-        //         if(this.state.openImage === true){
-        //             return(
-        // <Image unit={this.props.unit} forTab={this.props.forTab}/>
-        //             )
-        //         }
         const { classes } = this.props;
         const { tab } = this.state;
 
         return (
             <div>
                 <Container maxWidth="xs" className={classes.contain} >
-                    <Paper style={{ marginTop: '10px', paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
+                    <Paper style={{  paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
                             <Paper variant='outlined' style={{ width: "90%" }} >
                             {this.state.image.length != 0 
@@ -393,6 +468,54 @@ class Product extends React.Component {
                                         :
                                         " "
                                 }
+                                {this.state.items.length !== 0 
+                                ?
+                                <br />
+                            :
+                            undefined
+                            }
+                            
+
+{this.state.items.map(item => (
+          <div className="tag-item" key={item}>
+            {item}
+            <button
+              type="button"
+              className="button"
+              onClick={() => this.handleDelete(item)}
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+                                 <TextField
+                                  className={"input " + (this.state.error && " has-error")}
+                                  onKeyDown={this.handleKeyDown}
+                                  onChange={this.handleChangeTag}
+                                  onPaste={this.handlePaste}
+                                    InputProps={{ classes: { root: classes.inputRoot } }}
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelRoot,
+                                            focused: classes.labelFocused
+                                        }
+                                    }}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="tag"
+                                    label="Add Tag"
+                                    name="tag"
+                                    autoComplete="tag"
+                                    autoFocus
+                                    size="small"
+                                    multiline={true}
+                                    value={ tag  }
+                                    onChange={this.handleChange}
+                                />
+                                       {this.state.error && <p className="error">{this.state.error}</p>}
+
                                 <br />
                                 <Divider />
                                 <br />
@@ -400,10 +523,7 @@ class Product extends React.Component {
                                     <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
                                         style={{ fontSize: '12px' }}>Submit</Button>
                                 </Grid>
-                                {/* <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                            <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}
-                                style={{ fontSize: '12px' }}>Cancel</Button>
-                        </Grid> */}
+                                
                             </form>
                         </div>
                     </Paper>
@@ -425,7 +545,6 @@ class Product extends React.Component {
           </Button>
                     </DialogActions>
                 </Dialog>
-
             </div>
         )
     }

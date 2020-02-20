@@ -46,7 +46,7 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
     <ListItem button onClick={() => handlePageChange(3)}
     selected={history.location.pathname === '/config'}
     >
-      <ListItemIcon>
+      <ListItemIcon >
       <Tooltip title="Add Product">
         <ShoppingBasketIcon />
 </Tooltip>
