@@ -22,6 +22,19 @@ import ImageTab from './ImageTab'
 import Files from './Files'
 import "./styles.css";
 
+import Checkbox from '@material-ui/core/Checkbox';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
+const top100Films = [
+    { title: 'Education' },
+    { title: 'Hospital' },
+{title: 'Sports'}]
+
 
 const styles = theme => ({
     paper: {
@@ -45,18 +58,18 @@ const styles = theme => ({
         fontSize: 14,
 
     },
-    showImage:{
+    showImage: {
         marginBottom: theme.spacing(0),
-        width:"100%",
-        height:'100%'
-    },    
+        width: "100%",
+        height: '100%'
+    },
     image: {
         marginTop: theme.spacing(8),
         marginBottom: theme.spacing(8),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        
+
 
     },
     root: {
@@ -108,7 +121,7 @@ class Product extends React.Component {
             category: '',
             desc: '',
             link: '',
-            tag:'',
+            tag: '',
             open: false,
             imageDialog: true,
             tab: "upload",
@@ -128,78 +141,78 @@ class Product extends React.Component {
 
 
     handleKeyDown = evt => {
-        if (["Enter", "Tab",","].includes(evt.key)) {
-          evt.preventDefault();
-    
-          var tag = this.state.tag.trim();
-    
-          if (tag && this.isValid(tag)) {
-            this.setState({
-              items: [...this.state.items, this.state.tag],
-              tag: ""
-            });
-          }
+        if (["Enter", "Tab", ","].includes(evt.key)) {
+            evt.preventDefault();
+
+            var tag = this.state.tag.trim();
+
+            if (tag && this.isValid(tag)) {
+                this.setState({
+                    items: [...this.state.items, this.state.tag],
+                    tag: ""
+                });
+            }
         }
 
-      };
-    
-      handleChangeTag = evt => {
+    };
+
+    handleChangeTag = evt => {
         this.setState({
-          tag: evt.target.tag,
-          error: null
+            tag: evt.target.tag,
+            error: null
         });
-      };
-    
-      handleDelete = item => {
+    };
+
+    handleDelete = item => {
         this.setState({
-          items: this.state.items.filter(i => i !== item)
+            items: this.state.items.filter(i => i !== item)
         });
-      };
-    
-      handlePaste = evt => {
+    };
+
+    handlePaste = evt => {
         evt.preventDefault();
-    
+
         var paste = evt.clipboardData.getData("text");
         var content = paste.match(/[\w\d\.-]+/g);
-    
+
         if (content) {
-          var toBeAdded = content.filter(item => !this.isInList(item));
-    
-          this.setState({
-            items: [...this.state.items, ...toBeAdded]
-          });
+            var toBeAdded = content.filter(item => !this.isInList(item));
+
+            this.setState({
+                items: [...this.state.items, ...toBeAdded]
+            });
         }
-      };
-    
-      isValid(item) {
+    };
+
+    isValid(item) {
         let error = null;
-    
+
         if (this.isInList(item)) {
-          error = `${item} has already been added.`;
+            error = `${item} has already been added.`;
         }
-    
+
         if (!this.isItem(item)) {
-          error = `${item} is not a valid item.`;
+            error = `${item} is not a valid item.`;
         }
-    
+
         if (error) {
-          this.setState({ error });
-          return false;
+            this.setState({ error });
+            return false;
         }
-        else{
-            this.setState({error:null})
+        else {
+            this.setState({ error: null })
         }
-    
+
         return true;
-      }
-    
-      isInList(item) {
+    }
+
+    isInList(item) {
         return this.state.items.includes(item);
-      }
-    
-      isItem(item) {
+    }
+
+    isItem(item) {
         return /[\w\d\.-]+/.test(item);
-      }
+    }
 
 
     handleDisplay = () => {
@@ -210,7 +223,7 @@ class Product extends React.Component {
     };
 
     handleChange = e => {
-        const { name, value} = e.target
+        const { name, value } = e.target
         this.setState({
             [name]: value
         })
@@ -222,7 +235,7 @@ class Product extends React.Component {
         const userData = { image, product_name, category, price, desc, link, items };
         console.log(userData);
         // this.props.handleData(userData);
-        this.setState({image:'',product_name:'',category:'',price:'',desc:'',link:'', tag:'',items:[], error:null})
+        this.setState({ image: '', product_name: '', category: '', price: '', desc: '', link: '', tag: '', items: [], error: null })
     }
 
     handleChangeCategory(e) {
@@ -238,8 +251,8 @@ class Product extends React.Component {
 
     getImage(image) {
         this.setState({ image: image })
-  }
-    
+    }
+
     handleOpen() {
         this.setState({ open: true })
     }
@@ -270,22 +283,22 @@ class Product extends React.Component {
         return (
             <div>
                 <Container maxWidth="xs" className={classes.contain} >
-                    <Paper style={{  paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
+                    <Paper style={{ paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
                             <Paper variant='outlined' style={{ width: "90%" }} >
-                            {this.state.image.length != 0 
-                              ?
-                              <div className={classes.showImage}>
-                              {this.state.image.map(file=> <img style={{width:'100%',height:'100%', paddingBottom:'0px'}} src={file.preview} /> )}
-                                  </div>
-                            :
-                            <div className={classes.image} >
-                            <AddAPhotoIcon onClick={() => { this.handleOpen() }} style={{ color: '#1a73e8', fontSize: '32px' }} />
-                            <br />
-                            <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Make your post stand out with a photo</div>
-                        </div>}
-                             
-                               
+                                {this.state.image.length != 0
+                                    ?
+                                    <div className={classes.showImage}>
+                                        {this.state.image.map(file => <img style={{ width: '100%', height: '100%', paddingBottom: '0px' }} src={file.preview} />)}
+                                    </div>
+                                    :
+                                    <div className={classes.image} >
+                                        <AddAPhotoIcon onClick={() => { this.handleOpen() }} style={{ color: '#1a73e8', fontSize: '32px' }} />
+                                        <br />
+                                        <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+                                    </div>}
+
+
 
                             </Paper>
                             <form noValidate >
@@ -311,7 +324,7 @@ class Product extends React.Component {
                                     value={product_name}
                                     onChange={this.handleChange}
                                 />
-                                <FormControl
+                                {/* <FormControl
                                     className={classes.root} style={{ width: '70%' }}
                                     variant="outlined"
                                     size="small"
@@ -338,7 +351,61 @@ class Product extends React.Component {
                                         <option value={1}>Create a new category</option>
 
                                     </Select>
-                                </FormControl>
+                                </FormControl> */}
+
+
+                                <Autocomplete
+                                className={classes.root}
+                                InputProps={{ classes: { root: classes.inputRoot } }}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelRoot,
+                                        focused: classes.labelFocused
+                                    }
+                                }}
+                                    multiple
+                                    size="small"
+                                    id="checkboxes-tags-demo"
+                                    options={top100Films}
+                                    disableCloseOnSelect
+                                    getOptionLabel={option => option.title}
+                                    renderOption={(option, { selected }) => (
+                                        <React.Fragment>
+                                            <Checkbox
+                                                icon={icon}
+                                                checkedIcon={checkedIcon}
+                                                style={{ marginRight: 4, fontSize:'14px' }}
+                                                checked={selected}
+                                            />
+                                            {option.title}
+                                        </React.Fragment>
+                                    )}
+                                    renderInput={params => (
+                                        <TextField
+                                        InputProps={{ classes: { root: classes.inputRoot } }}
+                                        InputLabelProps={{
+                                            classes: {
+                                                root: classes.labelRoot,
+                                                focused: classes.labelFocused
+                                            }
+                                        }}
+                                size="small"
+                                            {...params}
+                                            variant="outlined"
+                                            label="Select Category"
+                                            placeholder="Create new category"
+                                            fullWidth
+                                            name="category"
+                                            autoComplete="category"
+                                            autoFocus
+                                            size="small"
+                                            value={category}
+                                            onChange={this.handleChange}
+                                        />
+                                    )}
+                                />
+
+
                                 {
                                     this.state.value !== 0 ?
                                         <TextField
@@ -406,6 +473,7 @@ class Product extends React.Component {
                                     autoFocus
                                     size="small"
                                     value={desc}
+                                    rows={3}
                                     onChange={this.handleChange}
                                     multiline={true}
                                 />
@@ -468,31 +536,31 @@ class Product extends React.Component {
                                         :
                                         " "
                                 }
-                                {this.state.items.length !== 0 
-                                ?
-                                <br />
-                            :
-                            undefined
-                            }
-                            
+                                {this.state.items.length !== 0
+                                    ?
+                                    <br />
+                                    :
+                                    undefined
+                                }
 
-{this.state.items.map(item => (
-          <div className="tag-item" key={item}>
-            {item}
-            <button
-              type="button"
-              className="button"
-              onClick={() => this.handleDelete(item)}
-            >
-              &times;
+
+                                {this.state.items.map(item => (
+                                    <div className="tag-item" key={item}>
+                                        {item}
+                                        <button
+                                            type="button"
+                                            className="button"
+                                            onClick={() => this.handleDelete(item)}
+                                        >
+                                            &times;
             </button>
-          </div>
-        ))}
-                                 <TextField
-                                  className={"input " + (this.state.error && " has-error")}
-                                  onKeyDown={this.handleKeyDown}
-                                  onChange={this.handleChangeTag}
-                                  onPaste={this.handlePaste}
+                                    </div>
+                                ))}
+                                <TextField
+                                    className={"input " + (this.state.error && " has-error")}
+                                    onKeyDown={this.handleKeyDown}
+                                    onChange={this.handleChangeTag}
+                                    onPaste={this.handlePaste}
                                     InputProps={{ classes: { root: classes.inputRoot } }}
                                     InputLabelProps={{
                                         classes: {
@@ -511,10 +579,10 @@ class Product extends React.Component {
                                     autoFocus
                                     size="small"
                                     multiline={true}
-                                    value={ tag  }
+                                    value={tag}
                                     onChange={this.handleChange}
                                 />
-                                       {this.state.error && <p className="error">{this.state.error}</p>}
+                                {this.state.error && <p className="error">{this.state.error}</p>}
 
                                 <br />
                                 <Divider />
@@ -523,12 +591,12 @@ class Product extends React.Component {
                                     <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
                                         style={{ fontSize: '12px' }}>Submit</Button>
                                 </Grid>
-                                
+
                             </form>
                         </div>
                     </Paper>
                 </Container>
-                
+
                 <Dialog onClose={this.handleClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.open}>
                     <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
                         Select a file

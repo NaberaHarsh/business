@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
 
     localStorage.setItem('authToken', 'kma');
 
-    history.replace('/dashboard');
+    history.replace('/1');
 
     
 

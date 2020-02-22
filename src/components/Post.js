@@ -27,9 +27,24 @@ const styles = theme => ({
 
   },
 
-  root: {
+  root1: {
     width: 250
-
+  },
+  root2:{
+    width: 280
+  },
+  sectionMobile:{
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+      
+    }
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
   }
 })
 
@@ -93,8 +108,9 @@ class Post extends React.Component {
               <Grid container spacing={2}>
 
                 {this.state.data.map((product) =>
-
-                  <Card className={classes.root} style={{ marginLeft: '20px', marginTop: '10px' }}>
+                <>
+<div className={classes.sectionDesktop} >
+                  <Card className={classes.root1} style={{ marginLeft: '20px', marginTop: '10px' }}>
 
                     <CardHeader
                       avatar={
@@ -142,6 +158,60 @@ class Post extends React.Component {
 
                     </CardActions>
                   </Card>
+                  </div>
+
+
+                  <div className={classes.sectionMobile} >
+                  <Card className={classes.root2} style={{ marginLeft: '20px', marginTop: '10px' }}>
+
+                    <CardHeader
+                      avatar={
+                        <Avatar aria-label="name" className={classes.avatar}>
+                          H
+          </Avatar>
+                      }
+                      action={
+                        <IconButton aria-label="settings">
+                          <MoreVertIcon
+                            onClick={this.handleClick}
+                          />
+                          <Menu
+                            id="simple-menu"
+                            anchorEl={this.state.menu}
+                            keepMounted
+                            open={Boolean(this.state.menu)}
+                            onClose={this.handleClose}
+                          >
+                            <MenuItem onClick={this.handleClose}>Edit</MenuItem>
+                            <MenuItem onClick={this.handleClose}>Delete</MenuItem>
+                          </Menu>
+                        </IconButton>
+
+                      }
+                      title={product.title}
+                    />
+                    <CardMedia
+                      style={{ height: '140px', width: '100%' }}
+                      image={product.image}
+                    />
+                    <CardContent>
+                      <Typography variant="h6">{product.price}</Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        {product.desc}
+                      </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                      <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                      </IconButton>
+                      <IconButton aria-label="share">
+                        <ShareIcon />
+                      </IconButton>
+
+                    </CardActions>
+                  </Card>
+                  </div>
+                  </>
                 )}
               </Grid>
             </Card>

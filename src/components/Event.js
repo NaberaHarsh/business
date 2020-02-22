@@ -418,6 +418,7 @@ class Event extends React.Component {
                                     autoFocus
                                     size="small"
                                     multiline={true}
+                                    rows={3}
                                     value={description}
                                     onChange={this.handleChange}
                                 />

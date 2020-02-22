@@ -31,7 +31,7 @@ const styles = theme => ({
         flexDirection: "column",
         alignItems: "center"
 
-    }, 
+    },
     contain: {
         marginTop: theme.spacing(2),
         display: "flex",
@@ -40,12 +40,12 @@ const styles = theme => ({
     },
     inputRoot: {
         fontSize: 14
-      },
-      labelRoot: {
+    },
+    labelRoot: {
         fontSize: 14,
-       
-      },
-      image: {
+
+    },
+    image: {
         marginTop: theme.spacing(8),
         marginBottom: theme.spacing(8),
         display: "flex",
@@ -94,29 +94,19 @@ class Question extends React.Component {
         this.state = {
             value: 0,
             button: 0,
-            file:[],
-            // file: false,
-            // file: null,
+            file: [],
             question: '',
-            answer:'',
-            option1:'',
-            option2:'',
-            option3:'',
-            option4:'',
-            option5:'',
-            option6:'',
-            option7:'',
-            option8:'',
-            option9:'',
-            option10:'',
-            count: 2,         
-               tab: "upload",
+            answer: [],
+            answerOption:[],
+            count: 2,
+            tab: "upload",
             options: ["Add option " + 1],
 
         }
         this.handleChangeCategory = this.handleChangeCategory.bind(this)
         this.handleChangeButton = this.handleChangeButton.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+        this.handleChangeQuestion = this.handleChangeQuestion.bind(this)
+        this.handleChangeAnswer = this.handleChangeAnswer.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.getFile = this.getFile.bind(this);
         this.addQuestion = this.addQuestion.bind(this);
@@ -142,19 +132,30 @@ class Question extends React.Component {
         this.setState({ file: file })
     }
 
-    handleChange = e => {
-        const { name, value } = e.target
+
+handleChangeQuestion = e =>{
+    const {name, value} = e.target
+    this.setState({
+        [name]: value
+    })
+}
+
+    handleChangeAnswer =  ( index , event)=> {
+        const { name, value } = event.target
+
+        let options = this.state.answerOption;
+        options[index] = value;
         this.setState({
-            [name]: value
+            answerOption: options
         })
     }
 
     handleSubmit = e => {
         e.preventDefault()
-        const { file, question, answer, option1,option2, option3, option4,option5, option6, option7,option8, option9,option10} = this.state;
-        const userData = { file, question, answer, option1,option2, option3, option4,option5, option6, option7,option8, option9,option10 };
+        const { file, question, answerOption } = this.state;
+        const userData = { file, question, answerOption };
         console.log(userData);
-        this.setState({file:'',question:'', answer:''})
+        this.setState({ file: '', question: '', answerOption:[] })
     }
 
     handleChangeCategory(e) {
@@ -200,98 +201,98 @@ class Question extends React.Component {
 
 
     render() {
-        const { question, answer, option1,option2, option3, option4,option5, option6, option7,option8, option9,option10 } = this.state;
+        const { question } = this.state;
 
         const { classes } = this.props;
         const { tab } = this.state;
 
         return (
             <div>
-                 <Container maxWidth="xs" className={classes.contain} >
+                <Container maxWidth="xs" className={classes.contain} >
                     <Paper style={{ paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
                             <Paper variant='outlined' style={{ width: "90%" }} >
-                            {this.state.file.length != 0 
-                              ?
-                              <div className={classes.showImage}>
-                              {this.state.file.map(file=> <img style={{width:'100%',height:'100%', paddingBottom:'0px'}} src={file.preview} /> )}
-                                  </div>
-                            :
-                            <div className={classes.image} >
-                            <AddAPhotoIcon onClick={() => { this.handleOpen() }} style={{ color: '#1a73e8', fontSize: '32px' }} />
-                            <br />
-                            <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Make your post stand out with a photo</div>
-                        </div>}
-                </Paper>
-                <form  noValidate >
+                                {this.state.file.length != 0
+                                    ?
+                                    <div className={classes.showImage}>
+                                        {this.state.file.map(file => <img style={{ width: '100%', height: '100%', paddingBottom: '0px' }} src={file.preview} />)}
+                                    </div>
+                                    :
+                                    <div className={classes.image} >
+                                        <AddAPhotoIcon onClick={() => { this.handleOpen() }} style={{ color: '#1a73e8', fontSize: '32px' }} />
+                                        <br />
+                                        <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+                                    </div>}
+                            </Paper>
+                            <form noValidate >
 
-                    <TextField
-                    InputProps={{ classes: { root: classes.inputRoot } }}
-                    InputLabelProps={{
-                      classes: {
-                        root: classes.labelRoot,
-                        focused: classes.labelFocused
-                      }
-                    }}
-                    size="small"
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="option"
-                        label="Add Question"
-                        name="question"
-                        autoComplete="product"
-                        autoFocus
-                        multiline={true}
-                        value={question}
-                        onChange={this.handleChange}
-                    />
-                    
-                        
-                    {this.state.options.map((option, index) => (
-                        <span key={index}>
-                             <TextField
+                                <TextField
                                     InputProps={{ classes: { root: classes.inputRoot } }}
-                     InputLabelProps={{
-                       classes: {
-                         root: classes.labelRoot,
-                         focused: classes.labelFocused
-                       }
-                     }}
-                     size="small"
-                                        variant="outlined"
-                                        margin="normal"
-                                        required
-                                        fullWidth
-                                        id="option"
-                                        label={option}
-                                        name="answer"
-                                        autoComplete="option"
-                                        autoFocus
-                                        value={answer}
-                                        onChange={this.handleChange} />
-                                    
-                        </span>
-
-                    ))}
-                    <Button variant='contained' color='primary'
-                        onClick={this.addQuestion}  
-                        style={{fontSize:"12px", width:'100%'}}                  >
-                        Add Option</Button>
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelRoot,
+                                            focused: classes.labelFocused
+                                        }
+                                    }}
+                                    size="small"
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="option"
+                                    label="Add Question"
+                                    name="question"
+                                    autoComplete="product"
+                                    autoFocus
+                                    multiline={true}
+                                    value={question}
+                                    onChange={this.handleChangeQuestion}
+                                />
 
 
-                    <br />
-                    <Divider />
-                    <br />
-                    <Grid style={{ textAlign: "right" }}>
+                                {this.state.options.map((option, index) => (
+                                    <span key={index}>
+                                        <TextField
+                                            InputProps={{ classes: { root: classes.inputRoot } }}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.labelRoot,
+                                                    focused: classes.labelFocused
+                                                }
+                                            }}
+                                            size="small"
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="option"
+                                            label={option}
+                                            name="answer"
+                                            autoComplete="option"
+                                            autoFocus
+                                            value={this.state.answerOption[index]}
+                                            onChange={(event) => this.handleChangeAnswer(index,event)} />
+
+                                    </span>
+
+                                ))}
+                                <Button variant='contained' color='primary'
+                                    onClick={this.addQuestion}
+                                    style={{ fontSize: "12px", width: '100%' }}                  >
+                                    Add Option</Button>
+
+
+                                <br />
+                                <Divider />
+                                <br />
+                                <Grid style={{ textAlign: "right" }}>
                                     <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
                                         style={{ fontSize: '12px' }}>Submit</Button>
                                 </Grid>
-                </form>
-</div></Paper>
-</Container>
-<Dialog onClose={this.handleClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.open}>
+                            </form>
+                        </div></Paper>
+                </Container>
+                <Dialog onClose={this.handleClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.open}>
                     <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
                         Select a file
           <ImageTab getValue={this.getValue} />

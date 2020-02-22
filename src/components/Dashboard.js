@@ -25,6 +25,8 @@ import Product from './Product'
 import Event from './Event'
 import Offer from './Offer'
 import OpenIconSpeedDial from './SpeedDial'
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Facebook from './Skeleton'
 
 import {
   BrowserRouter as Router,
@@ -35,6 +37,7 @@ import {
   useHistory,
   useLocation
 } from "react-router-dom";
+import { Grid } from '@material-ui/core';
 
 
 
@@ -101,7 +104,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing(7),
+    width: theme.spacing(0),
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9),
     },
@@ -125,13 +128,19 @@ const useStyles = makeStyles(theme => ({
   fixedHeight: {
     height: 380,
   },
+  sectionMobile:{
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    }
+  },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
       display: 'flex',
     },
     shiftTextLeft: {
-      marginLeft: '0px'
+      marginLeft: '0px',
     },
     shiftTextRight: {
       marginLeft: drawerWidth,
@@ -151,7 +160,7 @@ const Dashboard = (props) => {
 
 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
 
 
@@ -272,6 +281,17 @@ console.log(data);
             >Profile</Button>
 
           </div>
+          <div className={classes.sectionMobile}>
+          <MoreVertIcon 
+          color="inherit"
+          edge="end"
+          aria-label="account of current user"
+          aria-controls={menuId}
+          aria-haspopup="true"
+          onClick={handleProfileMenuOpen}
+          color="inherit"/>
+         
+</div>
 
         </Toolbar>
       </AppBar>
@@ -292,7 +312,7 @@ console.log(data);
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems(handlePageChange, page, history)}</List>
+        <List>{mainListItems(setOpen, handlePageChange, page, history)}</List>
       </Drawer>
 
 
@@ -313,17 +333,42 @@ console.log(data);
 
 
             <Route path="/2">
-<Product />
+              <Grid container spacing={4}>
+                <Grid md={6} xs={12}>
+                <Product />
+                </Grid>
+                <Grid md={6} xs={12}>
+                <Facebook />
+
+                </Grid>
+
+              </Grid>
             </Route>
 
             <Route path="/3">
+            <Grid container spacing={4}>
+                <Grid md={6} xs={12}>
+                <Event />
+                </Grid>
+                <Grid md={6} xs={12}>
+                <Facebook />
 
-<Event />
+                </Grid>
+
+              </Grid>
 </Route>
 
 <Route path="/4">
+<Grid container spacing={4}>
+                <Grid md={6} xs={12}>
+                <Offer />
+                </Grid>
+                <Grid md={6} xs={12}>
+                <Facebook />
 
-<Offer />
+                </Grid>
+
+              </Grid>
 </Route>
            
             {/* <Route 

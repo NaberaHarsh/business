@@ -440,6 +440,7 @@ class Offer extends React.Component {
                                             size="small"
                                             value={description}
                                             onChange={this.handleChange}
+                                            rows={3}
                                             multiline={true}
                                         />
                                     </ExpansionPanelDetails>

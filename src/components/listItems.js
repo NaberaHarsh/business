@@ -22,12 +22,12 @@ import {
   useHistory,
   useLocation
 } from "react-router-dom";
-export const mainListItems = (handlePageChange, pageId, history) =>  console.log(history) || (
+export const mainListItems = (setOpen ,handlePageChange, pageId, history) =>  console.log(history) || (
   <div>
 
     <Link to={`/1`} style={{ textDecoration: 'none', color: 'black'  }}>
     <ListItem  
-    button onClick={() => handlePageChange(1)}
+    button onClick={() => {handlePageChange(1);setOpen(false) }}
     selected={history.location.pathname === '/dashboard'}
     >
       <ListItemIcon>
@@ -43,7 +43,7 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
 
     <Link to={`/2`} style={{ textDecoration: 'none', color: 'black'  }}>
 
-    <ListItem button onClick={() => handlePageChange(3)}
+    <ListItem button onClick={() => {handlePageChange(1);setOpen(false) }}
     selected={history.location.pathname === '/config'}
     >
       <ListItemIcon >
@@ -58,7 +58,7 @@ export const mainListItems = (handlePageChange, pageId, history) =>  console.log
     
     <Link to={`/3`} style={{ textDecoration: 'none', color: 'black'  }}>
 
-<ListItem button onClick={() => handlePageChange(3)}
+<ListItem onClick={() => {handlePageChange(1);setOpen(false) }}
 selected={history.location.pathname === '/config'}
 >
   <ListItemIcon>
@@ -73,7 +73,7 @@ selected={history.location.pathname === '/config'}
 
 <Link to={`/4`} style={{ textDecoration: 'none', color: 'black'  }}>
 
-<ListItem button onClick={() => handlePageChange(3)}
+<ListItem onClick={() => {handlePageChange(1);setOpen(false) }}
 selected={history.location.pathname === '/config'}
 >
   <ListItemIcon>
@@ -100,7 +100,7 @@ selected={history.location.pathname === '/config'}
     </Link> */}
     <Link to={`/5`} style={{ textDecoration: 'none', color: 'black'  }}>
     <ListItem  
-    button onClick={() => handlePageChange(1)}
+    button onClick={() => {handlePageChange(1);setOpen(false) }}
     selected={history.location.pathname === '/dashboard'}
     >
       <ListItemIcon>
