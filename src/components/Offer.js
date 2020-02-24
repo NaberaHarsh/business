@@ -235,6 +235,13 @@ class Offer extends React.Component {
         this.setState({ end_time: endTime })
     }
 
+    handlePreview() {
+        const { image, title, start_date, end_date, start_time, end_time, description, voucher, terms, items } = this.state;
+        const userData = { image, title, start_date, end_date, start_time, end_time, description, voucher, terms, items };
+        console.log(userData);
+        this.props.handleDataDisplay(userData)
+    }
+
     handleSubmit = e => {
         e.preventDefault()
         const { image, title, start_date, end_date, start_time, end_time, description, voucher, terms, items } = this.state;
@@ -548,10 +555,20 @@ class Offer extends React.Component {
                                        {this.state.error && <p className="error">{this.state.error}</p>}
 
                                 <br />
-                                <Grid style={{ textAlign: "right" }}>
-                                    <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
-                                        style={{ fontSize: '12px' }}>Submit</Button>
+                                <Grid container spacing={2}>
+                                    <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                                    <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={() => { this.handlePreview() }}
+                                            style={{ fontSize: '12px' }}>Preview</Button>
+                                    </Grid>
+                                    <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                            style={{ fontSize: '12px' }}>Submit</Button>
+                                    </Grid>
+
                                 </Grid>
+
+
 
                             </form>
 

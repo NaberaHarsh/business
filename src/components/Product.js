@@ -33,7 +33,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const top100Films = [
     { title: 'Education' },
     { title: 'Hospital' },
-{title: 'Sports'}]
+    { title: 'Sports' }]
 
 
 const styles = theme => ({
@@ -128,6 +128,7 @@ class Product extends React.Component {
             items: [],
             tag: "",
             error: null,
+            userData: '',
         }
 
         this.handleChangeCategory = this.handleChangeCategory.bind(this)
@@ -229,11 +230,19 @@ class Product extends React.Component {
         })
     }
 
+    handlePreview() {
+        const { image, product_name, price, desc } = this.state;
+        const userData = { image, product_name, price, desc };
+        console.log(userData);
+        this.props.handleDataDisplay(userData)
+    }
+
     handleSubmit = e => {
         e.preventDefault()
         const { image, product_name, category, price, desc, link, items } = this.state;
         const userData = { image, product_name, category, price, desc, link, items };
         console.log(userData);
+        // this.props.handleDataDisplay(userData)
         // this.props.handleData(userData);
         this.setState({ image: '', product_name: '', category: '', price: '', desc: '', link: '', tag: '', items: [], error: null })
     }
@@ -259,7 +268,6 @@ class Product extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false })
-        console.log(this.props.unit)
         // this.props.forTab(this.props.unit)
 
     };
@@ -324,57 +332,29 @@ class Product extends React.Component {
                                     value={product_name}
                                     onChange={this.handleChange}
                                 />
-                                {/* <FormControl
-                                    className={classes.root} style={{ width: '70%' }}
-                                    variant="outlined"
-                                    size="small"
+
+                                <Autocomplete
+                                    className={classes.root}
                                     InputProps={{ classes: { root: classes.inputRoot } }}
                                     InputLabelProps={{
                                         classes: {
                                             root: classes.labelRoot,
                                             focused: classes.labelFocused
                                         }
-                                    }}>
+                                    }}
 
-                                    <InputLabel htmlFor="outlined-age-native-simple"
-                                        style={{ fontSize: "14px" }}
-                                    >
-                                        Select a category
-        </InputLabel>
-                                    <Select
-                                        style={{ fontSize: "14px" }}
-                                        native
-                                        value={this.state.value}
-                                        onChange={this.handleChangeCategory}
-                                    >
-                                        <option value="" />
-                                        <option value={1}>Create a new category</option>
-
-                                    </Select>
-                                </FormControl> */}
-
-
-                                <Autocomplete
-                                className={classes.root}
-                                InputProps={{ classes: { root: classes.inputRoot } }}
-                                InputLabelProps={{
-                                    classes: {
-                                        root: classes.labelRoot,
-                                        focused: classes.labelFocused
-                                    }
-                                }}
                                     multiple
                                     size="small"
                                     id="checkboxes-tags-demo"
                                     options={top100Films}
-                                    disableCloseOnSelect
+                                    closeOnSelect
                                     getOptionLabel={option => option.title}
                                     renderOption={(option, { selected }) => (
                                         <React.Fragment>
                                             <Checkbox
                                                 icon={icon}
                                                 checkedIcon={checkedIcon}
-                                                style={{ marginRight: 4, fontSize:'14px' }}
+                                                style={{ marginRight: 4, fontSize: '14px' }}
                                                 checked={selected}
                                             />
                                             {option.title}
@@ -382,14 +362,14 @@ class Product extends React.Component {
                                     )}
                                     renderInput={params => (
                                         <TextField
-                                        InputProps={{ classes: { root: classes.inputRoot } }}
-                                        InputLabelProps={{
-                                            classes: {
-                                                root: classes.labelRoot,
-                                                focused: classes.labelFocused
-                                            }
-                                        }}
-                                size="small"
+                                            InputProps={{ classes: { root: classes.inputRoot } }}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.labelRoot,
+                                                    focused: classes.labelFocused
+                                                }
+                                            }}
+                                            size="small"
                                             {...params}
                                             variant="outlined"
                                             label="Select Category"
@@ -587,10 +567,19 @@ class Product extends React.Component {
                                 <br />
                                 <Divider />
                                 <br />
-                                <Grid style={{ textAlign: "right" }}>
-                                    <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
-                                        style={{ fontSize: '12px' }}>Submit</Button>
+                                <Grid container spacing={2} >
+                                    <Grid md={6} lg={6} sm={3} xs={3}></Grid>
+                                    <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={() => { this.handlePreview() }}
+                                            style={{ fontSize: '12px' }}>Preview</Button>
+                                    </Grid>
+                                    <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                            style={{ fontSize: '12px' }}>Submit</Button>
+                                    </Grid>
+
                                 </Grid>
+
 
                             </form>
                         </div>

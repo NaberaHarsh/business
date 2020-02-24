@@ -15,16 +15,19 @@ const useStyles = makeStyles(theme => ({
     
   card: {
     maxWidth: 345,
-    marginTop: theme.spacing(12)
+    marginTop: theme.spacing(12),
+    width:'100%',
+    position:"fixed"
   },
   media: {
-    height: 190,
+    height: 200,
   },
 }));
 
 function Media(props) {
   const { loading = false } = props;
   const classes = useStyles();
+  const {name, price, description, startDate, endDate, photo} = props;
 
   return (
       <div className={classes.root} >
@@ -39,20 +42,55 @@ function Media(props) {
              null 
                   }
         title={
-            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />
-         
-          
+          name != null ? 
+          name
+          :
+            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} /> 
+                     
         }
-        subheader={ <Skeleton animation="wave" height={10} width="40%" />}
       />
-        <Skeleton animation="wave" variant="rect" className={classes.media} />
+      {photo != null ?
+      photo.map(file =>
+<img  src={file.preview} />
+        )
+       :
+      <Skeleton animation="wave" variant="rect" className={classes.media} />
+
+      }
+      
 
       <CardContent>
-       
-          <React.Fragment>
+      <Typography variant="h6">
+        {price != null 
+       ?
+         price
+         
+       : 
             <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
-            <Skeleton animation="wave" height={10} width="80%" />
-          </React.Fragment>
+       }
+       </Typography>
+       
+<Typography variant="h6">
+        {startDate && endDate != null 
+       ?
+            startDate - endDate  
+       : 
+       <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+      }
+      </Typography>
+
+       <Typography variant="h6">
+        {description != null 
+       ?
+         description        
+       : 
+       <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+      }
+      </Typography>
+
+
+
+          
        
       </CardContent>
     </Card>
@@ -64,10 +102,12 @@ Media.propTypes = {
   loading: PropTypes.bool,
 };
 
-export default function Facebook() {
+export default function Facebook(props) {
+const {name, price, description, startDate, endDate, photo} = props
+ console.log(name, price, description, startDate, endDate, photo)
   return (
     <div>
-      <Media loading />
+      <Media loading name={name} price={price} description={description} startDate={startDate} endDate={endDate} photo={photo}/>
     </div>
   );
 }

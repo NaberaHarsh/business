@@ -20,7 +20,8 @@ import Typography from '@material-ui/core/Typography';
 import ImageTab from './ImageTab'
 import Files from './Files'
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 
 const styles = theme => ({
@@ -96,7 +97,8 @@ class Question extends React.Component {
             button: 0,
             file: [],
             question: '',
-            answer: [],
+            answer:'',
+            description:'',
             answerOption:[],
             count: 2,
             tab: "upload",
@@ -152,10 +154,10 @@ handleChangeQuestion = e =>{
 
     handleSubmit = e => {
         e.preventDefault()
-        const { file, question, answerOption } = this.state;
-        const userData = { file, question, answerOption };
+        const { file, question,answer, answerOption, description } = this.state;
+        const userData = { file, question,answer, answerOption, description };
         console.log(userData);
-        this.setState({ file: '', question: '', answerOption:[] })
+        this.setState({ file: '', question: '',answer:"", answerOption:[], description:'' })
     }
 
     handleChangeCategory(e) {
@@ -201,7 +203,7 @@ handleChangeQuestion = e =>{
 
 
     render() {
-        const { question } = this.state;
+        const { question, answer, description } = this.state;
 
         const { classes } = this.props;
         const { tab } = this.state;
@@ -221,7 +223,7 @@ handleChangeQuestion = e =>{
                                     <div className={classes.image} >
                                         <AddAPhotoIcon onClick={() => { this.handleOpen() }} style={{ color: '#1a73e8', fontSize: '32px' }} />
                                         <br />
-                                        <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Make your post stand out with a photo</div>
+                                        <div style={{ color: '#1a73e8', textAlign: "center", fontSize: "14px" }}>Add a photo</div>
                                     </div>}
                             </Paper>
                             <form noValidate >
@@ -267,7 +269,7 @@ handleChangeQuestion = e =>{
                                             fullWidth
                                             id="option"
                                             label={option}
-                                            name="answer"
+                                            name="option"
                                             autoComplete="option"
                                             autoFocus
                                             value={this.state.answerOption[index]}
@@ -276,6 +278,51 @@ handleChangeQuestion = e =>{
                                     </span>
 
                                 ))}
+                                 <TextField
+                                            InputProps={{ classes: { root: classes.inputRoot } }}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.labelRoot,
+                                                    focused: classes.labelFocused
+                                                }
+                                            }}
+                                            size="small"
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="answer"
+                                            label="Enter correct answer"
+                                            name="answer"
+                                            autoComplete="answer"
+                                            autoFocus
+                                            value={answer}
+                                            onChange={this.handleChangeQuestion} />
+
+<TextField
+                                            InputProps={{ classes: { root: classes.inputRoot } }}
+                                            InputLabelProps={{
+                                                classes: {
+                                                    root: classes.labelRoot,
+                                                    focused: classes.labelFocused
+                                                }
+                                            }}
+                                            size="small"
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="description"
+                                            label="Add description"
+                                            name="description"
+                                            autoComplete="description"
+                                            autoFocus
+                                            multiline={true}
+                                            rows={3}
+                                            value={description}
+                                            onChange={this.handleChangeQuestion} />
+
+
                                 <Button variant='contained' color='primary'
                                     onClick={this.addQuestion}
                                     style={{ fontSize: "12px", width: '100%' }}                  >

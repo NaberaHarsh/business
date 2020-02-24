@@ -151,14 +151,6 @@ const useStyles = makeStyles(theme => ({
 
 const Dashboard = (props) => {
 
-
-
-
-
-
-
-
-
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -196,6 +188,13 @@ console.log(data);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [name, setName]= React.useState(null);
+  const [price, setPrice] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
+  const [startDate, setStartDate] = React.useState(null);
+  const [endDate, setEndDate] = React.useState(null);
+  const [photo, setPhoto] = React.useState(null);
+  
 
   const menuId = 'primary-search-account-menu';
   const isMenuOpen = Boolean(anchorEl);
@@ -203,6 +202,8 @@ console.log(data);
   const handleMenuClose = (actionId) => {
     setAnchorEl(null);
     handleMobileMenuClose();
+
+    
 
     switch (actionId) {
       case 3:
@@ -217,7 +218,22 @@ console.log(data);
     }
   };
 
-
+  const handleDataDisplay = data =>{
+    setPhoto( data.image )
+    setName(data.product_name);
+    setPrice(data.price);
+    setDescription(data.desc);
+    
+    console.log(data)
+  }
+  const handleDataDisplayEvent = data =>{
+    setPhoto( data.image)
+    setName(data.title);
+    setDescription(data.description);
+    setStartDate(data.start_date);
+    setEndDate(data.end_date);
+    console.log(data)
+  }
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -335,10 +351,10 @@ console.log(data);
             <Route path="/2">
               <Grid container spacing={4}>
                 <Grid md={6} xs={12}>
-                <Product />
+                <Product handleDataDisplay={handleDataDisplay}/>
                 </Grid>
                 <Grid md={6} xs={12}>
-                <Facebook />
+                <Facebook name={name} description={description} price={price} photo={photo} />
 
                 </Grid>
 
@@ -348,10 +364,10 @@ console.log(data);
             <Route path="/3">
             <Grid container spacing={4}>
                 <Grid md={6} xs={12}>
-                <Event />
+                <Event  handleDataDisplay={handleDataDisplayEvent}/>
                 </Grid>
                 <Grid md={6} xs={12}>
-                <Facebook />
+                <Facebook name={name} description={description} startDate={startDate} endDate={endDate} photo={photo}/>
 
                 </Grid>
 
@@ -361,10 +377,10 @@ console.log(data);
 <Route path="/4">
 <Grid container spacing={4}>
                 <Grid md={6} xs={12}>
-                <Offer />
+                <Offer  handleDataDisplay={handleDataDisplayEvent}/>
                 </Grid>
                 <Grid md={6} xs={12}>
-                <Facebook />
+                <Facebook name={name} description={description} startDate={startDate} endDate={endDate} photo={photo}/>
 
                 </Grid>
 
