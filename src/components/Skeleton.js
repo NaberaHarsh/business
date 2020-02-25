@@ -61,9 +61,9 @@ function Media(props) {
 
       <CardContent>
       <Typography variant="h6">
-        {price != null 
+        {price || (startDate && endDate)   != null 
        ?
-         price
+         price || (`${startDate}-${endDate}`)
          
        : 
             <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />

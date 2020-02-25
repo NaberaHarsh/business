@@ -21,8 +21,7 @@ import ImageTab from './ImageTab'
 import Files from './Files'
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
     paper: {
@@ -189,6 +188,20 @@ handleChangeQuestion = e =>{
 
     };
 
+    handleDelete(i){
+        console.log("hello")
+        let x= this.state.options;
+        let y= this.state.answerOption;
+        let num= this.state.count;
+        num=num - 1;
+        this.setState({count: num})
+        x.splice(i,1)
+        y.splice(i,1)
+        this.setState({
+            options:x, answerOption:y
+        })       
+    }
+
     getValue(e) {
         console.log(e);
         if (e == 1) {
@@ -254,7 +267,9 @@ handleChangeQuestion = e =>{
 
                                 {this.state.options.map((option, index) => (
                                     <span key={index}>
-                                        <TextField
+                                        <Grid container spacing={0}>
+                                            <Grid md={11} sm={11} xs={11} >
+                                            <TextField
                                             InputProps={{ classes: { root: classes.inputRoot } }}
                                             InputLabelProps={{
                                                 classes: {
@@ -275,6 +290,22 @@ handleChangeQuestion = e =>{
                                             value={this.state.answerOption[index]}
                                             onChange={(event) => this.handleChangeAnswer(index,event)} />
 
+                                            </Grid>
+                                            <Grid md={1} sm={1} xs={1} >
+                                                
+                                            < DeleteIcon className={classes.root} style={{ height:'28px', width:'auto'}} onClick={()=> this.handleDelete(index)}/>
+
+                                                {/* {this.state.count == 2
+                                                ?
+                                                < AddIcon className={classes.root}
+                                                onClick={this.addQuestion}
+                                                />
+                                            :
+                                            < DeleteIcon className={classes.root} style={{ height:'28px', width:'auto'}} onClick={()=> this.handleDelete(index)}/>
+                                            } */}
+                                            </Grid>
+                                        </Grid>
+                                       
                                     </span>
 
                                 ))}
