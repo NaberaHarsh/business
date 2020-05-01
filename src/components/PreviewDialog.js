@@ -8,8 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import { Grid } from '@material-ui/core';
-import Question from './Question';
-
+import Facebook from './Skeleton'
 
 // import OpenIconSpeedDial from './SpeedDial'
 
@@ -71,9 +70,9 @@ function ConfirmationDialogRaw(props) {
             open={open}
             {...other}
         >
-            <DialogTitle id="confirmation-dialog-title">Add Question</DialogTitle>
+            <DialogTitle id="confirmation-dialog-title">Preview</DialogTitle>
             <DialogContent dividers>
-        <Question  handleOk={handleOk} handleCancel={handleCancel} />
+        <Facebook  handleOk={handleOk} handleCancel={handleCancel} />
               </DialogContent>
         </Dialog>
     );
@@ -97,7 +96,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function QuestionDialog(props) {
+export default function PreviewDialog(props) {
     const { getData } = props;
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);

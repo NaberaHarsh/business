@@ -32,6 +32,12 @@ const styles = theme => ({
         alignItems: "center"
 
     },
+    contain1: {
+        marginTop: theme.spacing(0),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+    },
     contain: {
         marginTop: theme.spacing(2),
         display: "flex",
@@ -223,10 +229,10 @@ handleChangeQuestion = e =>{
 
         return (
             <div>
-                <Container maxWidth="xs" className={classes.contain} >
+                <Container maxWidth="xs" className={classes.contain1} >
                     <Paper style={{ paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
-                            <Paper variant='outlined' style={{ width: "90%" }} >
+                            <Paper variant='outlined' style={{ width: "100%" }} >
                                 {this.state.file.length != 0
                                     ?
                                     <div className={classes.showImage}>
@@ -363,9 +369,20 @@ handleChangeQuestion = e =>{
                                 <br />
                                 <Divider />
                                 <br />
-                                <Grid style={{ textAlign: "right" }}>
-                                    <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                <Grid container spacing={0}>
+                                <Grid md={6} lg={6} sm={0} xs={0}></Grid>
+
+                                    <Grid md={3} lg={3} sm={6} xs={6} style={{alignItems:"right"}}>
+                                    <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleCancel() }}
                                         style={{ fontSize: '12px' }}>Submit</Button>
+                                    </Grid>
+                                    <Grid md={3} lg={3} sm={6} xs={6} style={{textalign:"right"}}>
+                                    <Button variant='contained' color='primary' onClick={(e) => { this.props.handleCancel() }}
+                                        style={{ fontSize: '12px' }}>Close</Button>
+                                    </Grid>
+
+
+                                   
                                 </Grid>
                             </form>
                         </div></Paper>

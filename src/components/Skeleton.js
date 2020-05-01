@@ -10,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Skeleton from '@material-ui/lab/Skeleton';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+
 
 const useStyles = makeStyles(theme => ({
     
@@ -20,80 +23,57 @@ const useStyles = makeStyles(theme => ({
     position:"fixed"
   },
   media: {
-    height: 200,
+    width:320,
+    height: 220,
   },
 }));
 
 function Media(props) {
   const { loading = false } = props;
   const classes = useStyles();
-  const {name, price, description, startDate, endDate, photo} = props;
-
+  const {name, price, desc, startDate, endDate,startTime, endTime, image} = props;
   return (
       <div className={classes.root} >
-    <Card className={classes.card} >
+       <Card className={classes.root}>
+      <CardActionArea>
       <CardHeader
         avatar={
-         
-            <Skeleton animation="wave" variant="circle" width={40} height={40} />
-         
+          <Avatar aria-label="recipe" className={classes.avatar}>
+            H
+          </Avatar>
         }
-        action={
-             null 
-                  }
-        title={
-          name != null ? 
-          name
-          :
-            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} /> 
-                     
-        }
+       
+        title={name}
       />
-      {photo != null ?
-      photo.map(file =>
-<img  src={file.preview} />
-        )
-       :
-      <Skeleton animation="wave" variant="rect" className={classes.media} />
-
-      }
-      
-
       <CardContent>
-      <Typography variant="h6">
-        {price || (startDate && endDate)   != null 
-       ?
-         price || (`${startDate}-${endDate}`)
-         
-       : 
-            <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
-       }
-       </Typography>
-       
-<Typography variant="h6">
-        {startDate && endDate != null 
-       ?
-            startDate - endDate  
-       : 
-       <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
-      }
-      </Typography>
-
-       <Typography variant="h6">
-        {description != null 
-       ?
-         description        
-       : 
-       <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
-      }
-      </Typography>
-
-
-
+        <CardMedia
+          className={classes.media}
+              image={image.map(file=> file.preview)}
           
-       
-      </CardContent>
+          title={`${name} image`}
+        />
+        
+          <Typography gutterBottom variant="h5" component="h2">
+           {price!= null ? price : ""} 
+           {(startDate && endDate)   != null ? (`${startDate.getDate()}/${startDate.getMonth()+1}/${startDate.getFullYear()} - ${endDate.getDate()}/${endDate.getMonth()+1}/${endDate.getFullYear()} `) : ""}
+
+           {/* {(startDate && endDate)   != null ? (`${startDate.getDate()}/${startDate.getMonth()+1}/${startDate.getFullYear()} ${startTime==null ?" ": (`(${startTime.getHours()}: ${startTime.getMinutes()})`)  }  - ${endDate.getDate()}/${endDate.getMonth()+1}/${endDate.getFullYear()} ${endTime==null? "" : (`(${endTime.getHours()}:${endTime.getMinutes()})`) }  `) : ""} */}
+          </Typography>
+          {/* {startTime!=null && endTime!=null ?
+          <Typography>
+{`${startTime.getHours()}:${startTime.getMinutes()} - ${endTime.getHours()}:${endTime.getMinutes()}`}
+          </Typography>
+        : ""
+        } */}
+          <Typography variant="body2" color="textSecondary" component="p">
+           {desc}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+      </CardActions>
     </Card>
+
     </div>
   );
 }
@@ -103,11 +83,11 @@ Media.propTypes = {
 };
 
 export default function Facebook(props) {
-const {name, price, description, startDate, endDate, photo} = props
- console.log(name, price, description, startDate, endDate, photo)
+const {name, price, desc, startDate, endDate,startTime,endTime, image} = props
+ console.log(name, price, desc, startDate, endDate,startTime, endTime, image)
   return (
     <div>
-      <Media loading name={name} price={price} description={description} startDate={startDate} endDate={endDate} photo={photo}/>
+      <Media name={name} price={price} desc={desc} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} image={image}/>
     </div>
   );
 }

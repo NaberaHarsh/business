@@ -6,8 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Button, Grid } from '@material-ui/core';
 import DragAndDrop from './Drag&Drop';
 import Divider from '@material-ui/core/Divider';
@@ -16,17 +14,18 @@ import MaterialUIPickersEndDate from './EndDate'
 import MaterialUIPickersEndTime from './EndTime'
 import MaterialUIPickersStartTime from './StartTime'
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
-import Image from './Image'
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
 import ImageTab from './ImageTab'
 import Files from './Files'
 import Typography from '@material-ui/core/Typography';
 import "./styles.css";
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Facebook from './Skeleton';
 
 const styles = theme => ({
     paper: {
@@ -50,6 +49,12 @@ const styles = theme => ({
         width:"100%",
         height:'100%'
     }, 
+    contain1: {
+        marginTop: theme.spacing(0),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+    },
     contain: {
         marginTop: theme.spacing(2),
         display: "flex",
@@ -120,6 +125,7 @@ class Event extends React.Component {
             items: [],
             tag: "",
             error: null,
+            showPreview:false,
 
         }
         this.handleChangeButton = this.handleChangeButton.bind(this)
@@ -169,7 +175,7 @@ class Event extends React.Component {
         evt.preventDefault();
     
         var paste = evt.clipboardData.getData("text");
-        var content = paste.match(/[\w\d\.-]+/g);
+        var content = paste.match(/[\w\d-]+/g);
     
         if (content) {
           var toBeAdded = content.filter(item => !this.isInList(item));
@@ -207,7 +213,7 @@ class Event extends React.Component {
       }
     
       isItem(item) {
-        return /[\w\d\.-]+/.test(item);
+        return /[\w\d-]+/.test(item);
       }
 
 
@@ -236,7 +242,7 @@ class Event extends React.Component {
         const { image, title, start_date, end_date, start_time, end_time, description, link, items } = this.state;
         const userData = { image, title, start_date, end_date, start_time, end_time, description, link, items };
         console.log(userData);
-        this.props.handleDataDisplay(userData)
+        // this.props.handleDataDisplay(userData)
     }
 
     handleSubmit = e => {
@@ -263,6 +269,12 @@ class Event extends React.Component {
         console.log(this.state.time)
     };
 
+    previewOpen=()=>{
+        this.setState({ showPreview:true })
+    }
+    previewClose=()=>{
+        this.setState({ showPreview:false })
+    }
 
     // get(){
     //     this.setState({image:true})
@@ -285,7 +297,7 @@ class Event extends React.Component {
 
     getValue(e) {
         console.log(e);
-        if (e == 1) {
+        if (e === 1) {
             this.setState({ tab: 'album' })
         }
         else {
@@ -304,14 +316,15 @@ class Event extends React.Component {
 
         return (
             <div>
-                <Container maxWidth="xs" className={classes.contain} >
+                <Container maxWidth="xs" className={classes.contain1} >
                     <Paper style={{ paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
-                            <Paper variant='outlined' style={{ width: "90%" }}>
-                            {this.state.image.length != 0 
+                            <Paper variant='outlined' style={{ width: "100%" }}>
+                            {this.state.image.length !== 0 
                               ?
                               <div className={classes.showImage}>
-                              {this.state.image.map(file=> <img style={{width:'100%',height:'100%', paddingBottom:'0px'}} src={file.preview} /> )}
+                              {this.state.image.map(file=> <img style={{width:'100%',height:'100%', paddingBottom:'0px'}} src={file.preview}
+                              alt="image" /> )}
                                   </div>
                             :
                             <div className={classes.image} >
@@ -338,13 +351,13 @@ class Event extends React.Component {
                                     label="Event Title"
                                     name="title"
                                     autoComplete="event"
-                                    autoFocus
+                                
                                     size="small"
                                     value={title}
                                     onChange={this.handleChange}
 
                                 />
-                                {/* <FormControlLabel
+                                <FormControlLabel
                         style={{ marginTop: '10px' }}
                         value="time"
                         onChange={this.handleChangeTime}
@@ -355,7 +368,7 @@ class Event extends React.Component {
 
 
                     {this.state.time === true
-                        ? */}
+                        ?
                                 <Grid container spacing={0}>
                                     <Grid md={8} xs={8} >
 
@@ -371,7 +384,7 @@ class Event extends React.Component {
                                         />
                                     </Grid>
                                 </Grid>
-                                {/* :
+                                 :
                         <div>
 
                             < MaterialUIPickersStartDate
@@ -381,7 +394,7 @@ class Event extends React.Component {
                     }
 
                     {this.state.time === true
-                        ? */}
+                        ? 
                                 <Grid container spacing={0}>
                                     <Grid md={8} xs={8} >
 
@@ -396,14 +409,14 @@ class Event extends React.Component {
                                         />
                                     </Grid>
                                 </Grid>
-                                {/* :
+                                 :
                         <div>
 
                             <MaterialUIPickersEndDate
                                 endDate={this.getEndDate}
                             />
                         </div>
-                    } */}
+                    } 
 
 
                                 <TextField
@@ -422,7 +435,7 @@ class Event extends React.Component {
                                     label="Event Description"
                                     name="description"
                                     autoComplete="desc"
-                                    autoFocus
+                                
                                     size="small"
                                     multiline={true}
                                     rows={3}
@@ -482,7 +495,7 @@ class Event extends React.Component {
                                             label="Link from your button"
                                             name="link"
                                             autoComplete="link"
-                                            autoFocus
+                                
                                             size="small"
                                             value={link}
                                             onChange={this.handleChange}
@@ -532,7 +545,7 @@ class Event extends React.Component {
                                     label="Add Tag"
                                     name="tag"
                                     autoComplete="tag"
-                                    autoFocus
+                        
                                     size="small"
                                     multiline={true}
                                     value={ tag  }
@@ -544,16 +557,19 @@ class Event extends React.Component {
                                 <Divider />
                                 <br />
                                 <Grid container spacing={2}>
-                                    <Grid md={6} lg={6} sm={3} xs={3}></Grid>
-                                    <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                                        <Button variant='contained' color='primary' onClick={() => { this.handlePreview() }}
+                                    
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={() => { this .previewOpen() }}
                                             style={{ fontSize: '12px' }}>Preview</Button>
                                     </Grid>
-                                    <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                                        <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleCancel() }}
                                             style={{ fontSize: '12px' }}>Submit</Button>
                                     </Grid>
-
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                    <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}
+                                            style={{ fontSize: '12px' }}>Close</Button>
+                                    </Grid>
                                 </Grid>
 
 
@@ -568,8 +584,8 @@ class Event extends React.Component {
           <ImageTab getValue={this.getValue} />
                     </DialogTitle>
                     <DialogContent dividers>
-                        {tab == "upload" ? <DragAndDrop getImage={this.getImage} /> : ""}
-                        {tab == "album" ? <Files /> : ""}
+                        {tab === "upload" ? <DragAndDrop getImage={this.getImage} /> : ""}
+                        {tab === "album" ? <Files /> : ""}
 
                     </DialogContent>
                     <DialogActions>
@@ -579,6 +595,19 @@ class Event extends React.Component {
                     </DialogActions>
                 </Dialog>
 
+                <Dialog onClose={this.previewClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.showPreview}>
+                    <DialogTitle id="customized-dialog-title" onClose={this.previewClose}>
+                        Preview
+                    </DialogTitle>
+                    <DialogContent dividers>
+                       <Facebook name={this.state.title} startDate={this.state.start_date} startTime={this.state.start_time} endDate={this.state.end_date} endTime={this.state.end_time} image={this.state.image} desc={this.state.description} />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={this.previewClose} color="primary">
+                            Done
+          </Button>
+                    </DialogActions>
+                </Dialog>
 
             </div>
         )

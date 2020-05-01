@@ -21,6 +21,7 @@ import Post from './Post'
 import { connect } from 'react-redux'
 import FileDialog from './FileModal'
 import Question from './Question'
+import QuestionDialog from './QuestionDialog'
 import Product from './Product'
 import Event from './Event'
 import Offer from './Offer'
@@ -349,57 +350,16 @@ console.log(data);
 
 
             <Route path="/2">
-              <Grid container spacing={4}>
-                <Grid md={6} xs={12}>
-                <Product handleDataDisplay={handleDataDisplay}/>
-                </Grid>
-                <Grid md={6} xs={12}>
-                <Facebook name={name} description={description} price={price} photo={photo} />
+            <Post />
 
-                </Grid>
-
-              </Grid>
+<ConfirmationDialog getData={handleData} handleDataDisplay={handleDataDisplay}/>
+              
             </Route>
 
-            <Route path="/3">
-            <Grid container spacing={4}>
-                <Grid md={6} xs={12}>
-                <Event  handleDataDisplay={handleDataDisplayEvent}/>
-                </Grid>
-                <Grid md={6} xs={12}>
-                <Facebook name={name} description={description} startDate={startDate} endDate={endDate} photo={photo}/>
-
-                </Grid>
-
-              </Grid>
-</Route>
-
-<Route path="/4">
-<Grid container spacing={4}>
-                <Grid md={6} xs={12}>
-                <Offer  handleDataDisplay={handleDataDisplayEvent}/>
-                </Grid>
-                <Grid md={6} xs={12}>
-                <Facebook name={name} description={description} startDate={startDate} endDate={endDate} photo={photo}/>
-
-                </Grid>
-
-              </Grid>
-</Route>
-           
-            {/* <Route 
-            exact path="/5"
-            // onEnter={} // CALL API ON ROUTE
-            >
-                          <Post />
-
-<FileDialog />
-            </Route> */}
             <Route 
-            exact path="/5"
-            // onEnter={} // CALL API ON ROUTE
+            exact path="/3"
             >
-                         <Question />
+                         <QuestionDialog />
             </Route>
 
 

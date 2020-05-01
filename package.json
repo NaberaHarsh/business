@@ -1,5 +1,5 @@
 {
-  "name": "dxp-monitoring",
+  "name": "noticeboard",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -62,5 +62,14 @@
   },
   "devDependencies": {
     "redux-devtools": "^3.5.0"
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://Acchen20@bitbucket.org/bintreereact/ob-react.git"
+  },
+  "author": "harsh",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/bintreereact/ob-react#readme"
 }

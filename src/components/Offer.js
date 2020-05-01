@@ -27,6 +27,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ImageTab from './ImageTab'
 import Files from './Files'
 import "./styles.css";
+import Facebook from './Skeleton';
 
 
 const styles = theme => ({
@@ -37,6 +38,12 @@ const styles = theme => ({
         flexDirection: "column",
         alignItems: "center"
 
+    },
+    contain1: {
+        marginTop: theme.spacing(0),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
     },
     contain: {
         marginTop: theme.spacing(2),
@@ -121,6 +128,8 @@ class Offer extends React.Component {
             items: [],
             tag: "",
             error: null,
+            showPreview:false,
+
         }
 
 
@@ -161,6 +170,13 @@ class Offer extends React.Component {
         });
       };
     
+      previewOpen=()=>{
+        this.setState({ showPreview:true })
+    }
+    previewClose=()=>{
+        this.setState({ showPreview:false })
+    }
+
       handleDelete = item => {
         this.setState({
           items: this.state.items.filter(i => i !== item)
@@ -239,7 +255,7 @@ class Offer extends React.Component {
         const { image, title, start_date, end_date, start_time, end_time, description, voucher, terms, items } = this.state;
         const userData = { image, title, start_date, end_date, start_time, end_time, description, voucher, terms, items };
         console.log(userData);
-        this.props.handleDataDisplay(userData)
+        // this.props.handleDataDisplay(userData)
     }
 
     handleSubmit = e => {
@@ -304,10 +320,10 @@ class Offer extends React.Component {
 
         return (
             <div>
-                <Container maxWidth="xs" className={classes.contain} >
+                <Container maxWidth="xs" className={classes.contain1} >
                     <Paper style={{  paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
-                            <Paper variant='outlined' style={{ width: "90%" }} >
+                            <Paper variant='outlined' style={{ width: "100%" }} >
                             {this.state.image.length != 0 
                               ?
                               <div className={classes.showImage}>
@@ -338,33 +354,27 @@ class Offer extends React.Component {
                                     label="Offer Title"
                                     name="title"
                                     autoComplete="offer"
-                                    autoFocus
+                            
                                     size="small"
                                     value={title}
                                     onChange={this.handleChange}
                                     helperText="Eg: 20% off on this store"
                                 />
-                                {/* <FormControlLabel
-                        InputProps={{ classes: { root: classes.inputRoot } }}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.labelRoot,
-                                focused: classes.labelFocused
-                            }
-                        }}
+
+                                <FormControlLabel
+                        style={{ marginTop: '10px' }}
                         value="time"
                         onChange={this.handleChangeTime}
                         control={<Switch color="primary" size="small" />}
                         label={<span style={{ fontSize: '14px' }}>Add Time</span>}
                         labelPlacement="start"
+                    />
 
-                    /> */}
 
-
-                                {/* {this.state.time === true
-                        ? */}
+                    {this.state.time === true
+                        ?
                                 <Grid container spacing={0}>
-                                    <Grid md={8} xs={8}>
+                                    <Grid md={8} xs={8} >
 
                                         < MaterialUIPickersStartDate
                                             startDate={this.getStartDate}
@@ -376,43 +386,42 @@ class Offer extends React.Component {
                                         <MaterialUIPickersStartTime
                                             startTime={this.getStartTime}
                                         />
-
                                     </Grid>
                                 </Grid>
-                                {/* :
-<Grid md={12} xs={12}>
-                        < MaterialUIPickersStartDate
-                            startDate={this.getStartDate}
-                        />
-                        </Grid>
-                     }
+                                 :
+                        <div>
+
+                            < MaterialUIPickersStartDate
+                                startDate={this.getStartDate}
+                            />
+                        </div>
+                    }
 
                     {this.state.time === true
                         ? 
-                         */}
                                 <Grid container spacing={0}>
-                                    <Grid md={8} xs={8}>
+                                    <Grid md={8} xs={8} >
 
                                         <MaterialUIPickersEndDate
                                             endDate={this.getEndDate}
                                         />
-
                                     </Grid>
                                     <Grid md={4} xs={4}>
 
                                         <MaterialUIPickersEndTime
                                             endTime={this.getEndTime}
                                         />
-
                                     </Grid>
                                 </Grid>
-                                {/* :
+                                 :
+                        <div>
 
-                        <MaterialUIPickersEndDate
-                            endDate={this.getEndDate}
-                        />
+                            <MaterialUIPickersEndDate
+                                endDate={this.getEndDate}
+                            />
+                        </div>
+                    } 
 
-                    } */}
 
                                 <ExpansionPanel elevation={0} className={classes.root}>
                                     <ExpansionPanelSummary
@@ -443,7 +452,7 @@ class Offer extends React.Component {
                                             label="Offer Description"
                                             name="description"
                                             autoComplete="desc"
-                                            autoFocus
+                                    
                                             size="small"
                                             value={description}
                                             onChange={this.handleChange}
@@ -469,7 +478,7 @@ class Offer extends React.Component {
                                             label="Voucher code"
                                             name="voucher"
                                             autoComplete="code"
-                                            autoFocus
+                                
                                             size="small"
                                             value={voucher}
                                             onChange={this.handleChange}
@@ -494,7 +503,7 @@ class Offer extends React.Component {
                                             label="Terms and Conditions"
                                             name="terms"
                                             autoComplete="terms and conditions"
-                                            autoFocus
+                    
                                             size="small"
                                             value={terms}
                                             onChange={this.handleChange}
@@ -546,7 +555,7 @@ class Offer extends React.Component {
                                     label="Add Tag"
                                     name="tag"
                                     autoComplete="tag"
-                                    autoFocus
+                        
                                     size="small"
                                     multiline={true}
                                     value={ tag  }
@@ -556,16 +565,19 @@ class Offer extends React.Component {
 
                                 <br />
                                 <Grid container spacing={2}>
-                                    <Grid md={6} lg={6} sm={3} xs={3}></Grid>
-                                    <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                                        <Button variant='contained' color='primary' onClick={() => { this.handlePreview() }}
+                                    
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={() => { this .previewOpen() }}
                                             style={{ fontSize: '12px' }}>Preview</Button>
                                     </Grid>
-                                    <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                                        <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleCancel() }}
                                             style={{ fontSize: '12px' }}>Submit</Button>
                                     </Grid>
-
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                    <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}
+                                            style={{ fontSize: '12px' }}>Close</Button>
+                                    </Grid>
                                 </Grid>
 
 
@@ -590,6 +602,19 @@ class Offer extends React.Component {
                     </DialogActions>
                 </Dialog>
 
+                <Dialog onClose={this.previewClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.showPreview}>
+                    <DialogTitle id="customized-dialog-title" onClose={this.previewClose}>
+                        Preview
+                    </DialogTitle>
+                    <DialogContent dividers>
+                    <Facebook name={this.state.title} startDate={this.state.start_date} startTime={this.state.start_time} endDate={this.state.end_date} endTime={this.state.end_time} image={this.state.image} desc={this.state.description} />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={this.previewClose} color="primary">
+                            Done
+          </Button>
+                    </DialogActions>
+                </Dialog>
 
             </div>
         )

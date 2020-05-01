@@ -21,12 +21,12 @@ import Typography from '@material-ui/core/Typography';
 import ImageTab from './ImageTab'
 import Files from './Files'
 import "./styles.css";
-
+import PreviewDialog from './PreviewDialog';
 import Checkbox from '@material-ui/core/Checkbox';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-
+import Facebook from './Skeleton';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -44,6 +44,12 @@ const styles = theme => ({
         flexDirection: "column",
         alignItems: "center",
 
+    },
+    contain1: {
+        marginTop: theme.spacing(0),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
     },
     contain: {
         marginTop: theme.spacing(2),
@@ -129,6 +135,7 @@ class Product extends React.Component {
             tag: "",
             error: null,
             userData: '',
+            showPreview:false,
         }
 
         this.handleChangeCategory = this.handleChangeCategory.bind(this)
@@ -234,7 +241,7 @@ class Product extends React.Component {
         const { image, product_name, price, desc } = this.state;
         const userData = { image, product_name, price, desc };
         console.log(userData);
-        this.props.handleDataDisplay(userData)
+        // this.props.handleDataDisplay(userData)
     }
 
     handleSubmit = e => {
@@ -272,6 +279,13 @@ class Product extends React.Component {
 
     };
 
+    previewOpen=()=>{
+        this.setState({ showPreview:true })
+    }
+    previewClose=()=>{
+        this.setState({ showPreview:false })
+    }
+
     getValue(e) {
         console.log(e);
         if (e == 1) {
@@ -290,10 +304,10 @@ class Product extends React.Component {
 
         return (
             <div>
-                <Container maxWidth="xs" className={classes.contain} >
+                <Container maxWidth="xs" className={classes.contain1} >
                     <Paper style={{ paddingBottom: '30px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <div className={classes.contain}>
-                            <Paper variant='outlined' style={{ width: "90%" }} >
+                            <Paper variant='outlined' style={{ width: "100%" }} >
                                 {this.state.image.length != 0
                                     ?
                                     <div className={classes.showImage}>
@@ -327,7 +341,7 @@ class Product extends React.Component {
                                     label="Product Name"
                                     name="product_name"
                                     autoComplete="product"
-                                    autoFocus
+                                
                                     size="small"
                                     value={product_name}
                                     onChange={this.handleChange}
@@ -377,7 +391,7 @@ class Product extends React.Component {
                                             fullWidth
                                             name="category"
                                             autoComplete="category"
-                                            autoFocus
+                                        
                                             size="small"
                                             value={category}
                                             onChange={this.handleChange}
@@ -404,7 +418,7 @@ class Product extends React.Component {
                                             label="Product Category"
                                             name="category"
                                             autoComplete="category"
-                                            autoFocus
+                                            
                                             size="small"
                                             value={category}
                                             onChange={this.handleChange}
@@ -429,7 +443,7 @@ class Product extends React.Component {
                                     label="Product price (INR)"
                                     name="price"
                                     autoComplete="price"
-                                    autoFocus
+                                    
                                     size="small"
                                     value={price}
                                     onChange={this.handleChange}
@@ -450,7 +464,7 @@ class Product extends React.Component {
                                     label="Product Description"
                                     name="desc"
                                     autoComplete="description"
-                                    autoFocus
+                            
                                     size="small"
                                     value={desc}
                                     rows={3}
@@ -506,7 +520,7 @@ class Product extends React.Component {
                                             label="Link from your button"
                                             name="link"
                                             autoComplete="link"
-                                            autoFocus
+                                        
                                             size="small"
                                             value={link}
                                             onChange={this.handleChange}
@@ -556,7 +570,7 @@ class Product extends React.Component {
                                     label="Add Tag"
                                     name="tag"
                                     autoComplete="tag"
-                                    autoFocus
+                                
                                     size="small"
                                     multiline={true}
                                     value={tag}
@@ -567,17 +581,20 @@ class Product extends React.Component {
                                 <br />
                                 <Divider />
                                 <br />
-                                <Grid container spacing={2} >
-                                    <Grid md={6} lg={6} sm={3} xs={3}></Grid>
-                                    <Grid md={3} lg={3} sm={5} xs={5} style={{ textAlign: 'center' }}>
-                                        <Button variant='contained' color='primary' onClick={() => { this.handlePreview() }}
-                                            style={{ fontSize: '12px' }}>Preview</Button>
+                                <Grid container spacing={2}>
+                                    
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={() =>{this .previewOpen()}}
+                                            style={{ fontSize: '12px' }} >Preview</Button>
                                     </Grid>
-                                    <Grid md={3} lg={3} sm={4} xs={4} style={{ textAlign: 'center' }}>
-                                        <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e) }}
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                        <Button variant='contained' color='primary' onClick={(e) => { this.handleSubmit(e); this.props.handleCancel() }}
                                             style={{ fontSize: '12px' }}>Submit</Button>
                                     </Grid>
-
+                                    <Grid md={4} lg={4} sm={4} xs={4} style={{ textAlign: 'center' }}>
+                                    <Button variant='contained' color='primary' onClick={() => { this.props.handleCancel() }}
+                                            style={{ fontSize: '12px' }}>Close</Button>
+                                    </Grid>
                                 </Grid>
 
 
@@ -598,6 +615,20 @@ class Product extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={this.handleClose} color="primary">
+                            Done
+          </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog onClose={this.previewClose} className={classes.root} aria-labelledby="customized-dialog-title" open={this.state.showPreview}>
+                    <DialogTitle id="customized-dialog-title" onClose={this.previewClose}>
+                        Preview
+                    </DialogTitle>
+                    <DialogContent dividers>
+                       <Facebook name={this.state.product_name} price={this.state.price} image={this.state.image} desc={this.state.desc} />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={this.previewClose} color="primary">
                             Done
           </Button>
                     </DialogActions>

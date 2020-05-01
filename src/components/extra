@@ -2117,3 +2117,72 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Dashboard)
+
+
+
+skeleton
+
+<Card className={classes.card} >
+      <CardHeader
+        avatar={
+         
+            <Skeleton animation="wave" variant="circle" width={40} height={40} />
+         
+        }
+        action={
+             null 
+                  }
+        title={
+          name != null ? 
+          name
+          :
+            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} /> 
+                     
+        }
+      />
+      {photo != null ?
+      photo.map(file =>
+<img  src={file.preview} />
+        )
+       :
+      <Skeleton animation="wave" variant="rect" className={classes.media} />
+
+      }
+      
+
+      <CardContent>
+      <Typography variant="h6">
+        {price || (startDate && endDate)   != null 
+       ?
+         price || (`${startDate}-${endDate}`)
+         
+       : 
+            <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+       }
+       </Typography>
+       
+<Typography variant="h6">
+        {startDate && endDate != null 
+       ?
+            startDate - endDate  
+       : 
+       <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+      }
+      </Typography>
+
+       <Typography variant="h6">
+        {description != null 
+       ?
+         description        
+       : 
+       <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+      }
+      </Typography>
+
+
+
+          
+       
+      </CardContent>
+    </Card>
+    
